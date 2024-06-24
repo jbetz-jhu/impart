@@ -17,7 +17,10 @@ the data should be reconstructed}
 A list
 }
 \description{
-Reconstruct data available at an earlier point in a study
+This function uses the timing of events, such as randomization times and
+times of outcomes, to reconstruct the data available at an earlier point in
+the study. This can be used for monitoring the rate of information accrual
+over the course of a study.
 }
 \examples{
 # To be added

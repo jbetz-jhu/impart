@@ -44,7 +44,9 @@ typically created with \code{\link[=monitored_analysis_control]{monitored_analys
 A list containing the following elements:
 }
 \description{
-Estimate the observed information level
+This is a function for computing the information level from a dataset. For
+multi-stage designs, earlier results can be passed as a
+\code{monitored_design} object.
 }
 \examples{
 # To be added

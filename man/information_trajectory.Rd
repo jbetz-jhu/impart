@@ -50,7 +50,14 @@ A \code{data.frame} containing the information and number of outcome
 events at each analysis
 }
 \description{
-Reconstruct a trajectory of information accrual
+While \code{\link[=estimate_information]{estimate_information()}} provides an estimated information
+level at a single point, investigators may want to visualize a trajectory
+of how quickly information is accruing as participants are randomized and
+their outcomes are obtained. \code{information_trajectory} attempts to
+reconstruct the study data available at different points in time, and then
+compute the information accrued at these times. Regression models can be used
+to smooth these trajectories to provide projections of when the information
+will reach pre-specified thresholds.
 }
 \examples{
 # To be added

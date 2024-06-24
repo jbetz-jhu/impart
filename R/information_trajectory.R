@@ -1,5 +1,14 @@
 #' Reconstruct a trajectory of information accrual
 #'
+#' While [impart::estimate_information()] provides an estimated information
+#' level at a single point, investigators may want to visualize a trajectory
+#' of how quickly information is accruing as participants are randomized and
+#' their outcomes are obtained. \code{information_trajectory} attempts to
+#' reconstruct the study data available at different points in time, and then
+#' compute the information accrued at these times. Regression models can be used
+#' to smooth these trajectories to provide projections of when the information
+#' will reach pre-specified thresholds.
+#'
 #' @param prepared_data A prepeared dataset: see
 #' [impart::prepare_monitored_study_data]
 #' @param monitored_design An object of class \code{monitored_design} created

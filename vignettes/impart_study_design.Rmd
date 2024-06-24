@@ -28,6 +28,10 @@ knitr::opts_chunk$set(
   out.width = "80%",
   dpi = 600
 )
+
+options(
+  rmarkdown.html_vignette.check_title = FALSE
+)
 ```
 
 ```{r setup}

@@ -1,4 +1,11 @@
-#' Title
+#' Produce a cumulative plot of study events
+#'
+#' An appropriate analysis must take into account the amount of data available
+#' for analysis. For continuous outcomes, this may involve the number of
+#' individuals with baseline covariates and primary outcomes, while binary and
+#' time to events may additionally depend on the number of observed events.
+#' \code{plot_outcome_counts} provides a way to visualize the amount of data
+#' available for analysis.
 #'
 #' @param prepared_data A prepeared dataset: see
 #' [impart::prepare_monitored_study_data]

@@ -1,5 +1,11 @@
 #' Count outcome events from prepared study data
 #'
+#' This function uses the timing of events, such as randomization times and
+#' times of outcomes, to reconstruct the data available at an earlier point in
+#' the study. This can be used for monitoring the rate of information accrual
+#' over the course of a study. This function returns the count of outcomes by
+#' study time.
+#'
 #' @param prepared_data A prepeared dataset: see
 #' [impart::prepare_monitored_study_data]
 #' @param study_time A \code{numeric} scalar indicating the study time at which

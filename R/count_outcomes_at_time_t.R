@@ -1,4 +1,10 @@
-#' Reconstruct the count of events at a given time during a study
+#' Reconstruct the count of events at a given study time during a study
+#'
+#' This function uses the timing of events, such as randomization times and
+#' times of outcomes, to reconstruct the data available at an earlier point in
+#' the study. This can be used for monitoring the rate of information accrual
+#' over the course of a study. This returns the number of events at a particular
+#' point during the study.
 #'
 #' @param prepared_data A prepeared dataset: see
 #' [impart::prepare_monitored_study_data]

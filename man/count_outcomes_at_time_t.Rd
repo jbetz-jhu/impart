@@ -2,7 +2,7 @@
 % Please edit documentation in R/count_outcomes_at_time_t.R
 \name{count_outcomes_at_time_t}
 \alias{count_outcomes_at_time_t}
-\title{Reconstruct the count of events at a given time during a study}
+\title{Reconstruct the count of events at a given study time during a study}
 \usage{
 count_outcomes_at_time_t(prepared_data, study_times)
 }
@@ -17,7 +17,11 @@ events.}
 A \code{data.frame}
 }
 \description{
-Reconstruct the count of events at a given time during a study
+This function uses the timing of events, such as randomization times and
+times of outcomes, to reconstruct the data available at an earlier point in
+the study. This can be used for monitoring the rate of information accrual
+over the course of a study. This returns the number of events at a particular
+point during the study.
 }
 \examples{
 # To be added

@@ -27,10 +27,15 @@ knitr::opts_chunk$set(
   out.width = "80%",
   dpi = 600
 )
+
+options(
+  rmarkdown.html_vignette.check_title = FALSE
+  )
 ```
 
 ```{r setup}
 library(impart)
+library(deming) # Required for deming::theilsen()
 ```
 
 This vignette demonstrates how to use `impart` to monitor the amount of
@@ -433,8 +438,6 @@ abline(
   ),
   lty = 2
 )
-
-library(deming)
 
 # Requires `deming` package
 abline(

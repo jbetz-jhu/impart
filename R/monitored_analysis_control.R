@@ -1,5 +1,8 @@
 #' Control arguments for performing information monitored analyses
 #'
+#' This provides a way to set and modify the analysis parameters for information
+#' monitoring.
+#'
 #' @param n_bootstrap Scalar number containing the number of bootstrap
 #' replicates to perform
 #' @param n_cores Scalar number of cores to use.

@@ -22,7 +22,8 @@ replicates to perform}
 A list containing the specified inputs.
 }
 \description{
-Control arguments for performing information monitored analyses
+This provides a way to set and modify the analysis parameters for information
+monitoring.
 }
 \examples{
 # To be added

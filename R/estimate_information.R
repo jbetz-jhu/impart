@@ -1,5 +1,9 @@
 #' Estimate the observed information level
 #'
+#' This is a function for computing the information level from a dataset. For
+#' multi-stage designs, earlier results can be passed as a
+#' \code{monitored_design} object.
+#'
 #' @param data A data.frame containing the data to be analyzed. A column named
 #' `.id` indicates which observations correspond to each individual.
 #' @param monitored_design An object of class \code{monitored_design} created

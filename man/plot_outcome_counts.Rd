@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_outcome_counts.R
 \name{plot_outcome_counts}
 \alias{plot_outcome_counts}
-\title{Title}
+\title{Produce a cumulative plot of study events}
 \usage{
 plot_outcome_counts(
   prepared_data,
@@ -35,7 +35,12 @@ scalar indicating the increment between vertical lines on the time axis.}
 \item{color_palette}{A vector of colors for each event.}
 }
 \description{
-Title
+An appropriate analysis must take into account the amount of data available
+for analysis. For continuous outcomes, this may involve the number of
+individuals with baseline covariates and primary outcomes, while binary and
+time to events may additionally depend on the number of observed events.
+\code{plot_outcome_counts} provides a way to visualize the amount of data
+available for analysis.
 }
 \examples{
 # To be added
