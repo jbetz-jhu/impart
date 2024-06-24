@@ -1,0 +1,27 @@
+Package: impart
+Type: Package
+Title: Information Monitoring for Precision Adaptive Randomized Trials (IMPART)
+Version: 0.1.0
+Author: Who wrote it
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Imports: 
+    methods,
+    rpact
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    pwr,
+    ggplot2,
+    rlang
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)

@@ -1,0 +1,450 @@
+---
+title: "impart_monitoring"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{impart_monitoring}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{deming}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+fig_w <- 8
+fig_h <- 8
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = TRUE,
+  results = "markup",
+  fig.width = fig_w,
+  fig.height = fig_h,
+  fig.align = "center",
+  out.width = "80%",
+  dpi = 600
+)
+```
+
+```{r setup}
+library(impart)
+```
+
+This vignette demonstrates how to use `impart` to monitor the amount of
+information contained in the accrued data so that analyses are not under- or
+over-powered. This builds upon the terminology and concepts in the vignette on
+study design, which can be viewed as follows:
+
+```{r Previous Vignettes, eval = FALSE}
+vignette("impart_study_design", package = "impart") # Design
+```
+
+# Monitoring Ongoing Studies
+
+In a fixed sample size design, the timing of the final analysis is based on the 
+last participant's last visit. Group sequential analyses are based when
+pre-specified fractions of the maximum sample size have their final outcome
+observed. Timing analyses in such studies only depends on counting the number of
+final outcomes observed during the study.
+
+In information-monitored designs, the times at which analyses are performed and
+recruitment is stopped depend on when the information reaches pre-specified
+thresholds. The amount of information contained in the data depends on the
+number of observations, the completeness of the data, the analytic methods used,
+and the interrelationships among the observed data. Depending on the analysis
+methods used, an individual could contribute baseline covariates and treatment
+assignment information, post-randomization outcomes, and even post-randomization
+auxiliary variables.
+
+
+
+
+## Challenges in Information Monitoring
+
+A new challenge in analyzing data in an ongoing trial is how to appropriately
+treat missing data. Suppose the following are observed:
+
+  - A participant is newly enrolled, has their baseline covariates measured, is randomized, is still on study, and has not yet entered any follow-up windows
+  - A participant is randomized, but did not attend any follow-up visits
+
+In both of these cases, the covariates, and treatment assignment are observed,
+but the outcomes are missing. In the first case, outcomes are not yet observed:
+while they are missing, they could still be observed when the participant enters
+the study window. In the latter case, they are known to be missing: the study
+window is closed without the outcome being observed.
+
+A convention can be used to differentiate outcomes that are not yet observed
+from those known to be missing:
+
+  - Completed assessments have both an observed outcome and an observed assessment time.
+  - Missed assessments have a missing outcome, but an observed assessment time: 
+    - If an assessment occurred, but no valid outcome was obtained, the time of the assessment is used.
+    - If an assessment was missed, the end of the study window is used, indicating the last time an outcome could have been observed per protocol.
+  - Not-yet-observed assessments are missing both an outcome and an assessment time.
+
+
+
+
+## Example Data:
+
+Information monitoring will be illustrated using a simulated dataset named
+`example_1`:
+
+```{r}
+head(example_1)
+```
+
+The dataset is in wide format, with one row per individual. There are four
+baseline covariates: `x_1`, `x_2`, ..., `x_4`. Treatment assignment is indicated
+a binary indicator (`tx`), with the time from study initiation to randomization
+indicated by `.enrollment_time`. There are four outcomes assessed at 30, 60, 90,
+and 120 days post-randomization: `y_1`, `y_2`, `y_3` and `y_4`. The time to each
+observed outcome is indicated in columns `.t_1`, `.t_2`, `.t_3` and `.t_4`. For
+missed study visits, the time recorded is the last day within the study window
+at which the individual's outcome could have been assessed.
+
+
+## Preparing Interim Datasets
+
+A function `prepare_interim_data` allows the user to create indicator variables
+for each outcome, with each variable indicating whether an outcome is observed
+(`1`), is known to be missing (`0`), or has not yet been observed (`NA`). This
+allows software to appropriately handle missing information during an ongoing
+study.
+
+`prepare_interim_data` retains only the columns of data relevant to the analysis
+at hand: covariates, study entry/enrollment time, treatment assignment,
+outcomes, and the times at which outcomes were measured.
+
+```{r Prepare Data}
+# Obtain time of last event
+last_event <-
+  example_1[, c(".enrollment_time", ".t_1", ".t_2", ".t_3", ".t_4")] |>
+  unlist() |>
+  max(na.rm = TRUE) |>
+  ceiling()
+
+prepared_final_data <-
+  prepare_monitored_study_data(
+    data = example_1,
+    study_time = last_event,
+    id_variable = ".id",
+    covariates_variables = c("x_1", "x_2", "x_3", "x_4"),
+    enrollment_time_variable = ".enrollment_time",
+    treatment_variable = "tx",
+    outcome_variables = c("y_1", "y_2", "y_3", "y_4"),
+    outcome_time_variables = c(".t_1", ".t_2", ".t_3", ".t_4"), 
+    # Observe missingness 1 week after target study visit
+    observe_missing_times = c(30, 60, 90, 120) + 7
+  )
+```
+
+The resulting object contains the prepared dataset, the original dataset, the study time of the data lock, and a list of variables and their role in analyses. 
+
+
+## Reverting to Information Earlier in the Study
+
+These conventions can also be used to take a dataset from one point in time during the study, and revert to the information that was only available at an earlier point in the study. This can be useful for determining how quickly information is accruing during an ongoing study. Let $(X_{1}, \ldots, X_{p})$, $A$, $(Y_{1}, \ldots, Y_{j})$, and $(T_{Y_{1}}, \ldots, T_{Y_{J})}$ respectively denote baseline covariates, treatment assignment, the outcome observed at study visit $j = 1, \ldots, J$, and the times at which the study outcomes are observed. Let $w^{c}_{j}$ denote the closing of the study window for visit $j$.
+
+To obtain the information available at $t$ days after the randomization of the first participant:
+
+  1. Retain only participants where $T_{A} < t$: i.e. those randomized by study time $t$
+  2. Set outcome $Y_{j}$ to unobserved if $T_{Y_{j}} > t$: i.e. outcomes not observed by time $t$
+  3. Set $Y_{j}$ to missing if $T_{Y_{j}} - T_{A} > w^{c}_{j}$: otherwise, treat the outcome as not yet observed.
+  
+For example, the data known at 90 days can be obtained using the `data_at_time_t()` function as follows:
+
+```{r Obtain Past Dataset}
+data_90 <-
+  data_at_time_t(
+    prepared_data = prepared_final_data,
+    study_time = 90
+  )
+```
+
+Consider 90 days after study initiation:
+
+  - Participant 1 is known to have missed their first post-randomization assessment: `.r_1` is `0`
+  - Participants 2-5 have had their first post-randomization outcome obtained: `.r_1` is `1`
+  - Participant 6 missed their first post-randomization assessment, but this is not yet known at day 90: `.r_1` is `NA`
+
+```{r Show Header Data at 70 Days}
+show_cols <- c(".id", "x_2", "x_3", "x_4", "tx")
+
+# Original Data
+data_90$original_data[1:6, c(show_cols, ".enrollment_time", ".t_1", "y_1")]
+
+# Data known at study day 90
+data_90$data[1:6, c(show_cols, ".e", ".t_1", "y_1", ".r_1")]
+```
+
+If `observe_missing_times` were set to `0` for each outcome, any outcome that is
+`NA` and has a recorded time of assessment will be treated as missing.
+
+
+
+
+## Plotting Observed Number of Outcomes
+
+One part of monitoring involves determining how many individuals contribute a
+given type of information to analyses, including baseline covariates,
+intermediate outcomes, and final outcomes. For binary and time-to-event
+analyses, monitoring should include the number of observed events, not just the
+number of participants who have completed monitoring.
+
+Plotting can be done for all available events:
+
+```{r Plot Entire Study}
+# Plot events at the end of the study
+plot_outcome_counts(
+  prepared_data = prepared_final_data
+)
+```
+
+
+Plotting can also be done for events known at a particular point in time:
+
+
+```{r Plot Data Up To Timepoint}
+# Plot events two years into the study
+plot_outcome_counts(
+  prepared_data = prepared_final_data,
+  study_time = 731 # 2 Years
+)
+```
+
+
+
+
+## Tabulating Event Times
+
+The times of each event can be obtained using `count_outcomes`:
+
+```{r Tabulate Timing of Events}
+example_1_counts_2y <-
+  count_outcomes(
+    prepared_data = prepared_final_data
+  )
+
+# Timing of first n randomizations
+subset(
+  example_1_counts_2y,
+  event == "randomization"
+) |> head()
+
+# Timing of first n observations of `y_4`
+subset(
+  example_1_counts_2y,
+  event == "y_4"
+) |> head()
+
+# Find when n observations of `y_4` are first available:
+subset(
+  example_1_counts_2y,
+  event == "y_4" & count_complete == 50
+)
+```
+
+
+This can also be used with `data_at_time_t` to reconstruct the study data when a
+particular number of observations have accrued:
+
+
+```{r Reconstruct Data N 50}
+# Reconstruct the data when N = 50 final outcomes were obtained
+data_n_final_50 <-
+  data_at_time_t(
+    prepared_data = prepared_final_data,
+    study_time = 
+      # Time when 50 final outcomes are observed:
+      ceiling(
+        subset(
+          example_1_counts_2y,
+          event == "y_4" & count_complete == 50
+        )$time
+      )
+  )
+
+data_n_50 <- data_n_final_50$data
+```
+
+
+
+# Monitoring Information Levels
+
+Information can be computed using the `estimate_information` function: users
+pass the function which conducts the analysis (`estimation_function`), along
+with a list of parameters the function requires (`estimation_arguments`).
+When there are multiple analyses, the `orthogonalize` argument specifies whether
+the test statistics and covariance should be orthogonalized to meet the
+independent increments assumption. A random number generator seed (`rng_seed`)
+can be supplied for reproducibility. By default, only the variance and
+information are returned, which can be compared against the target information
+level for analyses:
+
+```{r Estimate Information Example 1}
+information_n_50 <-
+  estimate_information(
+    data = data_n_50,
+    monitored_design = NULL,
+    estimation_function = standardization,
+    estimation_arguments =
+      list(
+        estimand = "difference",
+        y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        family = gaussian,
+        treatment_column = "tx",
+        outcome_indicator_column = ".r_4"
+      ),
+    orthogonalize = TRUE,
+    rng_seed = 23456
+  )
+
+information_n_50
+```
+
+When a study is designed with interim and final analyses, `monitored_design`
+allows the user to pass the results of previously conducted analyses to
+`estimate_information`.
+
+Using the design specified in the `impart_study_design` vignette:
+
+```{r Universal Study Design Parameters}
+# Universal Study Design Parameters
+minimum_difference <- 5 # Effect Size: Difference in Means of 5 or greater
+alpha <- 0.05 # Type I Error Rate
+power <- 0.9 # Statistical Power
+test_sides <- 2 # Direction of Alternatives
+
+# Determine information required to achieve desired power at fixed error rate
+information_fixed <-
+  impart::required_information_fixed_n(
+    delta = minimum_difference,
+    alpha = alpha,
+    power = power
+  )
+
+# Group Sequential Design Parameters
+information_rates <-
+  c(0.50, 0.75, 1.00) # Analyses at 50%, 75%, and 100% of the Total Information
+type_of_design <- "asOF" # O'Brien-Fleming Alpha Spending
+type_beta_spending <- "bsOF" # O'Brien-Fleming Beta Spending
+
+# Set up group sequential testing procedure
+trial_design <-
+  rpact::getDesignGroupSequential(
+    alpha = alpha,
+    beta = 1 - power,
+    sided = 2,
+    informationRates = information_rates,
+    typeOfDesign = type_of_design,
+    typeBetaSpending = type_beta_spending,
+    bindingFutility = FALSE
+  )
+
+# Inflate information level to account for multiple testing
+information_adaptive <-
+  impart::required_information_sequential(
+    information_fixed = information_fixed,
+    trial_design = trial_design
+  )
+
+# Initialize the monitored design
+monitored_design <-
+  initialize_monitored_design(
+    trial_design = trial_design,
+    null_value = 0,
+    maximum_sample_size = 280,
+    information_target = information_adaptive,
+    orthogonalize = TRUE,
+    rng_seed_analysis = 54321
+  )
+```
+
+The current information can be computed:
+
+```{r Compute Information Fraction N 50}
+information_n_50$information/information_adaptive
+```
+
+
+## Tools for Monitoring Information
+
+While `estimate_information` can provide an estimate of the information at a
+particular point in the study, understanding the rate at which information is
+accruing over time can be useful in projecting when pre-specified information
+levels may be met:
+
+```{r}
+data_n_50_trajectory <- 
+  information_trajectory(
+    prepared_data = data_n_final_50,
+    monitored_design = NULL,
+    estimation_function = standardization,
+    estimation_arguments =
+      list(
+        estimand = "difference",
+        y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        family = gaussian,
+        treatment_column = "tx",
+        outcome_indicator_column = ".r_4"
+      ),
+    orthogonalize = TRUE,
+    n_min = 30,
+    n_increment = 2,
+    rng_seed = 23456,
+    control = monitored_analysis_control()
+  )
+
+data_n_50_trajectory
+```
+
+
+This trajectory can be smoothed using regression, ideally using a method resistant to outliers, such as `deming::theilsen`. Inverse regression can be used to obtain an estimated number of outcomes necessary to achieve a given level of information:
+
+
+```{r Plot Trajectory}
+plot(
+  information ~ y_4,
+  data = data_n_50_trajectory,
+  xlim = c()
+)
+
+abline(
+  lm(formula = information ~ y_4,
+     data = data_n_50_trajectory),
+  lty = 1
+)
+
+last_high_pct_change <-
+  max(which(abs(data_n_50_trajectory$information_pct_change) > 30))
+keep_rows <- (last_high_pct_change + 1):nrow(data_n_50_trajectory)
+
+# Keep only the rows where the percentage change in information is stable
+abline(
+  lm(
+    formula = information ~ y_4,
+    data = data_n_50_trajectory[keep_rows,]
+  ),
+  lty = 2
+)
+
+library(deming)
+
+# Requires `deming` package
+abline(
+  deming::theilsen(
+    formula = information ~ y_4,
+    data = data_n_50_trajectory[keep_rows,]
+  ),
+  lty = 3
+)
+```
+
+
+

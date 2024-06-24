@@ -1,0 +1,356 @@
+---
+title: "`impart` Validation: `apply_stopping_rule_z`"
+subtitle: "Double Coding & Graphical Checks"
+author: "Josh Betz (jbetz@jhu.edu) - Johns Hopkins Biostatistics Center"
+date: "`r paste0('Compiled ', format(Sys.time(), '%Y-%m-%d %I:%M'))`"
+editor_options:
+  chunk_output_type: console
+output:
+  html_document:
+    pandoc_args: [--toc]
+---
+
+```{r Report Setup, echo = FALSE}
+library(impart)
+library(rpact)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+## All checks pass: 2024-06-12
+# [X] Two-Sided: No Futility [X] Original [X] Double Code
+# [X] Two-Sided: Non-binding Futility [X] Original [X] Double Code
+# [X] One-Sided Upper: No Futility [X] Original [X] Double Code
+# [X] One-Sided Upper: Non-binding Futility [X] Original [X] Double Code
+# [X] One-Sided Lower: No Futility [ ] Original [X] Double Code
+# [X] One-Sided Lower: Non-binding Futility
+
+alpha <- 0.05
+power <- 0.90
+sides <- 2
+# sides <- 1
+alpha_spending <- c("asOF", "asP", "asKD", "asHSD")[1]
+beta_spending <- c("none", "bsOF", "bsP", "bsKD", "bsHSD")[1]
+information_fractions <- c(0.5, 0.75, 1)
+one_sided_upper <- TRUE
+one_sided_upper <- FALSE
+
+# Only used for Kim-DeMets (KD) and Hwang-Shi-Decani spending functions
+# KD parameters from [0.4; 8]; HSD parameters from [-10; 5]
+alpha_spending_parameter <- 0 
+beta_spending_parameter <- 0
+
+z_min <- -6.25
+z_max <- 6.25
+z_increment <- 0.25
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  results = "asis",
+  fig.width = 8,
+  fig.height = 8
+)
+```
+
+
+```{r}
+alpha_spending_options <- c("asOF", "asP", "asKD", "asHSD")
+beta_spending_options <- c("none", "bsOF", "bsP", "bsKD", "bsHSD")
+
+if(!alpha_spending %in% alpha_spending_options){
+  stop("Alpha spending function \"", alpha_spending, "\" not recognized. ",
+       "Options include: ", paste0(alpha_spending_options, collapse = ", "))
+}
+
+if(!beta_spending %in% beta_spending_options){
+  stop("Beta spending function \"", beta_spending, "\" not recognized. ",
+       "Options include: ", paste0(beta_spending_options, collapse = ", "))
+}
+
+if(!alpha_spending %in% c("asKD", "asHSD")){
+  alpha_spending_parameter <- NA_real_
+}
+
+if(!beta_spending %in% c("bsKD", "bsHSD")){
+  beta_spending_parameter <- NA_real_
+}
+
+
+n_stages <- length(information_fractions)
+
+efficacy_bounds <-
+  dplyr::case_when(
+    alpha_spending == "asOF" ~ "O'Brien-Fleming",
+    alpha_spending == "asP" ~ "Pocock",
+    alpha_spending == "asKD" ~ "Kim-DeMets",
+    alpha_spending == "asHSD" ~ "Hwang-Shi-DeCani"
+  )
+
+futility_bounds <-
+  dplyr::case_when(
+    beta_spending == "none" ~ "no",
+    beta_spending == "bsOF" ~ "O'Brien-Fleming",
+    beta_spending == "bsP" ~ "Pocock",
+    beta_spending == "bsKD" ~ "Kim-DeMets",
+    beta_spending == "bsHSD" ~ "Hwang-Shi-DeCani"
+  )
+```
+
+## Test Parameters
+
+Tests were performed using a `r n_stages` design, with `r efficacy_bounds`
+efficacy boundaries and `r futility_bounds` futility boundaries. Tests were
+`r paste0(sides, "-sided")` with $\alpha=$ `r alpha` and `r 100*power`% power.
+
+Z-scores between `r z_max` and `r z_min` were tested in increments of
+`r z_increment` for consistency with a double-coding and graphical checks.
+
+
+```{r Construct Design}
+trial_design <-
+  rpact::getDesignGroupSequential(
+    alpha = alpha,
+    beta = 1 - power,
+    sided = sides,
+    typeOfDesign = alpha_spending,
+    typeBetaSpending = beta_spending,
+    gammaA = alpha_spending_parameter,
+    gammaB = beta_spending_parameter,
+    bindingFutility =
+      if(beta_spending != "none"){
+        FALSE
+      } else {
+        NA_real_
+      },
+    informationRates = information_fractions
+  )
+
+if(sides == 1){
+  trial_design <-
+    correct_one_sided_gsd(
+      trial_design = trial_design,
+      higher_better = one_sided_upper
+    )
+}
+```
+
+```{r Double Code Stopping Rules}
+bounds_e <- trial_design$criticalValues
+bounds_f <- c(trial_design$futilityBounds)
+
+param_grid <-
+  dplyr::tibble(
+    z_1 = seq(from = z_min, to = z_max, by = z_increment),
+    z_2 = seq(from = z_min, to = z_max, by = z_increment),
+    z_3 = seq(from = z_min, to = z_max, by = z_increment)
+  ) %>%
+  dplyr::mutate(
+    row = row_number(),
+    d_1 =
+      case_when(
+        (sides == 2 | one_sided_upper) & z_1 > bounds_e[1] ~ "Efficacy: Upper",
+        (sides == 2) & z_1 < -bounds_e[1] ~ "Efficacy: Lower",
+        (sides == 1) & !one_sided_upper & z_1 < bounds_e[1] ~ "Efficacy: Lower",
+        beta_spending != "none" & sides == 2 &
+          (z_1 < bounds_f[1]) & (z_1 > -bounds_f[1]) ~ "Futility",
+        sides == 1 & one_sided_upper & (z_1 < bounds_f[1]) ~ "Futility",
+        sides == 1 & !one_sided_upper & (z_1 > bounds_f[1]) ~ "Futility",
+        TRUE ~ "Continue"
+      ),
+    d_2 =
+      case_when(
+        (sides == 2 | one_sided_upper) & z_2 > bounds_e[2] ~ "Efficacy: Upper",
+        (sides == 2) & z_2 < -bounds_e[2] ~ "Efficacy: Lower",
+        (sides == 1) & !one_sided_upper & z_2 < bounds_e[2] ~ "Efficacy: Lower",
+        beta_spending != "none" & sides == 2 &
+          (z_2 < bounds_f[2]) & (z_2 > -bounds_f[2]) ~ "Futility",
+        sides == 1 & one_sided_upper & (z_2 < bounds_f[2]) ~ "Futility",
+        sides == 1 & !one_sided_upper & (z_2 > bounds_f[2]) ~ "Futility",
+        TRUE ~ "Continue"
+      ),
+    d_3 =
+      case_when(
+        (sides == 2 | one_sided_upper) & z_3 > bounds_e[3] ~ "Efficacy: Upper",
+        (sides == 2) & z_3 < -bounds_e[3] ~ "Efficacy: Lower",
+        (sides == 1) & !one_sided_upper & z_3 < bounds_e[3] ~ "Efficacy: Lower",
+        TRUE ~ "Fail to reject"
+      )
+  )
+```
+
+
+```{r Reshape Results}
+param_grid <-
+  param_grid %>%
+  dplyr::mutate(
+    dplyr::across(
+      .cols = dplyr::starts_with("z_"),
+      .fns = as.character
+    )
+  ) %>%
+  tidyr::pivot_longer(
+    cols = dplyr::matches("[zd]_\\d{1,}")
+  ) %>%
+  tidyr::extract(
+    col = name,
+    into = c("variable", "analysis"),
+    regex = "^(.*)_(\\d{1,})$"
+  ) %>%
+  tidyr::pivot_wider(
+    names_from = variable,
+    values_from = value
+  ) %>%
+  dplyr::mutate(
+    z = as.numeric(z),
+    analysis = as.numeric(analysis),
+    decision_original = NA_character_,
+    d =
+      factor(
+        x = d,
+        levels = c("Efficacy: Upper", "Efficacy: Lower", "Futility", "Continue",
+                   "Fail to reject")
+      )
+  ) %>% 
+  dplyr::rename(
+    decision_double = d
+  )
+```
+
+```{r Compare Against apply_stopping_rule_z}
+for(i in 1:nrow(param_grid)){
+  k <- param_grid$analysis[i]
+  z_stats <- rep(NA, k)
+  z_stats[k] <- param_grid$z[i]
+
+  if(k > 1){
+    # For analyses 1, ..., k: Earlier z-scores just below efficacy bound
+    z_stats[which(is.na(z_stats))] <-
+      if(sides == 2 | one_sided_upper){
+        bounds_e[k] - 0.01
+      } else {
+        bounds_e[k] + 0.01
+      }
+  }
+
+  param_grid$decision_original[i] <-
+    impart::apply_stopping_rule_z(
+      test_statistics = z_stats,
+      trial_design = trial_design,
+      information_fraction = information_fractions[1:k],
+      information_target = 10
+    )$decision
+}
+```
+
+
+```{r Check for Conflicts}
+param_grid <-
+  param_grid %>%
+  dplyr::mutate(
+    check =
+      case_when(
+        decision_original == decision_double ~ decision_original,
+        TRUE ~ "CONFLICT"
+      )
+  )
+```
+
+## Tabulation of Results {.tabset}
+
+### Summary 
+
+```{r Print Table}
+param_grid %>%
+  count(
+    decision_original, decision_double, check
+  ) %>% 
+  knitr::kable()
+```
+
+### Listing of Inconsistencies 
+
+```{r Print Listing}
+param_grid %>%
+  dplyr::filter(
+    check == "CONFLICT"
+  ) %>% 
+  knitr::kable()
+```
+
+
+
+
+## Plot of Results
+
+```{r Plot Results}
+bound_plot <-
+  ggplot2::ggplot() +
+  ggplot2::geom_point(
+    data = param_grid,
+    ggplot2::aes(
+      y = z,
+      x = analysis,
+      col = check
+    )
+  ) +
+  ggplot2::geom_line(
+    data =
+      data.frame(
+        z = bounds_e,
+        analysis = 1:length(bounds_e)
+      ),
+    ggplot2::aes(
+      y = z,
+      x = analysis
+    )
+  ) +
+  ggplot2::geom_line(
+    data =
+      data.frame(
+        z = bounds_f,
+        analysis = 1:length(bounds_f)
+      ),
+    ggplot2::aes(
+      y = z,
+      x = analysis
+    )
+  ) +
+  theme_bw()
+
+if(sides == 2){
+  bound_plot <-
+    bound_plot +
+    ggplot2::geom_line(
+      data =
+        data.frame(
+          z = -bounds_e,
+          analysis = 1:length(bounds_e)
+        ),
+      ggplot2::aes(
+        y = z,
+        x = analysis
+      )
+    ) +
+    ggplot2::geom_line(
+      data =
+        data.frame(
+          z = -bounds_f,
+          analysis = 1:length(bounds_f)
+        ),
+      ggplot2::aes(
+        y = z,
+        x = analysis
+      )
+    )
+}
+
+bound_plot
+```
+
+
+## sessionInfo
+
+```{r sessionInfo}
+sessionInfo()
+```
