@@ -1,29 +1,51 @@
-Package: impart
 Type: Package
-Title: Information Monitoring for Precision Adaptive Randomized Trials (IMPART)
+Package: impart
+Title: Information Monitoring for Precision Adaptive Randomized Trials
+    (IMPART)
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Authors@R: c(
+    person("Kelly", "Van Lancker", , "kelly.vanlancker@ugent.be", role = c("aut"),
+           comment = c(ORCID = "0000-0003-3458-3788")),
+    person("Josh", "Betz", , "jbetz@jhu.edu", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-4488-9799")),
+    person("Michael", "Rosenblum", , "mrosen@jhu.edu", role = "aut",
+           comment = c(ORCID = "0000-0001-7411-4172"))
+  )
+Maintainer: Josh Betz <jbetz@jhu.edu>
+Description: Software for designing, monitoring, and analyzing experiments
+    with covariate adjustment, including fixed sample size designs, group
+    sequential designs with interim assessments of efficacy and futility,
+    as well as information monitoring designs (i.e. designs whose sample
+    size is automatically adjusted to the precision of the accruing data).
+    Analyses can include covariate adjustment which can potentially improve power
+    and precision in group sequential and fixed sample size designs, and shorten
+    the duration of information monitored designs. Estimates can be
+    orthogonalized to provide the 'independent increments' assumption which
+    underpins the valid use of group sequential stopping boundaries.
 License: GPL (>= 3)
+URL: https://jbetz-jhu.github.io/impart/
+Depends: 
+    R (>= 2.10)
+Imports: 
+    boot,
+    methods,
+    mvtnorm,
+    parallel,
+    rpact,
+    stats,
+    utils
+Suggests: 
+    deming,
+    ggplot2,
+    knitr,
+    pwr,
+    rlang,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: 
+    knitr
+Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
-Imports: 
-    methods,
-    rpact
-Suggests: 
-    knitr,
-    rmarkdown,
-    testthat (>= 3.0.0),
-    pwr,
-    ggplot2,
-    rlang,
-    deming
-Config/testthat/edition: 3
-VignetteBuilder: knitr
-Depends: 
-    R (>= 2.10)
-URL: https://jbetz-jhu.github.io/impart/

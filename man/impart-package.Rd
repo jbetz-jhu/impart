@@ -6,12 +6,22 @@
 \alias{impart-package}
 \title{impart: Information Monitoring for Precision Adaptive Randomized Trials (IMPART)}
 \description{
-More about what it does (maybe more than one line) Use four spaces when indenting paragraphs within the Description.
+Software for designing, monitoring, and analyzing experiments with covariate adjustment, including fixed sample size designs, group sequential designs with interim assessments of efficacy and futility, as well as information monitoring designs (i.e. designs whose sample size is automatically adjusted to the precision of the accruing data). Analyses can include covariate adjustment which can potentially improve power and precision in group sequential and fixed sample size designs, and shorten the duration of information monitored designs. Estimates can be orthogonalized to provide the 'independent increments' assumption which underpins the valid use of group sequential stopping boundaries.
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://jbetz-jhu.github.io/impart/}
+}
+
+}
+\author{
+\strong{Maintainer}: Josh Betz \email{jbetz@jhu.edu} (\href{https://orcid.org/0000-0003-4488-9799}{ORCID})
+
+Authors:
+\itemize{
+  \item Kelly Van Lancker \email{kelly.vanlancker@ugent.be} (\href{https://orcid.org/0000-0003-3458-3788}{ORCID})
+  \item Michael Rosenblum \email{mrosen@jhu.edu} (\href{https://orcid.org/0000-0001-7411-4172}{ORCID})
 }
 
 }

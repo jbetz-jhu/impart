@@ -13,6 +13,21 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
+fig_w <- 8
+fig_h <- 8
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = TRUE,
+  results = "markup",
+  fig.path = "man/figures/",
+  fig.width = fig_w,
+  fig.height = fig_h,
+  fig.align = "center",
+  out.width = "80%",
+  dpi = 600
+)
+
 options(
   rmarkdown.html_vignette.check_title = FALSE
 )
