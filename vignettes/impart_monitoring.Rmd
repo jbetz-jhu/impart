@@ -1,5 +1,5 @@
 ---
-title: "impart_monitoring"
+title: "Monitoring Information with `impart`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{impart_monitoring}
