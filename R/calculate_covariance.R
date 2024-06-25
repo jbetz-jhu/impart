@@ -133,9 +133,7 @@ calculate_covariance <-
 
     parallel::clusterExport(
       cl = cluster,
-      varlist = c("data", "calculate_estimate",
-                  "estimation_function", "estimation_arguments",
-                  "apply_function"),
+      varlist = ls(),
       envir = environment()
     )
 
