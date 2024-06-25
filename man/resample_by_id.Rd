@@ -18,7 +18,7 @@ to a factor?}
 }
 \value{
 A \code{data.frame} containing the resampled data with unique values
-of \code{.id}:
+of \code{.id}.
 }
 \description{
 This is an internal function used by \link{calculate_covariance} for
