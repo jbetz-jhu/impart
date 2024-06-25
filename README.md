@@ -48,10 +48,16 @@ monitoring designs.
 You can install the development version of impart from
 [GitHub](https://github.com/) with:
 
-``` r
-# install.packages("devtools")
-devtools::install_github("jbetz-jhu/impart")
-```
+    #> 
+    #> ── R CMD build ─────────────────────────────────────────────────────────────────
+    #>       ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpAvfiMM\remotes406429993a8f\jbetz-jhu-impart-1317ad9/DESCRIPTION'
+    #>       ─  preparing 'impart':
+    #>    checking DESCRIPTION meta-information ...  ✔  checking DESCRIPTION meta-information
+    #>       ─  checking for LF line-endings in source and make files and shell scripts
+    #>   ─  checking for empty or unneeded directories
+    #>       ─  building 'impart_0.1.0.tar.gz'
+    #>      
+    #> 
 
 ## Vignettes
 
@@ -163,6 +169,8 @@ covariate adjustment, using a broad class of methods (Van Lancker, Betz,
 and Rosenblum 2022). Mehta and Tsiatis (2001) illustrate
 information-adaptive designs in practice. For a tutorial on implementing
 interim analyses, see Lakens, Pahlke, and Wassmer (2021).
+
+------------------------------------------------------------------------
 
 ## References
 

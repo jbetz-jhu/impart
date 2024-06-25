@@ -21,6 +21,8 @@
 #' @return A \code{data.frame} containing the resampled data with unique values
 #' of `.id`:
 #'
+#' @export
+#'
 #' @examples
 #' # To be added
 #'

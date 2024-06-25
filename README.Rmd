@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
   out.width = "100%",
   dpi = 600,
   echo = FALSE,
-  message = FALSE
+  message =FALSE
 )
 ```
 
@@ -53,7 +53,7 @@ The independent increments property can also be obtained by orthogonalizing esti
 
 You can install the development version of impart from [GitHub](https://github.com/) with:
 
-``` r
+```{r}
 # install.packages("devtools")
 devtools::install_github("jbetz-jhu/impart")
 ```
@@ -151,5 +151,13 @@ Alternatively, $RE_{A/U} = 1 + RCP_{A/U}$: If a covariate adjusted analysis has 
 ### Sequential Analyses
 
 Pre-planned interim analyses allow investigators to stop a randomized trial early for efficacy or futility [@Jennison1999]. Precision-adaptive trials can integrate both interim analyses and covariate adjustment, using a broad class of methods [@VanLancker2022]. @Mehta2001 illustrate information-adaptive designs in practice. For a tutorial on implementing interim analyses, see @Lakens2021.
+
+
+
+
+--------------------------------------------------------------------------------
+
+
+
 
 ## References
