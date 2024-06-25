@@ -416,22 +416,22 @@ against the target information level for analyses:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $covariance</span></span>
 <span><span class="co">#&gt;           estimates</span></span>
-<span><span class="co">#&gt; estimates  7.329475</span></span>
+<span><span class="co">#&gt; estimates  7.593306</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $information</span></span>
 <span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt; 0.1364354 </span></span>
+<span><span class="co">#&gt; 0.1316949 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $estimates_orthogonal</span></span>
 <span><span class="co">#&gt; NULL</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $covariance_orthogonal</span></span>
 <span><span class="co">#&gt;           estimates</span></span>
-<span><span class="co">#&gt; estimates  7.329475</span></span>
+<span><span class="co">#&gt; estimates  7.593306</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $information_orthogonal</span></span>
 <span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt; 0.1364354 </span></span>
+<span><span class="co">#&gt; 0.1316949 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ids_by_analysis</span></span>
 <span><span class="co">#&gt; NULL</span></span>
@@ -503,7 +503,7 @@ vignette:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information</span><span class="op">/</span><span class="va">information_adaptive</span></span>
 <span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt;  0.299313</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.2889133</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="tools-for-monitoring-information">Tools for Monitoring Information<a class="anchor" aria-label="anchor" href="#tools-for-monitoring-information"></a>
 </h3>
@@ -534,30 +534,30 @@ projecting when pre-specified information levels may be met:</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">data_n_50_trajectory</span></span>
-<span><span class="co">#&gt;       times randomization y_1 y_2 y_3 y_4 information information_lag_1</span></span>
-<span><span class="co">#&gt; 1  453.1467            56  44  41  36  30  0.02493807                NA</span></span>
-<span><span class="co">#&gt; 2  466.1324            58  47  42  37  32  0.05740602        0.02493807</span></span>
-<span><span class="co">#&gt; 3  468.1530            58  47  42  37  34  0.01621966        0.05740602</span></span>
-<span><span class="co">#&gt; 4  479.5912            59  48  42  38  36  0.09832545        0.01621966</span></span>
-<span><span class="co">#&gt; 5  511.2584            64  52  47  41  38  0.08717451        0.09832545</span></span>
-<span><span class="co">#&gt; 6  514.7433            64  52  47  41  40  0.09332960        0.08717451</span></span>
-<span><span class="co">#&gt; 7  540.2434            70  55  50  45  42  0.09413151        0.09332960</span></span>
-<span><span class="co">#&gt; 8  558.8427            74  59  50  47  44  0.12028068        0.09413151</span></span>
-<span><span class="co">#&gt; 9  567.3874            75  61  50  48  46  0.12507657        0.12028068</span></span>
-<span><span class="co">#&gt; 10 609.9576            79  66  58  51  48  0.11617907        0.12507657</span></span>
-<span><span class="co">#&gt; 11 645.8408            84  68  62  56  50  0.11707009        0.11617907</span></span>
+<span><span class="co">#&gt;       times randomization y_1 y_2 y_3 y_4  information information_lag_1</span></span>
+<span><span class="co">#&gt; 1  453.1467            56  44  41  36  30 0.0004082053                NA</span></span>
+<span><span class="co">#&gt; 2  466.1324            58  47  42  37  32 0.0603979230      0.0004082053</span></span>
+<span><span class="co">#&gt; 3  468.1530            58  47  42  37  34 0.0688362815      0.0603979230</span></span>
+<span><span class="co">#&gt; 4  479.5912            59  48  42  38  36 0.0835811478      0.0688362815</span></span>
+<span><span class="co">#&gt; 5  511.2584            64  52  47  41  38 0.0864551830      0.0835811478</span></span>
+<span><span class="co">#&gt; 6  514.7433            64  52  47  41  40 0.1038518612      0.0864551830</span></span>
+<span><span class="co">#&gt; 7  540.2434            70  55  50  45  42 0.1112745528      0.1038518612</span></span>
+<span><span class="co">#&gt; 8  558.8427            74  59  50  47  44 0.1199204091      0.1112745528</span></span>
+<span><span class="co">#&gt; 9  567.3874            75  61  50  48  46 0.1297552339      0.1199204091</span></span>
+<span><span class="co">#&gt; 10 609.9576            79  66  58  51  48 0.1183881226      0.1297552339</span></span>
+<span><span class="co">#&gt; 11 645.8408            84  68  62  56  50 0.1276586831      0.1183881226</span></span>
 <span><span class="co">#&gt;    information_change information_pct_change</span></span>
 <span><span class="co">#&gt; 1                  NA                     NA</span></span>
-<span><span class="co">#&gt; 2        0.0324679564             56.5584493</span></span>
-<span><span class="co">#&gt; 3       -0.0411863632           -253.9286492</span></span>
-<span><span class="co">#&gt; 4        0.0821057874             83.5041077</span></span>
-<span><span class="co">#&gt; 5       -0.0111509421            -12.7915175</span></span>
-<span><span class="co">#&gt; 6        0.0061550976              6.5950111</span></span>
-<span><span class="co">#&gt; 7        0.0008019077              0.8519015</span></span>
-<span><span class="co">#&gt; 8        0.0261491661             21.7401222</span></span>
-<span><span class="co">#&gt; 9        0.0047958947              3.8343669</span></span>
-<span><span class="co">#&gt; 10      -0.0088975050             -7.6584408</span></span>
-<span><span class="co">#&gt; 11       0.0008910254              0.7611042</span></span></code></pre></div>
+<span><span class="co">#&gt; 2         0.059989718              99.324140</span></span>
+<span><span class="co">#&gt; 3         0.008438358              12.258591</span></span>
+<span><span class="co">#&gt; 4         0.014744866              17.641378</span></span>
+<span><span class="co">#&gt; 5         0.002874035               3.324306</span></span>
+<span><span class="co">#&gt; 6         0.017396678              16.751436</span></span>
+<span><span class="co">#&gt; 7         0.007422692               6.670610</span></span>
+<span><span class="co">#&gt; 8         0.008645856               7.209662</span></span>
+<span><span class="co">#&gt; 9         0.009834825               7.579521</span></span>
+<span><span class="co">#&gt; 10       -0.011367111              -9.601564</span></span>
+<span><span class="co">#&gt; 11        0.009270560               7.261990</span></span></code></pre></div>
 <p>This trajectory can be smoothed using regression, ideally using a
 method resistant to outliers, such as <code><a href="https://rdrr.io/pkg/deming/man/theilsen.html" class="external-link">deming::theilsen</a></code>.
 Inverse regression can be used to obtain an estimated number of outcomes
