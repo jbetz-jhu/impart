@@ -9,7 +9,7 @@ vignette: >
   %\VignetteDepends{ggplot2}
 ---
 
-```{r, include = FALSE}
+```{r RMD-Setup, include = FALSE}
 fig_w <- 8
 fig_h <- 8
 
@@ -32,7 +32,7 @@ options(
 )
 ```
 
-```{r setup}
+```{r Library}
 library(impart)
 library(pwr) # Only required for examples, not for `impart`
 ```

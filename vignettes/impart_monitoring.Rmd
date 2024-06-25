@@ -8,7 +8,7 @@ vignette: >
   %\VignetteDepends{deming}
 ---
 
-```{r, include = FALSE}
+```{r RMD-Setup, include = FALSE}
 fig_w <- 8
 fig_h <- 8
 
@@ -31,7 +31,7 @@ options(
 )
 ```
 
-```{r setup}
+```{r Library}
 library(impart)
 library(deming) # Required for deming::theilsen()
 ```
@@ -41,7 +41,7 @@ information contained in the accrued data so that analyses are not under- or
 over-powered. This builds upon the terminology and concepts in the vignette on
 study design, which can be viewed as follows:
 
-```{r Previous Vignettes, eval = FALSE}
+```{r Previous-Vignettes, eval = FALSE}
 vignette("impart_study_design", package = "impart") # Design
 ```
 
@@ -96,7 +96,7 @@ from those known to be missing:
 Information monitoring will be illustrated using a simulated dataset named
 `example_1`:
 
-```{r}
+```{r Example-1-Header}
 head(example_1)
 ```
 
@@ -122,7 +122,7 @@ study.
 at hand: covariates, study entry/enrollment time, treatment assignment,
 outcomes, and the times at which outcomes were measured.
 
-```{r Prepare Data}
+```{r Prepare-Data}
 # Obtain time of last event
 last_event <-
   example_1[, c(".enrollment_time", ".t_1", ".t_2", ".t_3", ".t_4")] |>
@@ -174,7 +174,7 @@ Consider 90 days after study initiation:
   - Participants 2-5 have had their first post-randomization outcome obtained: `.r_1` is `1`
   - Participant 6 missed their first post-randomization assessment, but this is not yet known at day 90: `.r_1` is `NA`
 
-```{r Show Header Data at 70 Days}
+```{r Show-Header-Data-at-70-Days}
 show_cols <- c(".id", "x_2", "x_3", "x_4", "tx")
 
 # Original Data
@@ -226,7 +226,7 @@ plot_outcome_counts(
 
 The times of each event can be obtained using `count_outcomes`:
 
-```{r Tabulate Timing of Events}
+```{r Tabulate-Timing-of-Events}
 example_1_counts_2y <-
   count_outcomes(
     prepared_data = prepared_final_data
@@ -256,7 +256,7 @@ This can also be used with `data_at_time_t` to reconstruct the study data when a
 particular number of observations have accrued:
 
 
-```{r Reconstruct Data N 50}
+```{r Reconstruct-Data-N-50}
 # Reconstruct the data when N = 50 final outcomes were obtained
 data_n_final_50 <-
   data_at_time_t(
@@ -288,7 +288,7 @@ can be supplied for reproducibility. By default, only the variance and
 information are returned, which can be compared against the target information
 level for analyses:
 
-```{r Estimate Information Example 1}
+```{r Estimate-Information-Example-1}
 information_n_50 <-
   estimate_information(
     data = data_n_50,
@@ -319,7 +319,7 @@ allows the user to pass the results of previously conducted analyses to
 
 Using the design specified in the `impart_study_design` vignette:
 
-```{r Universal Study Design Parameters}
+```{r Universal-Study-Design-Parameters}
 # Universal Study Design Parameters
 minimum_difference <- 5 # Effect Size: Difference in Means of 5 or greater
 alpha <- 0.05 # Type I Error Rate
@@ -373,7 +373,7 @@ monitored_design <-
 
 The current information fraction can be computed:
 
-```{r Compute Information Fraction N 50}
+```{r Compute-Information-Fraction-N-50}
 information_n_50$information/information_adaptive
 ```
 
@@ -385,7 +385,7 @@ particular point in the study, understanding the rate at which information is
 accruing over time can be useful in projecting when pre-specified information
 levels may be met:
 
-```{r}
+```{r Compute-Information-Trajectory}
 data_n_50_trajectory <- 
   information_trajectory(
     prepared_data = data_n_final_50,

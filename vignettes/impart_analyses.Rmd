@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r RMD-Setup, include = FALSE}
 fig_w <- 8
 fig_h <- 8
 
@@ -30,7 +30,7 @@ options(
 )
 ```
 
-```{r setup}
+```{r Library}
 library(impart)
 ```
 
@@ -39,7 +39,7 @@ analyses in group sequential or information monitored designs. This builds upon
 the terminology and concepts in the vignettes on study design and information
 monitoring. These can be viewed as follows:
 
-```{r Previous Vignettes, eval = FALSE}
+```{r Previous-Vignettes, eval = FALSE}
 vignette("impart_study_design", package = "impart") # Design
 vignette("impart_monitoring", package = "impart") # Information Monitoring
 ```
@@ -49,7 +49,7 @@ vignette("impart_monitoring", package = "impart") # Information Monitoring
 The design parameters in this vignette will be the same as in the previous
 vignettes:
 
-```{r Universal Study Design Parameters}
+```{r Universal-Study-Design-Parameters}
 # Universal Study Design Parameters
 minimum_difference <- 5 # Effect Size: Difference in Means of 5 or greater
 alpha <- 0.05 # Type I Error Rate
@@ -110,7 +110,7 @@ head(impart::example_1)
 
 ## Interim Analysis 1
 
-```{r Interim Analysis 1, eval = FALSE}
+```{r Interim-Analysis-1, eval = FALSE}
 interim_analysis_1 <-
   monitored_analysis(
     data = data_interim_1,
@@ -136,7 +136,7 @@ All subsequent analyses are identical in syntax: a new dataset is provided, and
 the result of the previous analysis is passed using the `monitored_design`
 argument.
 
-```{r Interim Analysis 2, eval = FALSE}
+```{r Interim-Analysis-2, eval = FALSE}
 interim_analysis_2 <-
   monitored_analysis(
     data = data_interim_2,
