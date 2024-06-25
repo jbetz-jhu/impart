@@ -20,7 +20,8 @@ Suggests:
     testthat (>= 3.0.0),
     pwr,
     ggplot2,
-    rlang
+    rlang,
+    deming
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 Depends: 
