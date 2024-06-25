@@ -8,19 +8,16 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-
 fig_w <- 8
 fig_h <- 8
 
 knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
   echo = TRUE,
   message = TRUE,
   results = "markup",
-  fig.path = "man/figures/",
+  fig.path = "../man/figures/",
   fig.width = fig_w,
   fig.height = fig_h,
   fig.align = "center",
@@ -108,7 +105,7 @@ monitored_design <-
 The data used in this example will also be the same: `impart::example_1`
 
 ```{r}
-
+head(impart::example_1)
 ```
 
 ## Interim Analysis 1

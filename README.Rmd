@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
   out.width = "100%",
   dpi = 600,
   echo = FALSE,
-  message =FALSE
+  message = FALSE
 )
 ```
 
@@ -53,7 +53,7 @@ The independent increments property can also be obtained by orthogonalizing esti
 
 You can install the development version of impart from [GitHub](https://github.com/) with:
 
-```{r}
+```{r Install Impart, echo = TRUE}
 # install.packages("devtools")
 devtools::install_github("jbetz-jhu/impart")
 ```
@@ -62,7 +62,7 @@ devtools::install_github("jbetz-jhu/impart")
 
 There are three vignettes on how to use `impart`, each focusing on a different phase of a study. Each vignette is sequential, building upon the previous ones.
 
-```{r Vignettes, eval = FALSE}
+```{r Vignettes, echo = TRUE, eval = FALSE}
 vignette("impart_study_design", package = "impart") # Design
 vignette("impart_monitoring", package = "impart") # Information Monitoring
 vignette("impart_analyses", package = "impart") # Analyses

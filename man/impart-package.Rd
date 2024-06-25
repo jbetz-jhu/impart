@@ -4,7 +4,7 @@
 \name{impart-package}
 \alias{impart}
 \alias{impart-package}
-\title{impart: Information Monitoring for Precision Adaptive Randomized Trials (IMPART)}
+\title{impart: Information Monitoring for Precision Adaptive Randomized Trials}
 \description{
 Software for designing, monitoring, and analyzing experiments with covariate adjustment, including fixed sample size designs, group sequential designs with interim assessments of efficacy and futility, as well as information monitoring designs (i.e. designs whose sample size is automatically adjusted to the precision of the accruing data). Analyses can include covariate adjustment which can potentially improve power and precision in group sequential and fixed sample size designs, and shorten the duration of information monitored designs. Estimates can be orthogonalized to provide the 'independent increments' assumption which underpins the valid use of group sequential stopping boundaries.
 }

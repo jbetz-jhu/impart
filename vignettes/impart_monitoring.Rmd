@@ -9,19 +9,16 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-
 fig_w <- 8
 fig_h <- 8
 
 knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
   echo = TRUE,
   message = TRUE,
   results = "markup",
-  fig.path = "man/figures/",
+  fig.path = "../man/figures/",
   fig.width = fig_w,
   fig.height = fig_h,
   fig.align = "center",
@@ -31,7 +28,7 @@ knitr::opts_chunk$set(
 
 options(
   rmarkdown.html_vignette.check_title = FALSE
-  )
+)
 ```
 
 ```{r setup}
@@ -203,7 +200,7 @@ number of participants who have completed monitoring.
 
 Plotting can be done for all available events:
 
-```{r Plot Entire Study}
+```{r Plot-Entire-Study}
 # Plot events at the end of the study
 plot_outcome_counts(
   prepared_data = prepared_final_data
@@ -214,7 +211,7 @@ plot_outcome_counts(
 Plotting can also be done for events known at a particular point in time:
 
 
-```{r Plot Data Up To Timepoint}
+```{r Plot-Data-Up-To-Timepoint}
 # Plot events two years into the study
 plot_outcome_counts(
   prepared_data = prepared_final_data,
@@ -310,7 +307,10 @@ information_n_50 <-
     rng_seed = 23456
   )
 
-information_n_50
+information_n_50$covariance
+information_n_50$information
+information_n_50$covariance_orthogonal
+information_n_50$information_orthogonal
 ```
 
 When a study is designed with interim and final analyses, `monitored_design`
@@ -371,7 +371,7 @@ monitored_design <-
   )
 ```
 
-The current information can be computed:
+The current information fraction can be computed:
 
 ```{r Compute Information Fraction N 50}
 information_n_50$information/information_adaptive
@@ -414,7 +414,7 @@ data_n_50_trajectory
 This trajectory can be smoothed using regression, ideally using a method resistant to outliers, such as `deming::theilsen`. Inverse regression can be used to obtain an estimated number of outcomes necessary to achieve a given level of information:
 
 
-```{r Plot Trajectory}
+```{r Plot-Trajectory}
 plot(
   information ~ y_4,
   data = data_n_50_trajectory,
@@ -422,8 +422,10 @@ plot(
 )
 
 abline(
-  lm(formula = information ~ y_4,
-     data = data_n_50_trajectory),
+  lm(
+    formula = information ~ y_4,
+    data = data_n_50_trajectory
+  ),
   lty = 1
 )
 
@@ -444,7 +446,7 @@ abline(
 abline(
   deming::theilsen(
     formula = information ~ y_4,
-    data = data_n_50_trajectory[keep_rows,]
+    data = data_n_50_trajectory
   ),
   lty = 3
 )

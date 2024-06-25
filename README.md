@@ -48,22 +48,32 @@ monitoring designs.
 You can install the development version of impart from
 [GitHub](https://github.com/) with:
 
-    #> 
-    #> ── R CMD build ─────────────────────────────────────────────────────────────────
-    #>       ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpAvfiMM\remotes406429993a8f\jbetz-jhu-impart-1317ad9/DESCRIPTION'
-    #>       ─  preparing 'impart':
-    #>    checking DESCRIPTION meta-information ...  ✔  checking DESCRIPTION meta-information
-    #>       ─  checking for LF line-endings in source and make files and shell scripts
-    #>   ─  checking for empty or unneeded directories
-    #>       ─  building 'impart_0.1.0.tar.gz'
-    #>      
-    #> 
+``` r
+# install.packages("devtools")
+devtools::install_github("jbetz-jhu/impart")
+#> 
+#> ── R CMD build ─────────────────────────────────────────────────────────────────
+#>          checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpY7toZl\remotes5aa859221c8c\jbetz-jhu-impart-5eeec5e/DESCRIPTION' ...  ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpY7toZl\remotes5aa859221c8c\jbetz-jhu-impart-5eeec5e/DESCRIPTION' (417ms)
+#>       ─  preparing 'impart':
+#>    checking DESCRIPTION meta-information ...  ✔  checking DESCRIPTION meta-information
+#>       ─  checking for LF line-endings in source and make files and shell scripts (383ms)
+#>   ─  checking for empty or unneeded directories
+#>   ─  building 'impart_0.1.0.tar.gz'
+#>      
+#> 
+```
 
 ## Vignettes
 
 There are three vignettes on how to use `impart`, each focusing on a
 different phase of a study. Each vignette is sequential, building upon
 the previous ones.
+
+``` r
+vignette("impart_study_design", package = "impart") # Design
+vignette("impart_monitoring", package = "impart") # Information Monitoring
+vignette("impart_analyses", package = "impart") # Analyses
+```
 
 ------------------------------------------------------------------------
 

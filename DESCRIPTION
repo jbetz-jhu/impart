@@ -1,7 +1,6 @@
 Type: Package
 Package: impart
 Title: Information Monitoring for Precision Adaptive Randomized Trials
-    (IMPART)
 Version: 0.1.0
 Authors@R: c(
     person("Kelly", "Van Lancker", , "kelly.vanlancker@ugent.be", role = c("aut"),
