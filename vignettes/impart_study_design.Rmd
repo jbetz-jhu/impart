@@ -1,5 +1,5 @@
 ---
-title: "Planning Information Monitored Designs with `impart`"
+title: "1. Planning Information Monitored Designs with `impart`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{impart_study_design}

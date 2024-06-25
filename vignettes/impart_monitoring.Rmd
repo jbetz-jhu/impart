@@ -1,5 +1,5 @@
 ---
-title: "Monitoring Information with `impart`"
+title: "2. Monitoring Information with `impart`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{impart_monitoring}
@@ -417,8 +417,7 @@ This trajectory can be smoothed using regression, ideally using a method resista
 ```{r Plot-Trajectory}
 plot(
   information ~ y_4,
-  data = data_n_50_trajectory,
-  xlim = c()
+  data = data_n_50_trajectory
 )
 
 abline(
