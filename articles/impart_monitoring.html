@@ -411,26 +411,15 @@ against the target information level for analyses:</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">information_n_50</span><span class="op">$</span><span class="va">covariance</span></span>
-<span><span class="co">#&gt;           estimates</span></span>
-<span><span class="co">#&gt; estimates  8.160198</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information</span></span>
-<span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt; 0.1225461</span></span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">information_n_50</span><span class="op">$</span><span class="va">covariance_orthogonal</span></span>
-<span><span class="co">#&gt;           estimates</span></span>
-<span><span class="co">#&gt; estimates  8.160198</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information_orthogonal</span></span>
-<span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt; 0.1225461</span></span></code></pre></div>
+<span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information</span></span>
+<span><span class="va">information_n_50</span><span class="op">$</span><span class="va">covariance_orthogonal</span></span>
+<span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information_orthogonal</span></span></code></pre></div>
 <p>When a study is designed with interim and final analyses,
 <code>monitored_design</code> allows the user to pass the results of
 previously conducted analyses to <code>estimate_information</code>.</p>
 <p>Using the design specified in the <code>impart_study_design</code>
 vignette:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Universal Study Design Parameters</span></span>
 <span><span class="va">minimum_difference</span> <span class="op">&lt;-</span> <span class="fl">5</span> <span class="co"># Effect Size: Difference in Means of 5 or greater</span></span>
 <span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.05</span> <span class="co"># Type I Error Rate</span></span>
@@ -481,10 +470,8 @@ vignette:</p>
 <span>    rng_seed_analysis <span class="op">=</span> <span class="fl">54321</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p>The current information fraction can be computed:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information</span><span class="op">/</span><span class="va">information_adaptive</span></span>
-<span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt; 0.2688424</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information</span><span class="op">/</span><span class="va">information_adaptive</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="tools-for-monitoring-information">Tools for Monitoring Information<a class="anchor" aria-label="anchor" href="#tools-for-monitoring-information"></a>
 </h3>
@@ -492,7 +479,7 @@ vignette:</p>
 the information at a particular point in the study, understanding the
 rate at which information is accruing over time can be useful in
 projecting when pre-specified information levels may be met:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_n_50_trajectory</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="../reference/information_trajectory.html">information_trajectory</a></span><span class="op">(</span></span>
 <span>    prepared_data <span class="op">=</span> <span class="va">data_n_final_50</span>,</span>
@@ -514,36 +501,12 @@ projecting when pre-specified information levels may be met:</p>
 <span>    control <span class="op">=</span> <span class="fu"><a href="../reference/monitored_analysis_control.html">monitored_analysis_control</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">data_n_50_trajectory</span></span>
-<span><span class="co">#&gt;       times randomization y_1 y_2 y_3 y_4  information information_lag_1</span></span>
-<span><span class="co">#&gt; 1  453.1467            56  44  41  36  30 0.0009864047                NA</span></span>
-<span><span class="co">#&gt; 2  466.1324            58  47  42  37  32 0.0589331561      0.0009864047</span></span>
-<span><span class="co">#&gt; 3  468.1530            58  47  42  37  34 0.0671863954      0.0589331561</span></span>
-<span><span class="co">#&gt; 4  479.5912            59  48  42  38  36 0.0997978086      0.0671863954</span></span>
-<span><span class="co">#&gt; 5  511.2584            64  52  47  41  38 0.0935600216      0.0997978086</span></span>
-<span><span class="co">#&gt; 6  514.7433            64  52  47  41  40 0.1030866500      0.0935600216</span></span>
-<span><span class="co">#&gt; 7  540.2434            70  55  50  45  42 0.0838150533      0.1030866500</span></span>
-<span><span class="co">#&gt; 8  558.8427            74  59  50  47  44 0.1176012948      0.0838150533</span></span>
-<span><span class="co">#&gt; 9  567.3874            75  61  50  48  46 0.1221647604      0.1176012948</span></span>
-<span><span class="co">#&gt; 10 609.9576            79  66  58  51  48 0.1191222611      0.1221647604</span></span>
-<span><span class="co">#&gt; 11 645.8408            84  68  62  56  50 0.1194807376      0.1191222611</span></span>
-<span><span class="co">#&gt;    information_change information_pct_change</span></span>
-<span><span class="co">#&gt; 1                  NA                     NA</span></span>
-<span><span class="co">#&gt; 2        0.0579467513             98.3262313</span></span>
-<span><span class="co">#&gt; 3        0.0082532393             12.2840931</span></span>
-<span><span class="co">#&gt; 4        0.0326114132             32.6774842</span></span>
-<span><span class="co">#&gt; 5       -0.0062377869             -6.6671500</span></span>
-<span><span class="co">#&gt; 6        0.0095266284              9.2413794</span></span>
-<span><span class="co">#&gt; 7       -0.0192715968            -22.9930019</span></span>
-<span><span class="co">#&gt; 8        0.0337862415             28.7294809</span></span>
-<span><span class="co">#&gt; 9        0.0045634656              3.7355008</span></span>
-<span><span class="co">#&gt; 10      -0.0030424993             -2.5540980</span></span>
-<span><span class="co">#&gt; 11       0.0003584765              0.3000287</span></span></code></pre></div>
+<span><span class="va">data_n_50_trajectory</span></span></code></pre></div>
 <p>This trajectory can be smoothed using regression, ideally using a
 method resistant to outliers, such as <code><a href="https://rdrr.io/pkg/deming/man/theilsen.html" class="external-link">deming::theilsen</a></code>.
 Inverse regression can be used to obtain an estimated number of outcomes
 necessary to achieve a given level of information:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">information</span> <span class="op">~</span> <span class="va">y_4</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">data_n_50_trajectory</span></span>
@@ -578,7 +541,6 @@ necessary to achieve a given level of information:</p>
 <span>  <span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Plot-Trajectory-1.png" width="80%" style="display: block; margin: auto;"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
