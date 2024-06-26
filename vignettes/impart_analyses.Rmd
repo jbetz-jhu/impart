@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
   comment = "#>",
   echo = TRUE,
   message = TRUE,
+  error = TRUE,
+  purl = FALSE,
   results = "markup",
   fig.path = "../man/figures/",
   fig.width = fig_w,
