@@ -288,7 +288,7 @@ can be supplied for reproducibility. By default, only the variance and
 information are returned, which can be compared against the target information
 level for analyses:
 
-```{r Estimate-Information-Example-1}
+```{r Estimate-Information-Example-1, eval = FALSE}
 information_n_50 <-
   estimate_information(
     data = data_n_50,
@@ -373,7 +373,7 @@ monitored_design <-
 
 The current information fraction can be computed:
 
-```{r Compute-Information-Fraction-N-50}
+```{r Compute-Information-Fraction-N-50, eval = FALSE}
 information_n_50$information/information_adaptive
 ```
 
@@ -385,7 +385,7 @@ particular point in the study, understanding the rate at which information is
 accruing over time can be useful in projecting when pre-specified information
 levels may be met:
 
-```{r Compute-Information-Trajectory}
+```{r Compute-Information-Trajectory, eval = FALSE}
 data_n_50_trajectory <- 
   information_trajectory(
     prepared_data = data_n_final_50,
@@ -414,7 +414,7 @@ data_n_50_trajectory
 This trajectory can be smoothed using regression, ideally using a method resistant to outliers, such as `deming::theilsen`. Inverse regression can be used to obtain an estimated number of outcomes necessary to achieve a given level of information:
 
 
-```{r Plot-Trajectory}
+```{r Plot-Trajectory, eval = FALSE}
 plot(
   information ~ y_4,
   data = data_n_50_trajectory
