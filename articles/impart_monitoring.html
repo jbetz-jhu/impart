@@ -412,19 +412,19 @@ against the target information level for analyses:</p>
 <span></span>
 <span><span class="va">information_n_50</span><span class="op">$</span><span class="va">covariance</span></span>
 <span><span class="co">#&gt;           estimates</span></span>
-<span><span class="co">#&gt; estimates  8.321067</span></span></code></pre></div>
+<span><span class="co">#&gt; estimates  7.333454</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information</span></span>
 <span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt; 0.1201769</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.1363614</span></span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">information_n_50</span><span class="op">$</span><span class="va">covariance_orthogonal</span></span>
 <span><span class="co">#&gt;           estimates</span></span>
-<span><span class="co">#&gt; estimates  8.321067</span></span></code></pre></div>
+<span><span class="co">#&gt; estimates  7.333454</span></span></code></pre></div>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information_orthogonal</span></span>
 <span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt; 0.1201769</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.1363614</span></span></code></pre></div>
 <p>When a study is designed with interim and final analyses,
 <code>monitored_design</code> allows the user to pass the results of
 previously conducted analyses to <code>estimate_information</code>.</p>
@@ -484,7 +484,7 @@ vignette:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information</span><span class="op">/</span><span class="va">information_adaptive</span></span>
 <span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt; 0.2636449</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.2991506</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="tools-for-monitoring-information">Tools for Monitoring Information<a class="anchor" aria-label="anchor" href="#tools-for-monitoring-information"></a>
 </h3>
@@ -515,30 +515,30 @@ projecting when pre-specified information levels may be met:</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">data_n_50_trajectory</span></span>
-<span><span class="co">#&gt;       times randomization y_1 y_2 y_3 y_4  information information_lag_1</span></span>
-<span><span class="co">#&gt; 1  453.1467            56  44  41  36  30 6.902355e-06                NA</span></span>
-<span><span class="co">#&gt; 2  466.1324            58  47  42  37  32 6.093767e-02      6.902355e-06</span></span>
-<span><span class="co">#&gt; 3  468.1530            58  47  42  37  34 7.054747e-02      6.093767e-02</span></span>
-<span><span class="co">#&gt; 4  479.5912            59  48  42  38  36 7.083608e-02      7.054747e-02</span></span>
-<span><span class="co">#&gt; 5  511.2584            64  52  47  41  38 8.837867e-02      7.083608e-02</span></span>
-<span><span class="co">#&gt; 6  514.7433            64  52  47  41  40 1.099690e-01      8.837867e-02</span></span>
-<span><span class="co">#&gt; 7  540.2434            70  55  50  45  42 1.051509e-01      1.099690e-01</span></span>
-<span><span class="co">#&gt; 8  558.8427            74  59  50  47  44 1.182109e-01      1.051509e-01</span></span>
-<span><span class="co">#&gt; 9  567.3874            75  61  50  48  46 1.262983e-01      1.182109e-01</span></span>
-<span><span class="co">#&gt; 10 609.9576            79  66  58  51  48 1.257733e-01      1.262983e-01</span></span>
-<span><span class="co">#&gt; 11 645.8408            84  68  62  56  50 1.440551e-01      1.257733e-01</span></span>
+<span><span class="co">#&gt;       times randomization y_1 y_2 y_3 y_4 information information_lag_1</span></span>
+<span><span class="co">#&gt; 1  453.1467            56  44  41  36  30  0.03661801                NA</span></span>
+<span><span class="co">#&gt; 2  466.1324            58  47  42  37  32  0.01482150        0.03661801</span></span>
+<span><span class="co">#&gt; 3  468.1530            58  47  42  37  34  0.06993988        0.01482150</span></span>
+<span><span class="co">#&gt; 4  479.5912            59  48  42  38  36  0.03399280        0.06993988</span></span>
+<span><span class="co">#&gt; 5  511.2584            64  52  47  41  38  0.08800673        0.03399280</span></span>
+<span><span class="co">#&gt; 6  514.7433            64  52  47  41  40  0.09827788        0.08800673</span></span>
+<span><span class="co">#&gt; 7  540.2434            70  55  50  45  42  0.09742985        0.09827788</span></span>
+<span><span class="co">#&gt; 8  558.8427            74  59  50  47  44  0.11976501        0.09742985</span></span>
+<span><span class="co">#&gt; 9  567.3874            75  61  50  48  46  0.12579083        0.11976501</span></span>
+<span><span class="co">#&gt; 10 609.9576            79  66  58  51  48  0.11344937        0.12579083</span></span>
+<span><span class="co">#&gt; 11 645.8408            84  68  62  56  50  0.12018141        0.11344937</span></span>
 <span><span class="co">#&gt;    information_change information_pct_change</span></span>
 <span><span class="co">#&gt; 1                  NA                     NA</span></span>
-<span><span class="co">#&gt; 2        0.0609307708             99.9886731</span></span>
-<span><span class="co">#&gt; 3        0.0096097996             13.6217489</span></span>
-<span><span class="co">#&gt; 4        0.0002886079              0.4074307</span></span>
-<span><span class="co">#&gt; 5        0.0175425869             19.8493453</span></span>
-<span><span class="co">#&gt; 6        0.0215903096             19.6330912</span></span>
-<span><span class="co">#&gt; 7       -0.0048180444             -4.5820272</span></span>
-<span><span class="co">#&gt; 8        0.0130599670             11.0480226</span></span>
-<span><span class="co">#&gt; 9        0.0080873724              6.4033912</span></span>
-<span><span class="co">#&gt; 10      -0.0005249996             -0.4174175</span></span>
-<span><span class="co">#&gt; 11       0.0182818364             12.6908629</span></span></code></pre></div>
+<span><span class="co">#&gt; 2       -0.0217965100           -147.0600796</span></span>
+<span><span class="co">#&gt; 3        0.0551183783             78.8082271</span></span>
+<span><span class="co">#&gt; 4       -0.0359470835           -105.7491255</span></span>
+<span><span class="co">#&gt; 5        0.0540139343             61.3747775</span></span>
+<span><span class="co">#&gt; 6        0.0102711543             10.4511350</span></span>
+<span><span class="co">#&gt; 7       -0.0008480306             -0.8704012</span></span>
+<span><span class="co">#&gt; 8        0.0223351561             18.6491499</span></span>
+<span><span class="co">#&gt; 9        0.0060258228              4.7903513</span></span>
+<span><span class="co">#&gt; 10      -0.0123414573            -10.8783829</span></span>
+<span><span class="co">#&gt; 11       0.0067320382              5.6015635</span></span></code></pre></div>
 <p>This trajectory can be smoothed using regression, ideally using a
 method resistant to outliers, such as <code><a href="https://rdrr.io/pkg/deming/man/theilsen.html" class="external-link">deming::theilsen</a></code>.
 Inverse regression can be used to obtain an estimated number of outcomes
