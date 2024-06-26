@@ -183,7 +183,8 @@ calculate_covariance <-
         covariance = stats::cov(estimates),
         ids_by_analysis = ids_by_analysis,
         bootstrap_estimates = estimates,
-        bootstrap_ids = bootstrap_ids
+        bootstrap_ids = bootstrap_ids,
+        random_seed = random_seed
       )
     )
   }

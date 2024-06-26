@@ -29,6 +29,8 @@ knitr::opts_chunk$set(
 options(
   rmarkdown.html_vignette.check_title = FALSE
 )
+
+set.seed(9876)
 ```
 
 ```{r Library}
@@ -288,7 +290,7 @@ can be supplied for reproducibility. By default, only the variance and
 information are returned, which can be compared against the target information
 level for analyses:
 
-```{r Estimate-Information-Example-1, eval = FALSE}
+```{r Estimate-Information-Example-1}
 information_n_50 <-
   estimate_information(
     data = data_n_50,
@@ -373,7 +375,7 @@ monitored_design <-
 
 The current information fraction can be computed:
 
-```{r Compute-Information-Fraction-N-50, eval = FALSE}
+```{r Compute-Information-Fraction-N-50}
 information_n_50$information/information_adaptive
 ```
 
@@ -385,7 +387,7 @@ particular point in the study, understanding the rate at which information is
 accruing over time can be useful in projecting when pre-specified information
 levels may be met:
 
-```{r Compute-Information-Trajectory, eval = FALSE}
+```{r Compute-Information-Trajectory}
 data_n_50_trajectory <- 
   information_trajectory(
     prepared_data = data_n_final_50,
@@ -426,19 +428,6 @@ abline(
     data = data_n_50_trajectory
   ),
   lty = 1
-)
-
-last_high_pct_change <-
-  max(which(abs(data_n_50_trajectory$information_pct_change) > 30))
-keep_rows <- (last_high_pct_change + 1):nrow(data_n_50_trajectory)
-
-# Keep only the rows where the percentage change in information is stable
-abline(
-  lm(
-    formula = information ~ y_4,
-    data = data_n_50_trajectory[keep_rows,]
-  ),
-  lty = 2
 )
 
 # Requires `deming` package

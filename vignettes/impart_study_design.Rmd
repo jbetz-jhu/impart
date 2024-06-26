@@ -30,6 +30,8 @@ knitr::opts_chunk$set(
 options(
   rmarkdown.html_vignette.check_title = FALSE
 )
+
+set.seed(9876)
 ```
 
 ```{r Library}
