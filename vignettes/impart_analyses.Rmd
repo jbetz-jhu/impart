@@ -104,7 +104,7 @@ monitored_design <-
 
 The data used in this example will also be the same: `impart::example_1`
 
-```{r}
+```{r Example-1-Header}
 head(impart::example_1)
 ```
 

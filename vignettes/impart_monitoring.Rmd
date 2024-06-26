@@ -160,7 +160,7 @@ To obtain the information available at $t$ days after the randomization of the f
   
 For example, the data known at 90 days can be obtained using the `data_at_time_t()` function as follows:
 
-```{r Obtain Past Dataset}
+```{r Obtain-Past-Dataset}
 data_90 <-
   data_at_time_t(
     prepared_data = prepared_final_data,
