@@ -109,6 +109,8 @@ calculate_covariance <-
     # Create cluster, export objects
     cluster <- parallel::makeCluster(control$n_cores)
 
+    parallel::clusterEvalQ(cl = cluster, library("impart"))
+
     # Run estimation function on bootstrapped data
     apply_function <-
       function(
