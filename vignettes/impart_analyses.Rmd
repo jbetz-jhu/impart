@@ -117,7 +117,7 @@ head(impart::example_1)
 ```{r Interim-Analysis-1, eval = FALSE}
 interim_analysis_1 <-
   monitored_analysis(
-    data = data_interim_1,
+    data = example_1,
     monitored_design = monitored_design,
     estimation_function = standardization,
     estimation_arguments = 
@@ -126,7 +126,8 @@ interim_analysis_1 <-
         y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
         y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
         family = gaussian,
-        treatment_column = "tx"
+        treatment_column = "tx",
+        outcome_indicator_column = ".r_4"
       )
     )
 ```
@@ -152,7 +153,8 @@ interim_analysis_2 <-
         y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
         y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
         family = gaussian,
-        treatment_column = "tx"
+        treatment_column = "tx",
+        outcome_indicator_column = ".r_4"
       )
   )
 ```

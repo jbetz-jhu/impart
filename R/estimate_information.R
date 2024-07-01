@@ -50,6 +50,8 @@ estimate_information <-
       k <- setdiff(x = names(monitored_design), y = "original_design") |>
         length() + 1
 
+      n_analyses <- monitored_design$original_design$trial_design$kMax
+
       prior_analysis <- utils::tail(monitored_design, 1)[[1]]
 
       orthogonalize <- monitored_design$original_design$orthogonalize

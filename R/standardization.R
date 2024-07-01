@@ -67,7 +67,7 @@ standardization <-
            "or \"oddsratio\".")
     }
 
-    if(!all(c(treatment_column, treatment_column) %in% names(data))){
+    if(!all(c(treatment_column, outcome_indicator_column) %in% names(data))){
       stop("`treatment_column` (", treatment_column, ") and ",
            "`outcome_indicator_column` (", outcome_indicator_column, ") must ",
            "be in `data`.")
