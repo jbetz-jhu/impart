@@ -110,14 +110,58 @@ The data used in this example will also be the same: `impart::example_1`
 
 ```{r Example-1-Header}
 head(impart::example_1)
+
+# Obtain time of last event
+last_event <-
+  example_1[, c(".enrollment_time", ".t_1", ".t_2", ".t_3", ".t_4")] |>
+  unlist() |>
+  max(na.rm = TRUE) |>
+  ceiling()
+
+prepared_final_data <-
+  prepare_monitored_study_data(
+    data = example_1,
+    study_time = last_event,
+    id_variable = ".id",
+    covariates_variables = c("x_1", "x_2", "x_3", "x_4"),
+    enrollment_time_variable = ".enrollment_time",
+    treatment_variable = "tx",
+    outcome_variables = c("y_1", "y_2", "y_3", "y_4"),
+    outcome_time_variables = c(".t_1", ".t_2", ".t_3", ".t_4"), 
+    # Observe missingness 1 week after target study visit
+    observe_missing_times = c(30, 60, 90, 120) + 7
+  )
 ```
+
+```{r Create-Interim-Analysis-Datasets}
+data_n_interim_1 <-
+  data_at_time_t(
+    prepared_data = prepared_final_data,
+    study_time = 783
+  )
+
+data_n_interim_2 <-
+  data_at_time_t(
+    prepared_data = prepared_final_data,
+    study_time = 800
+  )
+
+data_n_final <-
+  data_at_time_t(
+    prepared_data = prepared_final_data,
+    study_time = 1478
+  )
+```
+
+
+
 
 ## Interim Analysis 1
 
-```{r Interim-Analysis-1, eval = FALSE}
+```{r Interim-Analysis-1}
 interim_analysis_1 <-
   monitored_analysis(
-    data = example_1,
+    data = data_n_interim_1$data,
     monitored_design = monitored_design,
     estimation_function = standardization,
     estimation_arguments = 
@@ -130,6 +174,10 @@ interim_analysis_1 <-
         outcome_indicator_column = ".r_4"
       )
     )
+
+interim_analysis_1$interim_analysis_1$decision
+interim_analysis_1$interim_analysis_1$decision_data
+interim_analysis_1$interim_analysis_1$information_fraction_orthogonal
 ```
 
 
@@ -144,7 +192,7 @@ argument.
 ```{r Interim-Analysis-2, eval = FALSE}
 interim_analysis_2 <-
   monitored_analysis(
-    data = data_interim_2,
+    data = data_n_interim_2$data,
     monitored_design = interim_analysis_1,
     estimation_function = standardization,
     estimation_arguments = 

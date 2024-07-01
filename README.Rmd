@@ -36,7 +36,7 @@ example_pcp <- 100*example_rcp
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/jbetz-jhu/impart/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jbetz-jhu/impart/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/jbetz-jhu/impart/graph/badge.svg?token=75LYU8AN1H)](https://codecov.io/gh/jbetz-jhu/impart)
+[![codecov](https://codecov.io/gh/jbetz-jhu/impart/graph/badge.svg?token=75LYU8AN1H)](https://codecov.io/gh/jbetz-jhu/impart)    
 <!-- badges: end -->
 
 Investigators are faced with many challenges in designing efficient, ethical randomized trials due to competing demands: a trial must collect enough information to identify meaningful benefits or harms with a desired probability, while also minimizing potential harm and suboptimal treatment of participants. Satisfying these competing demands is further complicated by the limited and imprecise information available during the design of a study.

@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/jbetz-jhu/impart/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jbetz-jhu/impart/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/jbetz-jhu/impart/graph/badge.svg?token=75LYU8AN1H)](https://codecov.io/gh/jbetz-jhu/impart)
+[![codecov](https://codecov.io/gh/jbetz-jhu/impart/graph/badge.svg?token=75LYU8AN1H)](https://codecov.io/gh/jbetz-jhu/impart)  
 <!-- badges: end -->
 
 Investigators are faced with many challenges in designing efficient,
@@ -54,7 +54,7 @@ You can install the development version of impart from
 devtools::install_github("jbetz-jhu/impart")
 #> 
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#>          checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpeMHzk4\remotes54143cc97b9d\jbetz-jhu-impart-4099ede/DESCRIPTION' ...  ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpeMHzk4\remotes54143cc97b9d\jbetz-jhu-impart-4099ede/DESCRIPTION'
+#>       ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpSg0FFX\remotes2fc842f76301\jbetz-jhu-impart-0a7d677/DESCRIPTION'
 #>       ─  preparing 'impart':
 #>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
 #>       ─  checking for LF line-endings in source and make files and shell scripts

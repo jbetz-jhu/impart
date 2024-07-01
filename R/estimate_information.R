@@ -59,6 +59,7 @@ estimate_information <-
       information_target <- monitored_design$original_design$information_target
 
       trial_design <- prior_analysis$trial_design
+      ids_by_analysis <- prior_analysis$ids_by_analysis
       estimates <- prior_analysis$estimates
       covariance <- prior_analysis$covariance
       estimates_orthogonal <- prior_analysis$estimates_orthogonal
@@ -79,6 +80,7 @@ estimate_information <-
       covariance <- NULL
       estimates_orthogonal <- NULL
       covariance_orthogonal <- NULL
+      ids_by_analysis <- NULL
     }
 
 
@@ -93,6 +95,7 @@ estimate_information <-
 
       n_analyses <- trial_design$kMax
     }
+
     k <- length(estimates) + 1
 
     estimate_k <-
@@ -105,6 +108,7 @@ estimate_information <-
     covariance_k <-
       calculate_covariance(
         data = data,
+        ids_by_analysis = ids_by_analysis,
         bootstrap_ids = bootstrap_ids,
         bootstrap_results = bootstrap_results,
         estimation_function = estimation_function,
@@ -147,7 +151,7 @@ estimate_information <-
     if(return_results){
       bootstrap_ids <- covariance_k$bootstrap_ids
       bootstrap_results <- covariance_k$bootstrap_estimates
-      ids_by_analysis <- covariance_k$bootstrap_estimates
+      ids_by_analysis <- covariance_k$ids_by_analysis
     } else {
       estimates <- estimates_orthogonal <-
         bootstrap_ids <- bootstrap_results <- ids_by_analysis <- NULL

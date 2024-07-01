@@ -70,16 +70,16 @@ monitored_analysis <-
         return_results = TRUE
       )
 
-    estimates <- estimate_information$estimates
-    covariance <- estimate_information$covariance
-    information <- estimate_information$information
-    estimates_orthogonal <- estimate_information$estimates_orthogonal
-    covariance_orthogonal <- estimate_information$covariance_orthogonal
-    information_orthogonal <- estimate_information$information_orthogonal
-    ids_by_analysis <- estimate_information$ids_by_analysis
-    bootstrap_results <- estimate_information$bootstrap_results
-    bootstrap_ids <- estimate_information$bootstrap_ids
-    analysis_label <- estimate_information$analysis_label
+    estimates <- estimated_information$estimates
+    covariance <- estimated_information$covariance
+    information <- estimated_information$information
+    estimates_orthogonal <- estimated_information$estimates_orthogonal
+    covariance_orthogonal <- estimated_information$covariance_orthogonal
+    information_orthogonal <- estimated_information$information_orthogonal
+    ids_by_analysis <- estimated_information$ids_by_analysis
+    bootstrap_results <- estimated_information$bootstrap_results
+    bootstrap_ids <- estimated_information$bootstrap_ids
+    analysis_label <- estimated_information$analysis_label
 
     information_fraction <- information/information_target
     information_fraction_orthogonal <-

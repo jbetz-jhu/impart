@@ -16,8 +16,6 @@
 #' a grid of unique parameters are constructed, and the approximate information
 #' is computed for each value of the parameters.
 #'
-#' @export
-#'
 #' @seealso [impart::asymptotic_information_difference_means()],
 #' [impart::asymptotic_information_difference_proportions()], and
 #' [impart::asymptotic_information_mann_whitney_fm()] for an asymptotic
@@ -34,7 +32,7 @@
 #' receiving the control intervention
 #' @param sigma_1 Variance of outcomes in the population of individuals
 #' receiving the active intervention
-
+#' @export
 information_to_n_continuous_1_to_1 <-
   function(
     information,
@@ -93,6 +91,7 @@ information_to_n_continuous_1_to_1 <-
 #' @param pi_1 Probability of event in the population of individuals
 #' receiving the control intervention
 #' @param delta The risk difference (i.e. \code{pi_1 - pi_0})
+#' @export
 information_to_n_binary_1_to_1 <-
   function(
     information,

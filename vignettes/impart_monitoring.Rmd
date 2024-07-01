@@ -231,26 +231,26 @@ plot_outcome_counts(
 The times of each event can be obtained using `count_outcomes`:
 
 ```{r Tabulate-Timing-of-Events}
-example_1_counts_2y <-
+example_1_counts <-
   count_outcomes(
     prepared_data = prepared_final_data
   )
 
 # Timing of first n randomizations
 subset(
-  example_1_counts_2y,
+  example_1_counts,
   event == "randomization"
 ) |> head()
 
 # Timing of first n observations of `y_4`
 subset(
-  example_1_counts_2y,
+  example_1_counts,
   event == "y_4"
 ) |> head()
 
 # Find when n observations of `y_4` are first available:
 subset(
-  example_1_counts_2y,
+  example_1_counts,
   event == "y_4" & count_complete == 50
 )
 ```
@@ -269,7 +269,7 @@ data_n_final_50 <-
       # Time when 50 final outcomes are observed:
       ceiling(
         subset(
-          example_1_counts_2y,
+          example_1_counts,
           event == "y_4" & count_complete == 50
         )$time
       )
@@ -441,6 +441,3 @@ abline(
   lty = 3
 )
 ```
-
-
-
