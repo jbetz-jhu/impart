@@ -155,14 +155,54 @@ previous vignettes:</p>
 <span><span class="co">#&gt; 4  5.473575 -6.548695         39.40100 78.95480  95.29012 123.9621 156.4938</span></span>
 <span><span class="co">#&gt; 5 21.906824  4.005459         41.32190 71.43593 102.43171 141.4073 150.4507</span></span>
 <span><span class="co">#&gt; 6        NA        NA         55.24537 99.24537 129.24537 159.2454 189.2454</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Obtain time of last event</span></span>
+<span><span class="va">last_event</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">example_1</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".enrollment_time"</span>, <span class="st">".t_1"</span>, <span class="st">".t_2"</span>, <span class="st">".t_3"</span>, <span class="st">".t_4"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">ceiling</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">prepared_final_data</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/prepare_monitored_study_data.html">prepare_monitored_study_data</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">example_1</span>,</span>
+<span>    study_time <span class="op">=</span> <span class="va">last_event</span>,</span>
+<span>    id_variable <span class="op">=</span> <span class="st">".id"</span>,</span>
+<span>    covariates_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x_1"</span>, <span class="st">"x_2"</span>, <span class="st">"x_3"</span>, <span class="st">"x_4"</span><span class="op">)</span>,</span>
+<span>    enrollment_time_variable <span class="op">=</span> <span class="st">".enrollment_time"</span>,</span>
+<span>    treatment_variable <span class="op">=</span> <span class="st">"tx"</span>,</span>
+<span>    outcome_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"y_1"</span>, <span class="st">"y_2"</span>, <span class="st">"y_3"</span>, <span class="st">"y_4"</span><span class="op">)</span>,</span>
+<span>    outcome_time_variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".t_1"</span>, <span class="st">".t_2"</span>, <span class="st">".t_3"</span>, <span class="st">".t_4"</span><span class="op">)</span>, </span>
+<span>    <span class="co"># Observe missingness 1 week after target study visit</span></span>
+<span>    observe_missing_times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">60</span>, <span class="fl">90</span>, <span class="fl">120</span><span class="op">)</span> <span class="op">+</span> <span class="fl">7</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data_n_interim_1</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/data_at_time_t.html">data_at_time_t</a></span><span class="op">(</span></span>
+<span>    prepared_data <span class="op">=</span> <span class="va">prepared_final_data</span>,</span>
+<span>    study_time <span class="op">=</span> <span class="fl">783</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_n_interim_2</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/data_at_time_t.html">data_at_time_t</a></span><span class="op">(</span></span>
+<span>    prepared_data <span class="op">=</span> <span class="va">prepared_final_data</span>,</span>
+<span>    study_time <span class="op">=</span> <span class="fl">800</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_n_final</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/data_at_time_t.html">data_at_time_t</a></span><span class="op">(</span></span>
+<span>    prepared_data <span class="op">=</span> <span class="va">prepared_final_data</span>,</span>
+<span>    study_time <span class="op">=</span> <span class="fl">1478</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="interim-analysis-1">Interim Analysis 1<a class="anchor" aria-label="anchor" href="#interim-analysis-1"></a>
 </h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">interim_analysis_1</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/monitored_analysis.html">monitored_analysis</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">example_1</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">data_n_interim_1</span><span class="op">$</span><span class="va">data</span>,</span>
 <span>    monitored_design <span class="op">=</span> <span class="va">monitored_design</span>,</span>
 <span>    estimation_function <span class="op">=</span> <span class="va">standardization</span>,</span>
 <span>    estimation_arguments <span class="op">=</span> </span>
@@ -174,7 +214,20 @@ previous vignettes:</p>
 <span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span>,</span>
 <span>        outcome_indicator_column <span class="op">=</span> <span class="st">".r_4"</span></span>
 <span>      <span class="op">)</span></span>
-<span>    <span class="op">)</span></span></code></pre></div>
+<span>    <span class="op">)</span></span>
+<span></span>
+<span><span class="va">interim_analysis_1</span><span class="op">$</span><span class="va">interim_analysis_1</span><span class="op">$</span><span class="va">decision</span></span>
+<span><span class="co">#&gt; [1] "Continue"</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">interim_analysis_1</span><span class="op">$</span><span class="va">interim_analysis_1</span><span class="op">$</span><span class="va">decision_data</span></span>
+<span><span class="co">#&gt;   test_statistic efficacy  futility</span></span>
+<span><span class="co">#&gt; 1       1.814047 2.953989 0.3970887</span></span>
+<span><span class="co">#&gt; 2             NA 2.359546 1.2814828</span></span>
+<span><span class="co">#&gt; 3             NA 2.014136        NA</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">interim_analysis_1</span><span class="op">$</span><span class="va">interim_analysis_1</span><span class="op">$</span><span class="va">information_fraction_orthogonal</span></span>
+<span><span class="co">#&gt; estimates </span></span>
+<span><span class="co">#&gt; 0.5025701</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="interim-analysis-2">Interim Analysis 2<a class="anchor" aria-label="anchor" href="#interim-analysis-2"></a>
@@ -182,10 +235,10 @@ previous vignettes:</p>
 <p>All subsequent analyses are identical in syntax: a new dataset is
 provided, and the result of the previous analysis is passed using the
 <code>monitored_design</code> argument.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">interim_analysis_2</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/monitored_analysis.html">monitored_analysis</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">data_interim_2</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">data_n_interim_2</span><span class="op">$</span><span class="va">data</span>,</span>
 <span>    monitored_design <span class="op">=</span> <span class="va">interim_analysis_1</span>,</span>
 <span>    estimation_function <span class="op">=</span> <span class="va">standardization</span>,</span>
 <span>    estimation_arguments <span class="op">=</span> </span>
