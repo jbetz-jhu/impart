@@ -52,7 +52,7 @@ The independent increments property can also be obtained by orthogonalizing esti
 
 ## Installation
 
-You can install the development version of impart from [GitHub](https://github.com/) with:
+You can install the development version of impart from [GitHub](https://github.com/) using:
 
 ```{r Install Impart, echo = TRUE}
 # install.packages("devtools")

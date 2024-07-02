@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_covariance.R
 \name{calculate_covariance}
 \alias{calculate_covariance}
-\title{Compute bootstrap estimates of covariance}
+\title{Compute bootstrap covariance of estimates}
 \usage{
 calculate_covariance(
   data,
@@ -47,7 +47,7 @@ of bootstrap estimates, and a list of the
 IDs of individuals in each bootstrap replicate at each analysis.
 }
 \description{
-Compute bootstrap estimates of covariance
+Compute bootstrap covariance of estimates
 }
 \examples{
 # To be added

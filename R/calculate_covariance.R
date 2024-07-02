@@ -1,4 +1,4 @@
-#' Compute bootstrap estimates of covariance
+#' Compute bootstrap covariance of estimates
 #'
 #' @param data A \code{data.frame} containing the data to be analyzed. A column named
 #' `.id` indicates which observations correspond to each individual.
@@ -42,7 +42,6 @@ calculate_covariance <-
     rng_seed,
     control = monitored_analysis_control()
   ){
-
     current_ids <- unique(data$.id)
     n_current_ids <- length(current_ids)
 
@@ -62,8 +61,8 @@ calculate_covariance <-
     }
 
     if(is.null(bootstrap_ids)){
-      n_k <- length(unique(data$.id))
-      n_ids_to_sample <- n_k
+      n_k <- n_ids_to_sample <- n_current_ids
+      bootstrap_ids <- list()
     } else {
       n_k <- cumsum(x = sapply(X = ids_by_analysis, FUN = length))
       n_ids_to_sample <- utils::tail(x = diff(x = n_k), n = 1)
@@ -72,12 +71,6 @@ calculate_covariance <-
     set.seed(seed = rng_seed, kind = "L'Ecuyer")
     random_seed <- .Random.seed
     k <- length(n_k)
-
-    # Use separate RNG stream for each interim analysis
-    if(k > 1){
-      for(i in 2:k) parallel::nextRNGStream(seed = random_seed)
-    }
-
 
     # Generate resampled IDs
     new_bootstrap_ids <-
@@ -96,86 +89,27 @@ calculate_covariance <-
           )
       )
 
-    # Combine previous and current bootstrap IDs
-    all_bootstrap_ids <-
-      rbind(
-        sapply(
-          X = bootstrap_ids,
-          FUN = function(x) do.call(what = c, args = x)
-        ),
-        new_bootstrap_ids
-      )
+    bootstrap_ids[[k]] <- new_bootstrap_ids
 
-    # Create cluster, export objects
-    cluster <- parallel::makeCluster(control$n_cores)
+    all_bootstrap_ids <- do.call(what = rbind, args = bootstrap_ids)
 
-    parallel::clusterEvalQ(cl = cluster, library("impart"))
+    estimates <- rep(NA_real_, control$n_bootstrap)
 
-    # Run estimation function on bootstrapped data
-    apply_function <-
-      function(
-    x,
-    original_data = data,
-    args = estimation_arguments,
-    fun = estimation_function,
-    run_function = calculate_estimate
-      ) {
-        boot_ids <- x[[1]]
-
-        run_function(
-          data =
-            resample_by_id(
-              data = original_data,
-              ids_to_sample = boot_ids
-              ),
-          estimation_function = fun,
-          estimation_arguments = args
+    for(i in 1:ncol(all_bootstrap_ids)){
+      estimates[i] <-
+        do.call(
+          what = calculate_estimate,
+          args =
+            list(
+              data =
+                relabel_by_id(
+                  data = data,
+                  sampled_ids = all_bootstrap_ids[,i]
+                ),
+              estimation_function = estimation_function,
+              estimation_arguments = estimation_arguments
+            )
         )
-      }
-
-    parallel::clusterExport(
-      cl = cluster,
-      varlist = ls(),
-      envir = environment()
-    )
-
-    # Choose appropriate call depending on whether load balancing is desired
-    par_apply_function <-
-      ifelse(
-        test = control$use_load_balancing,
-        yes = parallel::parSapplyLB,
-        no = parallel::parSapply
-      )
-
-    # Compute estimates in parallel
-    estimates <-
-      do.call(
-        what = par_apply_function,
-        args =
-          list(
-            cl = cluster,
-            X =
-              apply(
-                X = all_bootstrap_ids,
-                MARGIN = 2,
-                FUN = list
-              ),
-            FUN = apply_function
-          )
-      ) |>
-      as.numeric()
-
-    # Stop the cluster
-    parallel::stopCluster(cl = cluster)
-
-    if(is.null(bootstrap_ids)){
-      bootstrap_ids <- list()
-      length(bootstrap_ids) <- control$n_bootstrap
-    }
-
-    # Add bootstrap IDs for analysis k
-    for(i in 1:length(bootstrap_ids)){
-      bootstrap_ids[[i]][[k]] <- new_bootstrap_ids[, i]
     }
 
     estimates <- cbind(bootstrap_results, estimates)

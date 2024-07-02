@@ -1,3 +1,4 @@
+# 1. Input Error Handling ######################################################
 test_that(
   desc = "Check for `.id`, mismatched values, length of `ids_to_sample",
   code = {
@@ -47,3 +48,25 @@ test_that(
     )
   }
 )
+
+# resample_by_id(
+#   data =
+#     data.frame(
+#       .id = letters[1:10],
+#       arm = c(rep(1, 5), rep(0, 5)),
+#       y = 1:10
+#     ),
+#   ids_to_sample = letters[sample(1:10, replace = TRUE)]
+# )
+#
+# x <-
+#   resample_by_id(
+#     data =
+#       data.frame(
+#         .id = letters[1:10],
+#         arm = c(rep(1, 5), rep(0, 5)),
+#         y = 1:10
+#       ),
+#     ids_to_sample = letters[sample(1:10, replace = TRUE)],
+#     convert_id_to_factor = TRUE
+#   )

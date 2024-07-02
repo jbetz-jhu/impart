@@ -54,7 +54,7 @@ You can install the development version of impart from
 devtools::install_github("jbetz-jhu/impart")
 #> 
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#>       ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpSg0FFX\remotes2fc842f76301\jbetz-jhu-impart-0a7d677/DESCRIPTION'
+#>       ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpmuG21y\remotes31845c6d32fb\jbetz-jhu-impart-09a0e24/DESCRIPTION'
 #>       ─  preparing 'impart':
 #>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
 #>       ─  checking for LF line-endings in source and make files and shell scripts

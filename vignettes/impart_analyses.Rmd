@@ -143,7 +143,7 @@ data_n_interim_1 <-
 data_n_interim_2 <-
   data_at_time_t(
     prepared_data = prepared_final_data,
-    study_time = 800
+    study_time = 1318
   )
 
 data_n_final <-
@@ -151,6 +151,12 @@ data_n_final <-
     prepared_data = prepared_final_data,
     study_time = 1478
   )
+
+data_n_final <- data_n_final$data
+
+# Subset to first 189 Outcomes
+data_n_final <- data_n_final[which(rank(data_n_final$.t_4) <= 189),]
+
 ```
 
 
@@ -189,7 +195,7 @@ All subsequent analyses are identical in syntax: a new dataset is provided, and
 the result of the previous analysis is passed using the `monitored_design`
 argument.
 
-```{r Interim-Analysis-2, eval = FALSE}
+```{r Interim-Analysis-2}
 interim_analysis_2 <-
   monitored_analysis(
     data = data_n_interim_2$data,
@@ -204,6 +210,42 @@ interim_analysis_2 <-
         treatment_column = "tx",
         outcome_indicator_column = ".r_4"
       )
-  )
+    )
+
+interim_analysis_2$interim_analysis_2$decision
+interim_analysis_2$interim_analysis_2$decision_data
+interim_analysis_2$interim_analysis_2$information_fraction_orthogonal
+```
+
+
+
+
+
+
+
+## Final Analysis
+
+The syntax is identical for the final analysis:
+
+```{r Final-Analysis}
+final_analysis <-
+  monitored_analysis(
+    data = data_n_final,
+    monitored_design = interim_analysis_2,
+    estimation_function = standardization,
+    estimation_arguments = 
+      list(
+        estimand = "difference",
+        y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        family = gaussian,
+        treatment_column = "tx",
+        outcome_indicator_column = ".r_4"
+      )
+    )
+
+final_analysis$final_analysis$decision
+final_analysis$final_analysis$decision_data
+final_analysis$final_analysis$information_fraction_orthogonal
 ```
 

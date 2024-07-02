@@ -2,10 +2,10 @@
 # [X] 1. Input Error Handling
 # [X] 2. Two-Sided Tests: No Futility Stopping (OF) - 3 Stages
 # [X] 3. Two-Sided Tests: Non-Binding Futility (OF, OF) - 3 Stages
-# [ ] 4. One-Sided Tests Higher: No Futility Stopping (OF) - 3 Stages
-# [ ] 5. One-Sided Tests Higher: Non-Binding Futility Stopping (OF) - 3 Stages
-# [ ] 6. One-Sided Tests Lower: No Futility Stopping (OF) - 3 Stages
-# [ ] 7. One-Sided Tests Lower: Non-Binding Futility Stopping (OF) - 3 Stages
+# [X] 4. One-Sided Tests Higher: No Futility Stopping (OF) - 3 Stages
+# [X] 5. One-Sided Tests Higher: Non-Binding Futility Stopping (OF) - 3 Stages
+# [X] 6. One-Sided Tests Lower: No Futility Stopping (OF) - 3 Stages
+# [X] 7. One-Sided Tests Lower: Non-Binding Futility Stopping (OF) - 3 Stages
 
 of_efficacy_no_futility_2S_3_stage <-
   rpact::getDesignGroupSequential(

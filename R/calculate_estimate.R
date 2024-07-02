@@ -22,7 +22,8 @@ calculate_estimate <-
     estimation_function,
     estimation_arguments
   ){
-    return(
+
+    result <-
       get(
         x = "estimate",
         pos =
@@ -31,5 +32,10 @@ calculate_estimate <-
             args = c(list(data = data), estimation_arguments)
           )
       )
-    )
+
+    if(length(result) == 1){
+      return(result)
+    } else{
+      stop("Result must have length == 1.")
+    }
   }
