@@ -187,14 +187,19 @@ previous vignettes:</p>
 <span><span class="va">data_n_interim_2</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/data_at_time_t.html">data_at_time_t</a></span><span class="op">(</span></span>
 <span>    prepared_data <span class="op">=</span> <span class="va">prepared_final_data</span>,</span>
-<span>    study_time <span class="op">=</span> <span class="fl">800</span></span>
+<span>    study_time <span class="op">=</span> <span class="fl">1318</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">data_n_final</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/data_at_time_t.html">data_at_time_t</a></span><span class="op">(</span></span>
 <span>    prepared_data <span class="op">=</span> <span class="va">prepared_final_data</span>,</span>
 <span>    study_time <span class="op">=</span> <span class="fl">1478</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_n_final</span> <span class="op">&lt;-</span> <span class="va">data_n_final</span><span class="op">$</span><span class="va">data</span></span>
+<span></span>
+<span><span class="co"># Subset to first 189 Outcomes</span></span>
+<span><span class="va">data_n_final</span> <span class="op">&lt;-</span> <span class="va">data_n_final</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rank.html" class="external-link">rank</a></span><span class="op">(</span><span class="va">data_n_final</span><span class="op">$</span><span class="va">.t_4</span><span class="op">)</span> <span class="op">&lt;=</span> <span class="fl">189</span><span class="op">)</span>,<span class="op">]</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="interim-analysis-1">Interim Analysis 1<a class="anchor" aria-label="anchor" href="#interim-analysis-1"></a>
@@ -220,14 +225,14 @@ previous vignettes:</p>
 <span><span class="co">#&gt; [1] "Continue"</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">interim_analysis_1</span><span class="op">$</span><span class="va">interim_analysis_1</span><span class="op">$</span><span class="va">decision_data</span></span>
-<span><span class="co">#&gt;   test_statistic efficacy  futility</span></span>
-<span><span class="co">#&gt; 1       1.814047 2.953989 0.3970887</span></span>
-<span><span class="co">#&gt; 2             NA 2.359546 1.2814828</span></span>
-<span><span class="co">#&gt; 3             NA 2.014136        NA</span></span></code></pre></div>
+<span><span class="co">#&gt;   test_statistic efficacy futility</span></span>
+<span><span class="co">#&gt; 1       1.801404 2.977494 0.371148</span></span>
+<span><span class="co">#&gt; 2             NA 2.358132 1.282600</span></span>
+<span><span class="co">#&gt; 3             NA 2.013996       NA</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">interim_analysis_1</span><span class="op">$</span><span class="va">interim_analysis_1</span><span class="op">$</span><span class="va">information_fraction_orthogonal</span></span>
 <span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt; 0.5025701</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.4955896</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="interim-analysis-2">Interim Analysis 2<a class="anchor" aria-label="anchor" href="#interim-analysis-2"></a>
@@ -250,7 +255,52 @@ provided, and the result of the previous analysis is passed using the
 <span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span>,</span>
 <span>        outcome_indicator_column <span class="op">=</span> <span class="st">".r_4"</span></span>
 <span>      <span class="op">)</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span>    <span class="op">)</span></span>
+<span></span>
+<span><span class="va">interim_analysis_2</span><span class="op">$</span><span class="va">interim_analysis_2</span><span class="op">$</span><span class="va">decision</span></span>
+<span><span class="co">#&gt; [1] "Continue"</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">interim_analysis_2</span><span class="op">$</span><span class="va">interim_analysis_2</span><span class="op">$</span><span class="va">decision_data</span></span>
+<span><span class="co">#&gt;   test_statistic efficacy  futility</span></span>
+<span><span class="co">#&gt; 1       1.801404 2.977494 0.3660487</span></span>
+<span><span class="co">#&gt; 2       2.258885 2.416304 1.1680556</span></span>
+<span><span class="co">#&gt; 3             NA 2.006713        NA</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">interim_analysis_2</span><span class="op">$</span><span class="va">interim_analysis_2</span><span class="op">$</span><span class="va">information_fraction_orthogonal</span></span>
+<span><span class="co">#&gt; [1] 0.4955896 0.7210874</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="final-analysis">Final Analysis<a class="anchor" aria-label="anchor" href="#final-analysis"></a>
+</h2>
+<p>The syntax is identical for the final analysis:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">final_analysis</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/monitored_analysis.html">monitored_analysis</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">data_n_final</span>,</span>
+<span>    monitored_design <span class="op">=</span> <span class="va">interim_analysis_2</span>,</span>
+<span>    estimation_function <span class="op">=</span> <span class="va">standardization</span>,</span>
+<span>    estimation_arguments <span class="op">=</span> </span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>        estimand <span class="op">=</span> <span class="st">"difference"</span>,</span>
+<span>        y0_formula <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
+<span>        y1_formula <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
+<span>        family <span class="op">=</span> <span class="va">gaussian</span>,</span>
+<span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span>,</span>
+<span>        outcome_indicator_column <span class="op">=</span> <span class="st">".r_4"</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span></span>
+<span><span class="va">final_analysis</span><span class="op">$</span><span class="va">final_analysis</span><span class="op">$</span><span class="va">decision</span></span>
+<span><span class="co">#&gt; [1] "Efficacy: Upper"</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">final_analysis</span><span class="op">$</span><span class="va">final_analysis</span><span class="op">$</span><span class="va">decision_data</span></span>
+<span><span class="co">#&gt;   test_statistic efficacy  futility</span></span>
+<span><span class="co">#&gt; 1       1.801404 2.977494 0.2107591</span></span>
+<span><span class="co">#&gt; 2       2.258885 2.416304 0.8947103</span></span>
+<span><span class="co">#&gt; 3       3.373441 2.020724        NA</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">final_analysis</span><span class="op">$</span><span class="va">final_analysis</span><span class="op">$</span><span class="va">information_fraction_orthogonal</span></span>
+<span><span class="co">#&gt; [1] 0.4955896 0.7210874 1.1078689</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

@@ -412,19 +412,19 @@ against the target information level for analyses:</p>
 <span></span>
 <span><span class="va">information_n_50</span><span class="op">$</span><span class="va">covariance</span></span>
 <span><span class="co">#&gt;           estimates</span></span>
-<span><span class="co">#&gt; estimates  7.911019</span></span></code></pre></div>
+<span><span class="co">#&gt; estimates  8.047266</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information</span></span>
 <span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt;  0.126406</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.1242658</span></span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">information_n_50</span><span class="op">$</span><span class="va">covariance_orthogonal</span></span>
 <span><span class="co">#&gt;           estimates</span></span>
-<span><span class="co">#&gt; estimates  7.911019</span></span></code></pre></div>
+<span><span class="co">#&gt; estimates  8.047266</span></span></code></pre></div>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information_orthogonal</span></span>
 <span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt;  0.126406</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.1242658</span></span></code></pre></div>
 <p>When a study is designed with interim and final analyses,
 <code>monitored_design</code> allows the user to pass the results of
 previously conducted analyses to <code>estimate_information</code>.</p>
@@ -484,7 +484,7 @@ vignette:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information</span><span class="op">/</span><span class="va">information_adaptive</span></span>
 <span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt; 0.2773103</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.2726152</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="tools-for-monitoring-information">Tools for Monitoring Information<a class="anchor" aria-label="anchor" href="#tools-for-monitoring-information"></a>
 </h3>
@@ -513,37 +513,52 @@ projecting when pre-specified information levels may be met:</p>
 <span>    rng_seed <span class="op">=</span> <span class="fl">23456</span>,</span>
 <span>    control <span class="op">=</span> <span class="fu"><a href="../reference/monitored_analysis_control.html">monitored_analysis_control</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span></span>
+<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
+<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
+<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
+<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
+<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
+<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
+<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
+<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
+<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
+<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
+<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
+<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
+<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
+<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="va">data_n_50_trajectory</span></span>
 <span><span class="co">#&gt;       times randomization y_1 y_2 y_3 y_4 information information_lag_1</span></span>
-<span><span class="co">#&gt; 1  453.1467            56  44  41  36  30 0.001131742                NA</span></span>
-<span><span class="co">#&gt; 2  466.1324            58  47  42  37  32 0.007297979       0.001131742</span></span>
-<span><span class="co">#&gt; 3  468.1530            58  47  42  37  34 0.075194868       0.007297979</span></span>
-<span><span class="co">#&gt; 4  479.5912            59  48  42  38  36 0.106621742       0.075194868</span></span>
-<span><span class="co">#&gt; 5  511.2584            64  52  47  41  38 0.088864153       0.106621742</span></span>
-<span><span class="co">#&gt; 6  514.7433            64  52  47  41  40 0.099051384       0.088864153</span></span>
-<span><span class="co">#&gt; 7  540.2434            70  55  50  45  42 0.112966625       0.099051384</span></span>
-<span><span class="co">#&gt; 8  558.8427            74  59  50  47  44 0.133424728       0.112966625</span></span>
-<span><span class="co">#&gt; 9  567.3874            75  61  50  48  46 0.116323720       0.133424728</span></span>
-<span><span class="co">#&gt; 10 609.9576            79  66  58  51  48 0.109696334       0.116323720</span></span>
-<span><span class="co">#&gt; 11 645.8408            84  68  62  56  50 0.129666889       0.109696334</span></span>
+<span><span class="co">#&gt; 1  453.1467            56  44  41  36  30  0.04122672                NA</span></span>
+<span><span class="co">#&gt; 2  466.1324            58  47  42  37  32  0.03642663        0.04122672</span></span>
+<span><span class="co">#&gt; 3  468.1530            58  47  42  37  34  0.05526950        0.03642663</span></span>
+<span><span class="co">#&gt; 4  479.5912            59  48  42  38  36  0.07829199        0.05526950</span></span>
+<span><span class="co">#&gt; 5  511.2584            64  52  47  41  38  0.08848096        0.07829199</span></span>
+<span><span class="co">#&gt; 6  514.7433            64  52  47  41  40  0.09940316        0.08848096</span></span>
+<span><span class="co">#&gt; 7  540.2434            70  55  50  45  42  0.09942606        0.09940316</span></span>
+<span><span class="co">#&gt; 8  558.8427            74  59  50  47  44  0.11661984        0.09942606</span></span>
+<span><span class="co">#&gt; 9  567.3874            75  61  50  48  46  0.12398463        0.11661984</span></span>
+<span><span class="co">#&gt; 10 609.9576            79  66  58  51  48  0.11654796        0.12398463</span></span>
+<span><span class="co">#&gt; 11 645.8408            84  68  62  56  50  0.12426581        0.11654796</span></span>
 <span><span class="co">#&gt;    information_change information_pct_change</span></span>
 <span><span class="co">#&gt; 1                  NA                     NA</span></span>
-<span><span class="co">#&gt; 2         0.006166237              84.492390</span></span>
-<span><span class="co">#&gt; 3         0.067896889              90.294578</span></span>
-<span><span class="co">#&gt; 4         0.031426874              29.475109</span></span>
-<span><span class="co">#&gt; 5        -0.017757589             -19.982849</span></span>
-<span><span class="co">#&gt; 6         0.010187231              10.284794</span></span>
-<span><span class="co">#&gt; 7         0.013915241              12.318011</span></span>
-<span><span class="co">#&gt; 8         0.020458102              15.333067</span></span>
-<span><span class="co">#&gt; 9        -0.017101008             -14.701221</span></span>
-<span><span class="co">#&gt; 10       -0.006627386              -6.041574</span></span>
-<span><span class="co">#&gt; 11        0.019970555              15.401430</span></span></code></pre></div>
+<span><span class="co">#&gt; 2       -4.800091e-03           -13.17742276</span></span>
+<span><span class="co">#&gt; 3        1.884287e-02            34.09270498</span></span>
+<span><span class="co">#&gt; 4        2.302249e-02            29.40593307</span></span>
+<span><span class="co">#&gt; 5        1.018897e-02            11.51543593</span></span>
+<span><span class="co">#&gt; 6        1.092220e-02            10.98777881</span></span>
+<span><span class="co">#&gt; 7        2.290031e-05             0.02303251</span></span>
+<span><span class="co">#&gt; 8        1.719378e-02            14.74344496</span></span>
+<span><span class="co">#&gt; 9        7.364789e-03             5.94008266</span></span>
+<span><span class="co">#&gt; 10      -7.436670e-03            -6.38078123</span></span>
+<span><span class="co">#&gt; 11       7.717848e-03             6.21075795</span></span></code></pre></div>
 <p>This trajectory can be smoothed using regression, ideally using a
 method resistant to outliers, such as <code><a href="https://rdrr.io/pkg/deming/man/theilsen.html" class="external-link">deming::theilsen</a></code>.
 Inverse regression can be used to obtain an estimated number of outcomes
 necessary to achieve a given level of information:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">information</span> <span class="op">~</span> <span class="va">y_4</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">data_n_50_trajectory</span></span>
