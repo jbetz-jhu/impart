@@ -1,120 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/404.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/SUPPORT.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/articles/impart_analyses.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/articles/impart_monitoring.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/articles/impart_study_design.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/index.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/apply_stopping_rule_z.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/asymptotic_info.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/asymptotic_information_mann_whitney_fm.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/calculate_covariance.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/calculate_estimate.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/correct_one_sided_gsd.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/count_outcomes.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/count_outcomes_at_time_t.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/data_at_time_t.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/estimate_information.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/example_1.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/impart-package.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/information_to_n.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/information_trajectory.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/initialize_monitored_design.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/monitored_analysis.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/monitored_analysis_control.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/monitored_design_checks.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/mw_from_pmfs.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/orthogonalize_estimates.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/plot_outcome_counts.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/prepare_monitored_study_data.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/relabel_by_id.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/required_info.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/required_information_sequential.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/resample_by_id.html</loc>
-  </url>
-  <url>
-    <loc>https://jbetz-jhu.github.io/impart/reference/standardization.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://jbetz-jhu.github.io/impart/404.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/CONTRIBUTING.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/LICENSE.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/SUPPORT.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/articles/impart_analyses.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/articles/impart_monitoring.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/articles/impart_study_design.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/articles/index.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/authors.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/index.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/apply_stopping_rule_z.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/asymptotic_info.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/asymptotic_information_mann_whitney_fm.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/calculate_covariance.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/calculate_estimate.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/correct_one_sided_gsd.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/count_outcomes.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/count_outcomes_at_time_t.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/data_at_time_t.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/estimate_information.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/example_1.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/impart-package.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/index.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/information_to_n.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/information_trajectory.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/initialize_monitored_design.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/monitored_analysis.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/monitored_analysis_control.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/monitored_design_checks.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/mw_from_pmfs.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/orthogonalize_estimates.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/plot_outcome_counts.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/prepare_monitored_study_data.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/relabel_by_id.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/required_info.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/required_information_sequential.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/resample_by_id.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/standardization.html</loc></url>
 </urlset>
+
