@@ -21,7 +21,7 @@ apply_stopping_rule_z(
 information fractions}
 
 \item{information_target}{A numeric scalar containing the target information
-level, created by \code{\link[=required_information_fixed_n]{required_information_fixed_n()}}}
+level, created by \code{\link[=required_information_single_stage]{required_information_single_stage()}}}
 }
 \value{
 A list containing an updated \code{TrialDesignGroupSequential object}
@@ -104,8 +104,8 @@ two_sided_of_efficacy_nb_of_futility_0 <-
  )
 }
 \seealso{
-\code{\link[=required_information_fixed_n]{required_information_fixed_n()}} and
-\code{\link[=required_information_mw_fixed_n]{required_information_mw_fixed_n()}} for obtaining the target
+\code{\link[=required_information_single_stage]{required_information_single_stage()}} and
+\code{\link[=required_information_mw_single_stage]{required_information_mw_single_stage()}} for obtaining the target
 information level for a single stage design;
 \code{\link[rpact:getDesignGroupSequential]{rpact::getDesignGroupSequential()}} for obtaining \code{trial_design}, and
 \code{\link[=required_information_sequential]{required_information_sequential()}} for adjusting the information

@@ -26,7 +26,7 @@
 #' from information monitoring.
 #' @param information_target A numeric scalar containing the information level
 #' for an information monitored design created
-#' using [impart::required_information_fixed_n()] and adjusted for multiplicity
+#' using [impart::required_information_single_stage()] and adjusted for multiplicity
 #' using [impart::required_information_sequential()]
 #' @param orthogonalize Logical scalar: Should estimates, their covariance,
 #' and the resulting test statistics be orthogonalized?

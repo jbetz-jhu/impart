@@ -69,7 +69,7 @@ $$\mathcal{I}_{F} = \left(\frac{Z_{\alpha/s} + Z_{\beta}}{\delta}\right)^2 \appr
 ```{r Information-Monitored-Design-Parameters}
 # Determine information required to achieve desired power at fixed error rate
 information_fixed <-
-  impart::required_information_fixed_n(
+  impart::required_information_single_stage(
     delta = minimum_difference,
     alpha = alpha,
     power = power

@@ -14,15 +14,15 @@
 #' @param information_fraction A numeric vector containing the observed
 #' information fractions
 #' @param information_target A numeric scalar containing the target information
-#' level, created by [impart::required_information_fixed_n()]
+#' level, created by [impart::required_information_single_stage()]
 #'
 #' @return A list containing an updated \code{TrialDesignGroupSequential object}
 #' object, the resulting decision, and supporting data.
 #'
 #' @export
 #'
-#' @seealso [impart::required_information_fixed_n()] and
-#' [impart::required_information_mw_fixed_n()] for obtaining the target
+#' @seealso [impart::required_information_single_stage()] and
+#' [impart::required_information_mw_single_stage()] for obtaining the target
 #' information level for a single stage design;
 #' [rpact::getDesignGroupSequential()] for obtaining \code{trial_design}, and
 #' [impart::required_information_sequential()] for adjusting the information

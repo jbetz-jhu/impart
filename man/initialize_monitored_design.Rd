@@ -27,7 +27,7 @@ from information monitoring.}
 
 \item{information_target}{A numeric scalar containing the information level
 for an information monitored design created
-using \code{\link[=required_information_fixed_n]{required_information_fixed_n()}} and adjusted for multiplicity
+using \code{\link[=required_information_single_stage]{required_information_single_stage()}} and adjusted for multiplicity
 using \code{\link[=required_information_sequential]{required_information_sequential()}}}
 
 \item{orthogonalize}{Logical scalar: Should estimates, their covariance,

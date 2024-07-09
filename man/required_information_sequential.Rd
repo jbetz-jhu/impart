@@ -9,7 +9,7 @@ required_information_sequential(information_fixed, trial_design)
 \arguments{
 \item{information_fixed}{A numeric scalar containing the information level
 for an information monitored design with a single efficacy analysis, created
-using \code{\link[=required_information_fixed_n]{required_information_fixed_n()}}}
+using \code{\link[=required_information_single_stage]{required_information_single_stage()}}}
 
 \item{trial_design}{An object of type \code{trialDesignGroupSequential}
 created by \code{\link[rpact:getDesignGroupSequential]{rpact::getDesignGroupSequential()}} containing a group sequential
@@ -30,8 +30,8 @@ design.
 # To be added
 }
 \seealso{
-\code{\link[=required_information_fixed_n]{required_information_fixed_n()}} and
-\code{\link[=required_information_mw_fixed_n]{required_information_mw_fixed_n()}} for obtaining
+\code{\link[=required_information_single_stage]{required_information_single_stage()}} and
+\code{\link[=required_information_mw_single_stage]{required_information_mw_single_stage()}} for obtaining
 \code{information_fixed}; \code{\link[rpact:getDesignGroupSequential]{rpact::getDesignGroupSequential()}} for
 obtaining \code{gsd_design_specification}.
 }

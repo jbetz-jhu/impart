@@ -6,7 +6,7 @@ bibliography:
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
+```{r Setup, include = FALSE}
 fig_w <- 8
 fig_h <- 8
 

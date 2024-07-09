@@ -47,14 +47,14 @@ monitoring designs.
 ## Installation
 
 You can install the development version of impart from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/) using:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("jbetz-jhu/impart")
 #> 
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#>       ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpmuG21y\remotes31845c6d32fb\jbetz-jhu-impart-09a0e24/DESCRIPTION'
+#>       ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpquBoug\remotes4a244de21698\jbetz-jhu-impart-09a0e24/DESCRIPTION'
 #>       ─  preparing 'impart':
 #>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
 #>       ─  checking for LF line-endings in source and make files and shell scripts

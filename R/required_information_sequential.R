@@ -8,7 +8,7 @@
 #'
 #' @param information_fixed A numeric scalar containing the information level
 #' for an information monitored design with a single efficacy analysis, created
-#' using [impart::required_information_fixed_n()]
+#' using [impart::required_information_single_stage()]
 #' @param trial_design An object of type \code{trialDesignGroupSequential}
 #' created by [rpact::getDesignGroupSequential()] containing a group sequential
 #' design specification
@@ -18,8 +18,8 @@
 #'
 #' @export
 #'
-#' @seealso [impart::required_information_fixed_n()] and
-#' [impart::required_information_mw_fixed_n()] for obtaining
+#' @seealso [impart::required_information_single_stage()] and
+#' [impart::required_information_mw_single_stage()] for obtaining
 #' \code{information_fixed}; [rpact::getDesignGroupSequential()] for
 #' obtaining \code{gsd_design_specification}.
 #'

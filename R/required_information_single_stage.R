@@ -5,7 +5,7 @@
 #' testing the null hypothesis against a specific alternative while maintaining
 #' a specified Type I Error Rate.
 #' \code{required_information_uninflated_mann_whitney} is an alias to
-#' \code{required_information_fixed_n} for ordinal outcomes, where the null
+#' \code{required_information_single_stage} for ordinal outcomes, where the null
 #' value of the Mann-Whitney estimand is 0.5.
 #'
 #' @param alpha Desired Type I Error Rate of the test
@@ -27,7 +27,7 @@
 #'
 #' @examples
 #' # When a single value is supplied for each parameter, a scalar is returned:
-#' required_information_fixed_n(
+#' required_information_single_stage(
 #'   delta = 5,
 #'   delta_0 = 0,
 #'   alpha = 0.05,
@@ -37,7 +37,7 @@
 #'
 #' # When multiple values are supplied for one or more parameters, the grid of
 #' # parameters are created, and a data.frame is returned.
-#' required_information_fixed_n(
+#' required_information_single_stage(
 #'   delta = c(5, 7.5),
 #'   delta_0 = 0,
 #'   alpha = 0.05,
@@ -53,7 +53,7 @@
 #' @param delta Numeric vector containing the estimand under the alternative hypothesis
 #' @param delta_0 Numeric vector containing the estimand under the null hypothesis
 
-required_information_fixed_n <-
+required_information_single_stage <-
   function(
     delta,
     delta_0 = 0,
@@ -109,7 +109,7 @@ required_information_fixed_n <-
 #' @param mw Numeric vector containing the estimand under the alternative
 #' hypothesis: the value of the Mann-Whitney under the null is always 0.5.
 
-required_information_mw_fixed_n <-
+required_information_mw_single_stage <-
   function(
     mw,
     alpha = 0.05,
@@ -117,7 +117,7 @@ required_information_mw_fixed_n <-
     power = 0.8
   ) {
     return(
-      required_information_fixed_n(
+      required_information_single_stage(
         delta = mw,
         delta_0 = 0.5,
         sides = sides,
