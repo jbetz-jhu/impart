@@ -109,14 +109,14 @@ at the final analysis is given by:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ℐ</mi><mi>F</mi></msub><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><msub><mi>Z</mi><mrow><mi>α</mi><mi>/</mi><mi>s</mi></mrow></msub><mo>+</mo><msub><mi>Z</mi><mi>β</mi></msub></mrow><mi>δ</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>≈</mo><mfrac><mn>1</mn><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>S</mi><mi>E</mi><mrow><mo stretchy="true" form="prefix">(</mo><mover><mi>δ</mi><mo accent="true">̂</mo></mover><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><mover><mi>δ</mi><mo accent="true">̂</mo></mover><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">\mathcal{I}_{F} = \left(\frac{Z_{\alpha/s} + Z_{\beta}}{\delta}\right)^2 \approx \frac{1}{\left(SE(\hat{\delta})\right)^2} = \frac{1}{Var(\hat{\delta})}</annotation></semantics></math></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Determine information required to achieve desired power at fixed error rate</span></span>
-<span><span class="va">information_fixed</span> <span class="op">&lt;-</span></span>
+<span><span class="va">information_single_stage</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/required_info.html">required_information_single_stage</a></span><span class="op">(</span></span>
 <span>    delta <span class="op">=</span> <span class="va">minimum_difference</span>,</span>
 <span>    alpha <span class="op">=</span> <span class="va">alpha</span>,</span>
 <span>    power <span class="op">=</span> <span class="va">power</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">information_fixed</span></span>
+<span><span class="va">information_single_stage</span></span>
 <span><span class="co">#&gt; [1] 0.4202969</span></span></code></pre></div>
 <p>For example, detecting a difference in means of 5 with 90% power and
 a Type I Error rate of 0.05 using a 2-sided test requires an information
@@ -142,7 +142,7 @@ sample size at which the target information level is reached.</p>
 <code class="sourceCode R"><span><span class="co"># Assume Equal Variances: 7.5</span></span>
 <span><span class="va">approximate_n_sd_7.5</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_continuous_1_to_1</a></span><span class="op">(</span></span>
-<span>    information <span class="op">=</span> <span class="va">information_fixed</span>,</span>
+<span>    information <span class="op">=</span> <span class="va">information_single_stage</span>,</span>
 <span>    sigma_0 <span class="op">=</span> <span class="fl">7.5</span>,</span>
 <span>    sigma_1 <span class="op">=</span> <span class="fl">7.5</span>,</span>
 <span>    round_up <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -170,7 +170,7 @@ sample size at which the target information level is reached.</p>
 <span><span class="co"># Equal Variances: 10</span></span>
 <span><span class="va">approximate_n_sd_10</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_continuous_1_to_1</a></span><span class="op">(</span></span>
-<span>    information <span class="op">=</span> <span class="va">information_fixed</span>,</span>
+<span>    information <span class="op">=</span> <span class="va">information_single_stage</span>,</span>
 <span>    sigma_0 <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>    sigma_1 <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>    round_up <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -349,7 +349,7 @@ the target level of information must be adjusted:</p>
 <code class="sourceCode R"><span><span class="co"># Inflate information level to account for multiple testing</span></span>
 <span><span class="va">information_adaptive</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/required_information_sequential.html">required_information_sequential</a></span><span class="op">(</span></span>
-<span>    information_fixed <span class="op">=</span> <span class="va">information_fixed</span>,</span>
+<span>    information_single_stage <span class="op">=</span> <span class="va">information_single_stage</span>,</span>
 <span>    trial_design <span class="op">=</span> <span class="va">trial_design</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="va">information_adaptive</span></span>
