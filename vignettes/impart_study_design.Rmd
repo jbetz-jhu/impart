@@ -68,17 +68,17 @@ $$\mathcal{I}_{F} = \left(\frac{Z_{\alpha/s} + Z_{\beta}}{\delta}\right)^2 \appr
 
 ```{r Information-Monitored-Design-Parameters}
 # Determine information required to achieve desired power at fixed error rate
-information_fixed <-
+information_single_stage <-
   impart::required_information_single_stage(
     delta = minimum_difference,
     alpha = alpha,
     power = power
   )
 
-information_fixed
+information_single_stage
 ```
 
-For example, detecting a difference in means of `r minimum_difference` with `r 100*power`% power and a Type I Error rate of `r alpha` using a `r test_sides`-sided test requires an information level of `r information_fixed`. Investigators can collect data until the precision (the reciprocal of the square of the standard error) reaches this level, and their analysis will have the appropriate power and Type I error control.
+For example, detecting a difference in means of `r minimum_difference` with `r 100*power`% power and a Type I Error rate of `r alpha` using a `r test_sides`-sided test requires an information level of `r information_single_stage`. Investigators can collect data until the precision (the reciprocal of the square of the standard error) reaches this level, and their analysis will have the appropriate power and Type I error control.
 
 
 
@@ -91,7 +91,7 @@ Translating information levels to a sample size requires making some assumption 
 # Assume Equal Variances: 7.5
 approximate_n_sd_7.5 <-
   impart::information_to_n_continuous_1_to_1(
-    information = information_fixed,
+    information = information_single_stage,
     sigma_0 = 7.5,
     sigma_1 = 7.5,
     round_up = TRUE
@@ -107,7 +107,7 @@ pwr::pwr.t.test(
 # Equal Variances: 10
 approximate_n_sd_10 <-
   impart::information_to_n_continuous_1_to_1(
-    information = information_fixed,
+    information = information_single_stage,
     sigma_0 = 10,
     sigma_1 = 10,
     round_up = TRUE
@@ -242,7 +242,7 @@ When doing sequential analyses in an information-monitored design, the target le
 # Inflate information level to account for multiple testing
 information_adaptive <-
   impart::required_information_sequential(
-    information_fixed = information_fixed,
+    information_single_stage = information_single_stage,
     trial_design = trial_design
   )
 information_adaptive

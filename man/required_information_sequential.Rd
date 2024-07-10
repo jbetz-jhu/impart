@@ -4,10 +4,10 @@
 \alias{required_information_sequential}
 \title{Adjust Information for Interim Monitoring}
 \usage{
-required_information_sequential(information_fixed, trial_design)
+required_information_sequential(information_single_stage, trial_design)
 }
 \arguments{
-\item{information_fixed}{A numeric scalar containing the information level
+\item{information_single_stage}{A numeric scalar containing the information level
 for an information monitored design with a single efficacy analysis, created
 using \code{\link[=required_information_single_stage]{required_information_single_stage()}}}
 
@@ -32,6 +32,6 @@ design.
 \seealso{
 \code{\link[=required_information_single_stage]{required_information_single_stage()}} and
 \code{\link[=required_information_mw_single_stage]{required_information_mw_single_stage()}} for obtaining
-\code{information_fixed}; \code{\link[rpact:getDesignGroupSequential]{rpact::getDesignGroupSequential()}} for
+\code{information_single_stage}; \code{\link[rpact:getDesignGroupSequential]{rpact::getDesignGroupSequential()}} for
 obtaining \code{gsd_design_specification}.
 }
