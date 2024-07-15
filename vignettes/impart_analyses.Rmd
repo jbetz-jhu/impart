@@ -61,8 +61,8 @@ power <- 0.9 # Statistical Power
 test_sides <- 2 # Direction of Alternatives
 
 # Determine information required to achieve desired power at fixed error rate
-information_fixed <-
-  impart::required_information_fixed_n(
+information_single_stage <-
+  impart::required_information_single_stage(
     delta = minimum_difference,
     alpha = alpha,
     power = power
@@ -89,7 +89,7 @@ trial_design <-
 # Inflate information level to account for multiple testing
 information_adaptive <-
   impart::required_information_sequential(
-    information_fixed = information_fixed,
+    information_single_stage = information_single_stage,
     trial_design = trial_design
   )
 
@@ -156,7 +156,6 @@ data_n_final <- data_n_final$data
 
 # Subset to first 189 Outcomes
 data_n_final <- data_n_final[which(rank(data_n_final$.t_4) <= 189),]
-
 ```
 
 
