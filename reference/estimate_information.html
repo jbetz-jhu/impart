@@ -54,6 +54,7 @@ multi-stage designs, earlier results can be passed as a
 <span>  <span class="va">monitored_design</span>,</span>
 <span>  <span class="va">estimation_function</span>,</span>
 <span>  <span class="va">estimation_arguments</span>,</span>
+<span>  correction_function <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  orthogonalize <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">rng_seed</span>,</span>
 <span>  return_results <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -83,6 +84,12 @@ named <code>data</code></p></dd>
 <dt id="arg-estimation-arguments">estimation_arguments<a class="anchor" aria-label="anchor" href="#arg-estimation-arguments"></a></dt>
 <dd><p>A list of any additional arguments needed by
 <code>estimation_function</code></p></dd>
+
+
+<dt id="arg-correction-function">correction_function<a class="anchor" aria-label="anchor" href="#arg-correction-function"></a></dt>
+<dd><p>A function which takes named arguments from
+<code>estimation_arguments</code> and returns a numeric scalar: this is used to
+scale the variance before computing information.</p></dd>
 
 
 <dt id="arg-orthogonalize">orthogonalize<a class="anchor" aria-label="anchor" href="#arg-orthogonalize"></a></dt>

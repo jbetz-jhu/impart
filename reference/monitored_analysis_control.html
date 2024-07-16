@@ -47,6 +47,7 @@ monitoring.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">monitored_analysis_control</span><span class="op">(</span></span>
+<span>  orthogonal_and_oblique <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  required_packages <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  n_bootstrap <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -58,7 +59,13 @@ monitoring.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-required-packages">required_packages<a class="anchor" aria-label="anchor" href="#arg-required-packages"></a></dt>
+<dl><dt id="arg-orthogonal-and-oblique">orthogonal_and_oblique<a class="anchor" aria-label="anchor" href="#arg-orthogonal-and-oblique"></a></dt>
+<dd><p>A logical scalar: if <code>orthogonal == TRUE</code>
+should non-orthogonalized (oblique) test statistics and decisions be
+returned?</p></dd>
+
+
+<dt id="arg-required-packages">required_packages<a class="anchor" aria-label="anchor" href="#arg-required-packages"></a></dt>
 <dd><p>A character vector of required packages to be
 loaded on a cluster: only used when <code>n_cores</code> &gt; 1.</p></dd>
 
