@@ -14,8 +14,6 @@
 #' Variance estimates can be obtained using the nonparametric bootstrap.
 #' Unadjusted estimates can be obtained by using intercept only models.
 #'
-#' @name standardization
-#'
 #' @param data A \code{data.frame} containing baseline covariates (e.g. `x1`,
 #' `x2`, ...), a binary treatment indicator (e.g. `tx` where 1 = Treatment;
 #' 0 = Control), outcome variables (e.g. `y1`, `y2`, ...), and outcome
@@ -31,10 +29,14 @@
 #' @param outcome_indicator_column A \code{character} scalar indicating the column
 #' containing the outcome indicator corresponding to `treatment_column`.
 #'
+#' @name standardization
+#'
 #' @return A \code{list} containing the marginal means and their contrast:
+#'
 #' @export
 #'
 #' @examples
+#'
 #' ex_1 <- example_1
 #' ex_1$.r_4 <- 1*(!is.na(ex_1$y_4))
 #'
@@ -54,6 +56,7 @@
 #' means or risk difference), "ratio" (for a ratio of means or relative risk),
 #' or "oddsratio" (for an odds ratio for a binary outcome).
 #' @param family The [stats::family] for the outcome regression model
+#' @export
 standardization <-
   function(
     data,
@@ -135,6 +138,7 @@ standardization <-
 
 
 #' @rdname standardization
+#' @export
 standardization_correction <-
   function(
     data,

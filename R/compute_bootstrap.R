@@ -27,6 +27,7 @@
 #'
 
 #' @rdname compute_bootstrap
+#' @export
 compute_bootstrap_serial <-
   function(
     data,
@@ -64,6 +65,8 @@ compute_bootstrap_serial <-
 #' @param use_load_balancing Logical scalar: Should load balancing be used?
 #' @param required_packages A character vector of required packages: extracted
 #' from the control argument to [impart::calculate_covariance()]
+#' @export
+
 compute_bootstrap_parallel <-
   function(
     data,
@@ -72,7 +75,7 @@ compute_bootstrap_parallel <-
     estimation_arguments = estimation_arguments,
     n_cores = 1,
     use_load_balancing = FALSE,
-    required_packages = NULL
+    required_packages = character(0)
   ){
     n_bootstrap <- ncol(ids)
 
@@ -80,7 +83,7 @@ compute_bootstrap_parallel <-
     cluster <- parallel::makeCluster(n_cores)
 
     parallel::clusterExport(
-      cl = cluster, varlist = "required_packages"
+      cl = cluster, varlist = "required_packages", envir = environment()
     )
 
     parallel::clusterEvalQ(

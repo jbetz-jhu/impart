@@ -6,7 +6,7 @@
 \usage{
 monitored_analysis_control(
   orthogonal_and_oblique = FALSE,
-  required_packages = NULL,
+  required_packages = character(0),
   n_bootstrap = 1000,
   n_cores = 1,
   use_load_balancing = FALSE

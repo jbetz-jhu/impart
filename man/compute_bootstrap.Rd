@@ -15,7 +15,7 @@ compute_bootstrap_parallel(
   estimation_arguments = estimation_arguments,
   n_cores = 1,
   use_load_balancing = FALSE,
-  required_packages = NULL
+  required_packages = character(0)
 )
 }
 \arguments{

@@ -69,6 +69,7 @@ Variance estimates can be obtained using the nonparametric bootstrap.
 Unadjusted estimates can be obtained by using intercept only models.
 }
 \examples{
+
 ex_1 <- example_1
 ex_1$.r_4 <- 1*(!is.na(ex_1$y_4))
 
