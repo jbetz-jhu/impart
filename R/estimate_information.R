@@ -12,6 +12,9 @@
 #' named \code{data}
 #' @param estimation_arguments A list of any additional arguments needed by
 #' \code{estimation_function}
+#' @param correction_function A function which takes named arguments from
+#' \code{estimation_arguments} and returns a numeric scalar: this is used to
+#' scale the variance before computing information.
 #' @param orthogonalize Logical scalar: Should estimates, their covariance,
 #' and the resulting test statistics be orthogonalized?
 #' @param rng_seed Numeric scalar containing the L'Ecuyer pseudorandom
@@ -39,6 +42,7 @@ estimate_information <-
     monitored_design,
     estimation_function,
     estimation_arguments,
+    correction_function = NULL,
     orthogonalize = NULL,
     rng_seed,
     return_results = FALSE,
@@ -96,7 +100,24 @@ estimate_information <-
       n_analyses <- trial_design$kMax
     }
 
-    k <- length(estimates) + 1
+    if(is.null(correction_function)){
+      correction_factor <- 1
+    } else {
+      correction_factor <-
+        do.call(
+          what = correction_function,
+          args =
+            c(
+              list(data = data),
+              estimation_arguments[
+                intersect(
+                  x = names(estimation_arguments),
+                  y = methods::formalArgs(correction_function)
+                )
+              ]
+            )
+        )
+    }
 
     estimate_k <-
       calculate_estimate(
@@ -119,13 +140,16 @@ estimate_information <-
 
     estimates <- as.numeric(c(estimates, estimate_k))
     covariance <- covariance_k$covariance
-    information <- 1/diag(covariance)
+    variance <- (diag(covariance)*correction_factor)
+    information <- 1/variance
 
     # Add to Previous Estimates
     if(orthogonalize == TRUE){
       if(k == 1) {
         estimates_orthogonal <- estimate_k
-        covariance_orthogonal <- covariance_k$covariance
+        covariance_orthogonal_uncorrected <- covariance_k$covariance
+        variance_orthogonal <-
+          covariance_orthogonal_uncorrected*correction_factor
       } else {
         orthogonalized_k <-
           orthogonalize_estimates(
@@ -135,14 +159,20 @@ estimate_information <-
 
         estimates_orthogonal[k] <- orthogonalized_k$estimate_orthogonal
 
-        covariance_orthogonal <-
+        covariance_orthogonal_uncorrected <-
           c(diag(covariance_orthogonal), orthogonalized_k$covariance_orthogonal)
 
-        covariance_orthogonal <-
-          sqrt(covariance_orthogonal) %*% t(sqrt(covariance_orthogonal))
+        covariance_orthogonal_uncorrected <-
+          sqrt(covariance_orthogonal_uncorrected) %*%
+          t(sqrt(covariance_orthogonal_uncorrected))
+
+        variance_orthogonal <-
+          diag(covariance_orthogonal_uncorrected)*correction_factor
       }
 
-      information_orthogonal <- 1/diag(covariance_orthogonal)
+      information_orthogonal <- 1/variance_orthogonal
+      information_orthogonal_uncorrected <-
+        1/diag(covariance_orthogonal_uncorrected)
     } else {
       estimates_orthogonal <- NA*estimates
       covariance_orthogonal <- NA*covariance$covariance
@@ -160,11 +190,17 @@ estimate_information <-
     return(
       list(
         estimates = estimates,
-        covariance = covariance,
+        covariance_uncorrected = covariance,
+        variance = variance,
         information = information,
+        correction_factor = correction_factor,
+        variance_uncorrected = diag(covariance),
+        information_uncorrected = 1/diag(covariance),
         estimates_orthogonal = estimates_orthogonal,
-        covariance_orthogonal = covariance_orthogonal,
+        covariance_orthogonal_uncorrected = covariance_orthogonal,
+        variance_orthogonal = variance_orthogonal,
         information_orthogonal = information_orthogonal,
+        information_orthogonal_uncorrected = 1/diag(covariance_orthogonal),
         ids_by_analysis = ids_by_analysis,
         bootstrap_results = bootstrap_results,
         bootstrap_ids = bootstrap_ids,

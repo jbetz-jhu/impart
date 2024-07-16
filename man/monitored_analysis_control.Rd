@@ -5,6 +5,7 @@
 \title{Control arguments for performing information monitored analyses}
 \usage{
 monitored_analysis_control(
+  orthogonal_and_oblique = FALSE,
   required_packages = NULL,
   n_bootstrap = 1000,
   n_cores = 1,
@@ -12,6 +13,10 @@ monitored_analysis_control(
 )
 }
 \arguments{
+\item{orthogonal_and_oblique}{A logical scalar: if \code{orthogonal == TRUE}
+should non-orthogonalized (oblique) test statistics and decisions be
+returned?}
+
 \item{required_packages}{A character vector of required packages to be
 loaded on a cluster: only used when \code{n_cores} > 1.}
 

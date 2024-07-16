@@ -71,11 +71,20 @@ monitored_analysis <-
       )
 
     estimates <- estimated_information$estimates
-    covariance <- estimated_information$covariance
+    covariance_uncorrected <- estimated_information$covariance_uncorrected
+    variance <- estimated_information$variance
     information <- estimated_information$information
+    correction_factor <- estimated_information$correction_factor
+    information_uncorrected <- estimated_information$information_uncorrected
     estimates_orthogonal <- estimated_information$estimates_orthogonal
     covariance_orthogonal <- estimated_information$covariance_orthogonal
+    variance_orthogonal <- estimated_information$variance_orthogonal
     information_orthogonal <- estimated_information$information_orthogonal
+    covariance_orthogonal_uncorrected <-
+      estimated_information$covariance_orthogonal_uncorrected
+    information_orthogonal_uncorrected <-
+      estimated_information$information_orthogonal_uncorrected
+
     ids_by_analysis <- estimated_information$ids_by_analysis
     bootstrap_results <- estimated_information$bootstrap_results
     bootstrap_ids <- estimated_information$bootstrap_ids
@@ -85,12 +94,13 @@ monitored_analysis <-
     information_fraction_orthogonal <-
       information_orthogonal/information_target
 
-    z_statistics <- estimates/sqrt(diag(covariance))
+    z_statistics <- estimates*sqrt(information)
     z_statistics_orthogonal <-
-      estimates_orthogonal/sqrt(diag(covariance_orthogonal))
+      estimates_orthogonal*sqrt(information_orthogonal)
 
     if(orthogonalize){
-      interim_decisions <-
+      analysis_decisions <-
+        analysis_decisions_orthogonal <-
         apply_stopping_rule_z(
           test_statistics = z_statistics_orthogonal,
           trial_design = trial_design,
@@ -98,21 +108,31 @@ monitored_analysis <-
           information_target = information_target
         )
     } else {
-      interim_decisions <-
+      analysis_decisions_orthogonal <- NA
+    }
+
+    if((!orthogonalize) | control$orthogonal_and_oblique) {
+      analysis_decisions_oblique <-
         apply_stopping_rule_z(
           test_statistics = z_statistics,
           trial_design = trial_design,
           information_fraction = information_fraction,
           information_target = information_target
         )
+
+      if(!orthogonalize) {
+        analysis_decisions <- analysis_decisions_oblique
+      }
+    } else {
+      analysis_decisions_oblique <- NA
     }
 
-    continue <- interim_decisions$continue
-    decision <- interim_decisions$decision
-    decision_detail <- interim_decisions$decision_detail
-    stopping_stage <- interim_decisions$stopping_stage
-    trial_design_updated <- interim_decisions$trial_design_updated
-    decision_data <- interim_decisions$decision_data
+    continue <- analysis_decisions$continue
+    decision <- analysis_decisions$decision
+    decision_detail <- analysis_decisions$decision_detail
+    stopping_stage <- analysis_decisions$stopping_stage
+    trial_design_updated <- analysis_decisions$trial_design_updated
+    decision_data <- analysis_decisions$decision_data
 
     analysis_results <-
       c(monitored_design,
@@ -124,16 +144,22 @@ monitored_analysis <-
                 trial_design = trial_design_updated,
                 information_target = information_target,
                 estimates = estimates,
-                covariance = covariance,
+                covariance_uncorrected = covariance_uncorrected,
+                variance = variance,
                 z_statistics = z_statistics,
                 information = information,
                 information_fraction = information_fraction,
+                information_uncorrected = information_uncorrected,
                 estimates_orthogonal = estimates_orthogonal,
-                covariance_orthogonal = covariance_orthogonal,
+                covariance_orthogonal_uncorrected =
+                  covariance_orthogonal_uncorrected,
+                variance_orthogonal = variance_orthogonal,
                 z_statistics_orthogonal = z_statistics_orthogonal,
                 information_orthogonal = information_orthogonal,
                 information_fraction_orthogonal =
                   information_fraction_orthogonal,
+                information_orthogonal_uncorrected =
+                  information_orthogonal_uncorrected,
                 ids_by_analysis = ids_by_analysis,
                 bootstrap_results = bootstrap_results,
                 bootstrap_ids = bootstrap_ids,
@@ -141,6 +167,8 @@ monitored_analysis <-
                 decision = decision,
                 decision_detail = decision_detail,
                 decision_data = decision_data,
+                analysis_decisions_oblique = analysis_decisions_oblique,
+                analysis_decisions_orthogonal = analysis_decisions_orthogonal,
                 session_info = utils::sessionInfo()
               )
             ),

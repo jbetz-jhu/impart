@@ -93,7 +93,7 @@ calculate_covariance <-
 
     all_bootstrap_ids <- do.call(what = rbind, args = bootstrap_ids)
 
-    if(control$n_cores){
+    if(control$n_cores == 1){
       estimates <-
         compute_bootstrap_serial(
           data = data,
@@ -101,7 +101,7 @@ calculate_covariance <-
           estimation_function = estimation_function,
           estimation_arguments = estimation_arguments
         )
-    } else {
+    } else if(control$n_cores > 1) {
       estimates <-
         compute_bootstrap_parallel(
           data = data,

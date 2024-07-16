@@ -14,20 +14,18 @@
 #' Variance estimates can be obtained using the nonparametric bootstrap.
 #' Unadjusted estimates can be obtained by using intercept only models.
 #'
+#' @name standardization
+#'
 #' @param data A \code{data.frame} containing baseline covariates (e.g. `x1`,
 #' `x2`, ...), a binary treatment indicator (e.g. `tx` where 1 = Treatment;
 #' 0 = Control), outcome variables (e.g. `y1`, `y2`, ...), and outcome
 #' indicators (e.g. `.r_1`, `.r_2`, ...). The outcome indicators indicate
 #' whether an outcome has been observed (`1`), is missing (`0`), or not yet
 #' obtained (\code{NA}).
-#' @param estimand A \code{character} scalar: "difference" (for a difference in
-#' means or risk difference), "ratio" (for a ratio of means or relative risk),
-#' or "oddsratio" (for an odds ratio for a binary outcome).
 #' @param y0_formula A [stats::formula] specifying the relationship between the
 #' outcome and covariates in the control arm.
 #' @param y1_formula A [stats::formula] specifying the relationship between the
 #' outcome and covariates in the treatment arm.
-#' @param family The [stats::family] for the outcome regression model
 #' @param treatment_column A \code{character} scalar indicating the column
 #' containing the treatment indicator.
 #' @param outcome_indicator_column A \code{character} scalar indicating the column
@@ -51,6 +49,11 @@
 #' )
 #'
 
+#' @rdname standardization
+#' @param estimand A \code{character} scalar: "difference" (for a difference in
+#' means or risk difference), "ratio" (for a ratio of means or relative risk),
+#' or "oddsratio" (for an odds ratio for a binary outcome).
+#' @param family The [stats::family] for the outcome regression model
 standardization <-
   function(
     data,
@@ -128,4 +131,25 @@ standardization <-
 
     class(out) <- "standardization"
     return(out)
+  }
+
+
+#' @rdname standardization
+standardization_correction <-
+  function(
+    data,
+    y0_formula,
+    y1_formula,
+    treatment_column,
+    outcome_indicator_column
+  ){
+    control_rows <- which(data[, treatment_column] == 0)
+    treatment_rows <- which(data[, treatment_column] == 1)
+
+    n_0 <- sum(data[control_rows, outcome_indicator_column], na.rm = TRUE)
+    n_1 <- sum(data[treatment_rows, outcome_indicator_column], na.rm = TRUE)
+
+    p_0 <- ncol(stats::model.matrix(y0_formula, data))
+    p_1 <- ncol(stats::model.matrix(y1_formula, data))
+    return((1/(n_1 - p_1) + 1/(n_0 - p_0))/(1/(n_1 - 1) + 1/(n_0 - 1)))
   }

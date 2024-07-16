@@ -3,6 +3,9 @@
 #' This provides a way to set and modify the analysis parameters for information
 #' monitoring.
 #'
+#' @param orthogonal_and_oblique A logical scalar: if `orthogonal == TRUE`
+#' should non-orthogonalized (oblique) test statistics and decisions be
+#' returned?
 #' @param required_packages A character vector of required packages to be
 #' loaded on a cluster: only used when `n_cores` > 1.
 #' @param n_bootstrap Scalar number containing the number of bootstrap
@@ -24,6 +27,7 @@
 
 monitored_analysis_control <-
   function(
+    orthogonal_and_oblique = FALSE,
     required_packages = NULL,
     n_bootstrap = 1000,
     n_cores = 1,
@@ -31,6 +35,7 @@ monitored_analysis_control <-
   ){
     return(
       list(
+        orthogonal_and_oblique = FALSE,
         n_bootstrap = n_bootstrap,
         n_cores = n_cores,
         use_load_balancing = use_load_balancing,

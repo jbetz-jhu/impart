@@ -2,6 +2,7 @@
 % Please edit documentation in R/standardization.R
 \name{standardization}
 \alias{standardization}
+\alias{standardization_correction}
 \title{Compute stanadardization (i.e. G-Computation) estimator}
 \usage{
 standardization(
@@ -12,6 +13,14 @@ standardization(
   family,
   treatment_column = NULL,
   outcome_indicator_column = NULL
+)
+
+standardization_correction(
+  data,
+  y0_formula,
+  y1_formula,
+  treatment_column,
+  outcome_indicator_column
 )
 }
 \arguments{

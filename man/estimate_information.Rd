@@ -9,6 +9,7 @@ estimate_information(
   monitored_design,
   estimation_function,
   estimation_arguments,
+  correction_function = NULL,
   orthogonalize = NULL,
   rng_seed,
   return_results = FALSE,
@@ -27,6 +28,10 @@ named \code{data}}
 
 \item{estimation_arguments}{A list of any additional arguments needed by
 \code{estimation_function}}
+
+\item{correction_function}{A function which takes named arguments from
+\code{estimation_arguments} and returns a numeric scalar: this is used to
+scale the variance before computing information.}
 
 \item{orthogonalize}{Logical scalar: Should estimates, their covariance,
 and the resulting test statistics be orthogonalized?}
