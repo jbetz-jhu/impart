@@ -47,6 +47,7 @@ monitoring.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">monitored_analysis_control</span><span class="op">(</span></span>
+<span>  required_packages <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  n_bootstrap <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  use_load_balancing <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -57,7 +58,12 @@ monitoring.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-n-bootstrap">n_bootstrap<a class="anchor" aria-label="anchor" href="#arg-n-bootstrap"></a></dt>
+<dl><dt id="arg-required-packages">required_packages<a class="anchor" aria-label="anchor" href="#arg-required-packages"></a></dt>
+<dd><p>A character vector of required packages to be
+loaded on a cluster: only used when <code>n_cores</code> &gt; 1.</p></dd>
+
+
+<dt id="arg-n-bootstrap">n_bootstrap<a class="anchor" aria-label="anchor" href="#arg-n-bootstrap"></a></dt>
 <dd><p>Scalar number containing the number of bootstrap
 replicates to perform</p></dd>
 

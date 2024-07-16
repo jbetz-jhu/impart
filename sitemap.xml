@@ -15,6 +15,7 @@
 <url><loc>https://jbetz-jhu.github.io/impart/reference/asymptotic_information_mann_whitney_fm.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/calculate_covariance.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/calculate_estimate.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/compute_bootstrap.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/correct_one_sided_gsd.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/count_outcomes.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/count_outcomes_at_time_t.html</loc></url>
@@ -36,7 +37,6 @@
 <url><loc>https://jbetz-jhu.github.io/impart/reference/relabel_by_id.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/required_info.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/required_information_sequential.html</loc></url>
-<url><loc>https://jbetz-jhu.github.io/impart/reference/resample_by_id.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/standardization.html</loc></url>
 </urlset>
 
