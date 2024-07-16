@@ -3,6 +3,8 @@
 #' This provides a way to set and modify the analysis parameters for information
 #' monitoring.
 #'
+#' @param required_packages A character vector of required packages to be
+#' loaded on a cluster: only used when `n_cores` > 1.
 #' @param n_bootstrap Scalar number containing the number of bootstrap
 #' replicates to perform
 #' @param n_cores Scalar number of cores to use.
@@ -22,6 +24,7 @@
 
 monitored_analysis_control <-
   function(
+    required_packages = NULL,
     n_bootstrap = 1000,
     n_cores = 1,
     use_load_balancing = FALSE
@@ -30,7 +33,8 @@ monitored_analysis_control <-
       list(
         n_bootstrap = n_bootstrap,
         n_cores = n_cores,
-        use_load_balancing = use_load_balancing
+        use_load_balancing = use_load_balancing,
+        required_packages = required_packages
       )
     )
   }

@@ -14,8 +14,10 @@
 #' @param data A \code{data.frame} to be resampled, which must contain a column
 #' named `.id` which uniquely identifies all rows corresponding to an
 #' individual.
-#' @param sampled_ids a vector of IDs that have already been resampled from
+#' @param ids a vector of IDs that have already been resampled from
 #' \code{data}
+#' @param resample Logical scalar: Should the IDs be resampled for computing a
+#' bootstrap replicate from a list of unique IDs?
 #' @param convert_id_to_factor Logical scalar: Should the ID column be converted
 #' to a factor?
 #'
@@ -31,38 +33,40 @@
 relabel_by_id <-
   function(
     data,
-    sampled_ids,
+    ids,
+    resample = FALSE,
     convert_id_to_factor = TRUE
   ){
     if(!".id" %in% names(data)){
       stop("`.id` column must be present in `data`.")
     }
 
-    if(!all(sampled_ids %in% data$.id)){
+    if(!all(ids %in% data$.id)){
       unmatched_ids <-
         setdiff(
-          x = sampled_ids,
+          x = ids,
           y = data$.id
         )
-      stop("Unmatched values of `.id` in `sampled_ids`: ",
+      stop("Unmatched values of `.id` in `ids`: ",
            paste0("'", unmatched_ids, "'", collapse = ", "))
     }
 
-    if(length(unique(data$.id)) != length(sampled_ids)){
+    if(length(unique(data$.id)) != length(ids)){
       stop("Number of unique ids in dataset (", length(unique(data$.id)), ") ",
-           "does not match the length of `sampled_ids` (",
-           length(sampled_ids), ").")
+           "does not match the length of `ids` (",
+           length(ids), ").")
     }
 
+    if(resample) ids <- sample(x = ids, replace = TRUE)
 
     id_column <- which(names(data) == ".id")
 
     ids_new <-
-      paste0(sampled_ids, ".",
+      paste0(ids, ".",
              count =
                stats::ave(
-                 x = sampled_ids == sampled_ids,
-                 sampled_ids,
+                 x = ids == ids,
+                 ids,
                  FUN = cumsum)
              )
 
@@ -72,11 +76,11 @@ relabel_by_id <-
 
     new_data <-
       lapply(
-        X = 1:length(sampled_ids),
+        X = 1:length(ids),
         FUN =
           function(
     x,
-    id_o = sampled_ids,
+    id_o = ids,
     id_n = ids_new,
     id_all = data$.id
           ){

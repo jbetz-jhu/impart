@@ -93,22 +93,24 @@ calculate_covariance <-
 
     all_bootstrap_ids <- do.call(what = rbind, args = bootstrap_ids)
 
-    estimates <- rep(NA_real_, control$n_bootstrap)
-
-    for(i in 1:ncol(all_bootstrap_ids)){
-      estimates[i] <-
-        do.call(
-          what = calculate_estimate,
-          args =
-            list(
-              data =
-                relabel_by_id(
-                  data = data,
-                  sampled_ids = all_bootstrap_ids[,i]
-                ),
-              estimation_function = estimation_function,
-              estimation_arguments = estimation_arguments
-            )
+    if(control$n_cores){
+      estimates <-
+        compute_bootstrap_serial(
+          data = data,
+          ids = all_bootstrap_ids,
+          estimation_function = estimation_function,
+          estimation_arguments = estimation_arguments
+        )
+    } else {
+      estimates <-
+        compute_bootstrap_parallel(
+          data = data,
+          ids = all_bootstrap_ids,
+          estimation_function = estimation_function,
+          estimation_arguments = estimation_arguments,
+          n_cores = control$n_cores,
+          use_load_balancing = control$use_load_balancing,
+          required_packages = control$required_packages
         )
     }
 

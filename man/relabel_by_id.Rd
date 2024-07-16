@@ -4,15 +4,18 @@
 \alias{relabel_by_id}
 \title{Create relabeled dataset from a list of resampled IDs}
 \usage{
-relabel_by_id(data, sampled_ids, convert_id_to_factor = TRUE)
+relabel_by_id(data, ids, resample = FALSE, convert_id_to_factor = TRUE)
 }
 \arguments{
 \item{data}{A \code{data.frame} to be resampled, which must contain a column
 named \code{.id} which uniquely identifies all rows corresponding to an
 individual.}
 
-\item{sampled_ids}{a vector of IDs that have already been resampled from
+\item{ids}{a vector of IDs that have already been resampled from
 \code{data}}
+
+\item{resample}{Logical scalar: Should the IDs be resampled for computing a
+bootstrap replicate from a list of unique IDs?}
 
 \item{convert_id_to_factor}{Logical scalar: Should the ID column be converted
 to a factor?}
