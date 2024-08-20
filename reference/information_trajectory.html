@@ -32,9 +32,9 @@ will reach pre-specified thresholds."></head><body>
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/impart_analyses.html">3. Performing Monitored Analyses with `impart`</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/impart_study_design.html">1. Planning Information Monitored Designs with `impart`</a></li>
     <li><a class="dropdown-item" href="../articles/impart_monitoring.html">2. Monitoring Information with `impart`</a></li>
-    <li><a class="dropdown-item" href="../articles/impart_study_design.html">1. Planning Information Monitored Designs with `impart`</a></li>
+    <li><a class="dropdown-item" href="../articles/impart_analyses.html">3. Performing Monitored Analyses with `impart`</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -69,6 +69,7 @@ will reach pre-specified thresholds.</p>
 <span>  monitored_design <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">estimation_function</span>,</span>
 <span>  <span class="va">estimation_arguments</span>,</span>
+<span>  correction_function <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">orthogonalize</span>,</span>
 <span>  n_min <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>  n_increment <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -99,6 +100,11 @@ named <code>data</code></p></dd>
 <dt id="arg-estimation-arguments">estimation_arguments<a class="anchor" aria-label="anchor" href="#arg-estimation-arguments"></a></dt>
 <dd><p>A list of any additional arguments needed by
 <code>estimation_function</code></p></dd>
+
+
+<dt id="arg-correction-function">correction_function<a class="anchor" aria-label="anchor" href="#arg-correction-function"></a></dt>
+<dd><p>An optional function to adjust the variance
+estimate using parameters from <code>estimation_arguments</code></p></dd>
 
 
 <dt id="arg-orthogonalize">orthogonalize<a class="anchor" aria-label="anchor" href="#arg-orthogonalize"></a></dt>

@@ -33,9 +33,9 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/impart_analyses.html">3. Performing Monitored Analyses with `impart`</a></li>
+<li><a class="dropdown-item" href="../articles/impart_study_design.html">1. Planning Information Monitored Designs with `impart`</a></li>
     <li><a class="dropdown-item" href="../articles/impart_monitoring.html">2. Monitoring Information with `impart`</a></li>
-    <li><a class="dropdown-item" href="../articles/impart_study_design.html">1. Planning Information Monitored Designs with `impart`</a></li>
+    <li><a class="dropdown-item" href="../articles/impart_analyses.html">3. Performing Monitored Analyses with `impart`</a></li>
   </ul>
 </li>
       </ul>
@@ -138,20 +138,20 @@ assessment time.</li>
 named <code>example_1</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">example_1</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   .id        x_1        x_2        x_3        x_4 tx       y_1       y_2</span></span>
-<span><span class="co">#&gt; 1   1  2.0742970  0.1971432 -0.8425884  0.2794844  0        NA        NA</span></span>
-<span><span class="co">#&gt; 2   2  0.2165473 -0.7384296  0.1315016 -1.2419134  0 -2.376967 -2.575398</span></span>
-<span><span class="co">#&gt; 3   3  0.8294726  0.4997821  1.6932555 -0.4063889  1  2.094655 13.615512</span></span>
-<span><span class="co">#&gt; 4   4 -1.0206893 -0.2189937 -1.7719120  0.1936013  1 -6.433176  3.015335</span></span>
-<span><span class="co">#&gt; 5   5 -0.0417332  0.9282685  0.8078133  0.9317145  1  5.653307  8.839702</span></span>
-<span><span class="co">#&gt; 6   6  0.7275778  1.1756811  0.0226265 -0.2556343  0        NA        NA</span></span>
-<span><span class="co">#&gt;         y_3       y_4 .enrollment_time     .t_1      .t_2     .t_3     .t_4</span></span>
-<span><span class="co">#&gt; 1        NA        NA         33.28136 77.28136 107.28136 137.2814 167.2814</span></span>
-<span><span class="co">#&gt; 2        NA        NA         33.69242 74.02729  96.49186 137.6924 167.6924</span></span>
-<span><span class="co">#&gt; 3 20.402979 24.403011         37.69694 73.32954 102.44161 129.2825 152.6411</span></span>
-<span><span class="co">#&gt; 4  5.473575 -6.548695         39.40100 78.95480  95.29012 123.9621 156.4938</span></span>
-<span><span class="co">#&gt; 5 21.906824  4.005459         41.32190 71.43593 102.43171 141.4073 150.4507</span></span>
-<span><span class="co">#&gt; 6        NA        NA         55.24537 99.24537 129.24537 159.2454 189.2454</span></span></code></pre></div>
+<span><span class="co">#&gt;   .id        x_1        x_2        x_3        x_4 tx      y_1       y_2</span></span>
+<span><span class="co">#&gt; 1   1  2.0742970  0.1971432 -0.8425884  0.2794844  0 1.591873 -4.535711</span></span>
+<span><span class="co">#&gt; 2   2  0.2165473 -0.7384296  0.1315016 -1.2419134  1       NA        NA</span></span>
+<span><span class="co">#&gt; 3   3  0.8294726  0.4997821  1.6932555 -0.4063889  0       NA        NA</span></span>
+<span><span class="co">#&gt; 4   4 -1.0206893 -0.2189937 -1.7719120  0.1936013  1 1.212620 -4.533776</span></span>
+<span><span class="co">#&gt; 5   5 -0.0417332  0.9282685  0.8078133  0.9317145  0 8.655326  6.970372</span></span>
+<span><span class="co">#&gt; 6   6  0.7275778  1.1756811  0.0226265 -0.2556343  1 6.902055 17.381316</span></span>
+<span><span class="co">#&gt;        y_3       y_4 .enrollment_time     .t_1      .t_2      .t_3     .t_4</span></span>
+<span><span class="co">#&gt; 1 13.98543 -1.320242          2.24846 25.01538  56.62636  98.51499 133.0050</span></span>
+<span><span class="co">#&gt; 2       NA        NA         11.05565 55.05565  85.05565 115.05565 145.0556</span></span>
+<span><span class="co">#&gt; 3       NA        NA         16.96591 60.96591  90.96591 120.96591 150.9659</span></span>
+<span><span class="co">#&gt; 4 11.17615 -6.629545         25.13396 59.84544  81.58577 127.78659 154.3419</span></span>
+<span><span class="co">#&gt; 5 17.62329  9.126240         50.07301 75.94952 111.21967 143.00338 181.4162</span></span>
+<span><span class="co">#&gt; 6 -2.42570  3.549977         50.93935 80.29181 114.96781 151.34249 177.3846</span></span></code></pre></div>
 <p>The dataset is in wide format, with one row per individual. There are
 four baseline covariates: <code>x_1</code>, <code>x_2</code>, …,
 <code>x_4</code>. Treatment assignment is indicated a binary indicator
@@ -271,23 +271,23 @@ this is not yet known at day 90: <code>.r_1</code> is
 <span></span>
 <span><span class="co"># Original Data</span></span>
 <span><span class="va">data_90</span><span class="op">$</span><span class="va">original_data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">show_cols</span>, <span class="st">".enrollment_time"</span>, <span class="st">".t_1"</span>, <span class="st">"y_1"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;   .id        x_2        x_3        x_4 tx .enrollment_time     .t_1       y_1</span></span>
-<span><span class="co">#&gt; 1   1  0.1971432 -0.8425884  0.2794844  0         33.28136 77.28136        NA</span></span>
-<span><span class="co">#&gt; 2   2 -0.7384296  0.1315016 -1.2419134  0         33.69242 74.02729 -2.376967</span></span>
-<span><span class="co">#&gt; 3   3  0.4997821  1.6932555 -0.4063889  1         37.69694 73.32954  2.094655</span></span>
-<span><span class="co">#&gt; 4   4 -0.2189937 -1.7719120  0.1936013  1         39.40100 78.95480 -6.433176</span></span>
-<span><span class="co">#&gt; 5   5  0.9282685  0.8078133  0.9317145  1         41.32190 71.43593  5.653307</span></span>
-<span><span class="co">#&gt; 6   6  1.1756811  0.0226265 -0.2556343  0         55.24537 99.24537        NA</span></span>
+<span><span class="co">#&gt;   .id        x_2        x_3        x_4 tx .enrollment_time     .t_1      y_1</span></span>
+<span><span class="co">#&gt; 1   1  0.1971432 -0.8425884  0.2794844  0          2.24846 25.01538 1.591873</span></span>
+<span><span class="co">#&gt; 2   2 -0.7384296  0.1315016 -1.2419134  1         11.05565 55.05565       NA</span></span>
+<span><span class="co">#&gt; 3   3  0.4997821  1.6932555 -0.4063889  0         16.96591 60.96591       NA</span></span>
+<span><span class="co">#&gt; 4   4 -0.2189937 -1.7719120  0.1936013  1         25.13396 59.84544 1.212620</span></span>
+<span><span class="co">#&gt; 5   5  0.9282685  0.8078133  0.9317145  0         50.07301 75.94952 8.655326</span></span>
+<span><span class="co">#&gt; 6   6  1.1756811  0.0226265 -0.2556343  1         50.93935 80.29181 6.902055</span></span>
 <span></span>
 <span><span class="co"># Data known at study day 90</span></span>
 <span><span class="va">data_90</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">show_cols</span>, <span class="st">".e"</span>, <span class="st">".t_1"</span>, <span class="st">"y_1"</span>, <span class="st">".r_1"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;   .id        x_2        x_3        x_4 tx       .e     .t_1       y_1 .r_1</span></span>
-<span><span class="co">#&gt; 1   1  0.1971432 -0.8425884  0.2794844  0 33.28136 77.28136        NA    0</span></span>
-<span><span class="co">#&gt; 2   2 -0.7384296  0.1315016 -1.2419134  0 33.69242 74.02729 -2.376967    1</span></span>
-<span><span class="co">#&gt; 3   3  0.4997821  1.6932555 -0.4063889  1 37.69694 73.32954  2.094655    1</span></span>
-<span><span class="co">#&gt; 4   4 -0.2189937 -1.7719120  0.1936013  1 39.40100 78.95480 -6.433176    1</span></span>
-<span><span class="co">#&gt; 5   5  0.9282685  0.8078133  0.9317145  1 41.32190 71.43593  5.653307    1</span></span>
-<span><span class="co">#&gt; 6   6  1.1756811  0.0226265 -0.2556343  0 55.24537       NA        NA   NA</span></span></code></pre></div>
+<span><span class="co">#&gt;   .id        x_2        x_3        x_4 tx       .e     .t_1      y_1 .r_1</span></span>
+<span><span class="co">#&gt; 1   1  0.1971432 -0.8425884  0.2794844  0  2.24846 25.01538 1.591873    1</span></span>
+<span><span class="co">#&gt; 2   2 -0.7384296  0.1315016 -1.2419134  1 11.05565 55.05565       NA    0</span></span>
+<span><span class="co">#&gt; 3   3  0.4997821  1.6932555 -0.4063889  0 16.96591 60.96591       NA    0</span></span>
+<span><span class="co">#&gt; 4   4 -0.2189937 -1.7719120  0.1936013  1 25.13396 59.84544 1.212620    1</span></span>
+<span><span class="co">#&gt; 5   5  0.9282685  0.8078133  0.9317145  0 50.07301 75.94952 8.655326    1</span></span>
+<span><span class="co">#&gt; 6   6  1.1756811  0.0226265 -0.2556343  1 50.93935 80.29181 6.902055    1</span></span></code></pre></div>
 <p>If <code>observe_missing_times</code> were set to <code>0</code> for
 each outcome, any outcome that is <code>NA</code> and has a recorded
 time of assessment will be treated as missing.</p>
@@ -307,7 +307,7 @@ monitoring.</p>
 <span><span class="fu"><a href="../reference/plot_outcome_counts.html">plot_outcome_counts</a></span><span class="op">(</span></span>
 <span>  prepared_data <span class="op">=</span> <span class="va">prepared_final_data</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Plot-Entire-Study-1.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/Plot-Entire-Study-1.png" alt="A plot of the study events over the entire study: randomized participants, intermediate outcomes, and final outcomes." width="80%" style="display: block; margin: auto;"></p>
 <p>Plotting can also be done for events known at a particular point in
 time:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -316,7 +316,7 @@ time:</p>
 <span>  prepared_data <span class="op">=</span> <span class="va">prepared_final_data</span>,</span>
 <span>  study_time <span class="op">=</span> <span class="fl">731</span> <span class="co"># 2 Years</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Plot-Data-Up-To-Timepoint-1.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/Plot-Data-Up-To-Timepoint-1.png" alt="A plot of the study events over the first two years of the study: randomized participants, intermediate outcomes, and final outcomes." width="80%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="tabulating-event-times">Tabulating Event Times<a class="anchor" aria-label="anchor" href="#tabulating-event-times"></a>
@@ -335,12 +335,12 @@ time:</p>
 <span>  <span class="va">event</span> <span class="op">==</span> <span class="st">"randomization"</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           event     time count_total count_complete</span></span>
-<span><span class="co">#&gt; 1 randomization 33.28136           1              1</span></span>
-<span><span class="co">#&gt; 2 randomization 33.69242           2              2</span></span>
-<span><span class="co">#&gt; 3 randomization 37.69694           3              3</span></span>
-<span><span class="co">#&gt; 4 randomization 39.40100           4              4</span></span>
-<span><span class="co">#&gt; 5 randomization 41.32190           5              5</span></span>
-<span><span class="co">#&gt; 6 randomization 55.24537           6              6</span></span>
+<span><span class="co">#&gt; 1 randomization  2.24846           1              1</span></span>
+<span><span class="co">#&gt; 2 randomization 11.05565           2              2</span></span>
+<span><span class="co">#&gt; 3 randomization 16.96591           3              3</span></span>
+<span><span class="co">#&gt; 4 randomization 25.13396           4              4</span></span>
+<span><span class="co">#&gt; 5 randomization 50.07301           5              5</span></span>
+<span><span class="co">#&gt; 6 randomization 50.93935           6              6</span></span>
 <span></span>
 <span><span class="co"># Timing of first n observations of `y_4`</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span></span>
@@ -348,39 +348,39 @@ time:</p>
 <span>  <span class="va">event</span> <span class="op">==</span> <span class="st">"y_4"</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      event     time count_total count_complete</span></span>
-<span><span class="co">#&gt; 516    y_4 150.4507           1              1</span></span>
-<span><span class="co">#&gt; 316    y_4 152.6411           2              2</span></span>
-<span><span class="co">#&gt; 416    y_4 156.4938           3              3</span></span>
-<span><span class="co">#&gt; 1106   y_4 167.2814           4             NA</span></span>
-<span><span class="co">#&gt; 284    y_4 167.6924           5             NA</span></span>
-<span><span class="co">#&gt; 716    y_4 171.0864           6              4</span></span>
+<span><span class="co">#&gt; 1106   y_4 133.0050           1              1</span></span>
+<span><span class="co">#&gt; 2106   y_4 145.0556           2             NA</span></span>
+<span><span class="co">#&gt; 316    y_4 150.9659           3             NA</span></span>
+<span><span class="co">#&gt; 416    y_4 154.3419           4              2</span></span>
+<span><span class="co">#&gt; 816    y_4 171.3021           5              3</span></span>
+<span><span class="co">#&gt; 716    y_4 177.3249           6              4</span></span>
 <span></span>
 <span><span class="co"># Find when n observations of `y_4` are first available:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span></span>
 <span>  <span class="va">example_1_counts</span>,</span>
-<span>  <span class="va">event</span> <span class="op">==</span> <span class="st">"y_4"</span> <span class="op">&amp;</span> <span class="va">count_complete</span> <span class="op">==</span> <span class="fl">50</span></span>
+<span>  <span class="va">event</span> <span class="op">==</span> <span class="st">"y_4"</span> <span class="op">&amp;</span> <span class="va">count_complete</span> <span class="op">==</span> <span class="fl">70</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;     event     time count_total count_complete</span></span>
-<span><span class="co">#&gt; 654   y_4 645.8408          65             50</span></span></code></pre></div>
+<span><span class="co">#&gt; 944   y_4 707.0069          96             70</span></span></code></pre></div>
 <p>This can also be used with <code>data_at_time_t</code> to reconstruct
 the study data when a particular number of observations have
 accrued:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Reconstruct the data when N = 50 final outcomes were obtained</span></span>
-<span><span class="va">data_n_final_50</span> <span class="op">&lt;-</span></span>
+<code class="sourceCode R"><span><span class="co"># Reconstruct the data when N = 70 final outcomes were obtained</span></span>
+<span><span class="va">data_n_final_70</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/data_at_time_t.html">data_at_time_t</a></span><span class="op">(</span></span>
 <span>    prepared_data <span class="op">=</span> <span class="va">prepared_final_data</span>,</span>
 <span>    study_time <span class="op">=</span> </span>
-<span>      <span class="co"># Time when 50 final outcomes are observed:</span></span>
+<span>      <span class="co"># Time when 70 final outcomes are observed:</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">ceiling</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span></span>
 <span>          <span class="va">example_1_counts</span>,</span>
-<span>          <span class="va">event</span> <span class="op">==</span> <span class="st">"y_4"</span> <span class="op">&amp;</span> <span class="va">count_complete</span> <span class="op">==</span> <span class="fl">50</span></span>
+<span>          <span class="va">event</span> <span class="op">==</span> <span class="st">"y_4"</span> <span class="op">&amp;</span> <span class="va">count_complete</span> <span class="op">==</span> <span class="fl">70</span></span>
 <span>        <span class="op">)</span><span class="op">$</span><span class="va">time</span></span>
 <span>      <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">data_n_50</span> <span class="op">&lt;-</span> <span class="va">data_n_final_50</span><span class="op">$</span><span class="va">data</span></span></code></pre></div>
+<span><span class="va">data_n_70</span> <span class="op">&lt;-</span> <span class="va">data_n_final_70</span><span class="op">$</span><span class="va">data</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -398,9 +398,9 @@ independent increments assumption. A random number generator seed
 only the variance and information are returned, which can be compared
 against the target information level for analyses:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">information_n_50</span> <span class="op">&lt;-</span></span>
+<code class="sourceCode R"><span><span class="va">information_n_70</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/estimate_information.html">estimate_information</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">data_n_50</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">data_n_70</span>,</span>
 <span>    monitored_design <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>    estimation_function <span class="op">=</span> <span class="va">standardization</span>,</span>
 <span>    estimation_arguments <span class="op">=</span></span>
@@ -416,16 +416,17 @@ against the target information level for analyses:</p>
 <span>    rng_seed <span class="op">=</span> <span class="fl">23456</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">information_n_50</span><span class="op">$</span><span class="va">covariance</span></span>
-<span><span class="co">#&gt; NULL</span></span>
-<span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information</span></span>
-<span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt; 0.1242658</span></span>
-<span><span class="va">information_n_50</span><span class="op">$</span><span class="va">covariance_orthogonal</span></span>
-<span><span class="co">#&gt; NULL</span></span>
-<span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information_orthogonal</span></span>
+<span><span class="va">information_n_70</span><span class="op">$</span><span class="va">covariance_uncorrected</span></span>
 <span><span class="co">#&gt;           estimates</span></span>
-<span><span class="co">#&gt; estimates 0.1242658</span></span></code></pre></div>
+<span><span class="co">#&gt; estimates  4.333183</span></span>
+<span><span class="va">information_n_70</span><span class="op">$</span><span class="va">information</span></span>
+<span><span class="co">#&gt; estimates </span></span>
+<span><span class="co">#&gt; 0.2307772</span></span>
+<span><span class="va">information_n_70</span><span class="op">$</span><span class="va">covariance_orthogonal_uncorrected</span></span>
+<span><span class="co">#&gt;           estimates</span></span>
+<span><span class="co">#&gt; estimates  4.333183</span></span>
+<span><span class="va">information_n_70</span><span class="op">$</span><span class="va">information_orthogonal</span></span>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div>
 <p>When a study is designed with interim and final analyses,
 <code>monitored_design</code> allows the user to pass the results of
 previously conducted analyses to <code>estimate_information</code>.</p>
@@ -439,13 +440,12 @@ vignette:</p>
 <span><span class="va">test_sides</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="co"># Direction of Alternatives</span></span>
 <span></span>
 <span><span class="co"># Determine information required to achieve desired power at fixed error rate</span></span>
-<span><span class="va">information_fixed</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu">required_information_fixed_n</span><span class="op">(</span></span>
+<span><span class="va">information_single_stage</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/required_info.html">required_information_single_stage</a></span><span class="op">(</span></span>
 <span>    delta <span class="op">=</span> <span class="va">minimum_difference</span>,</span>
 <span>    alpha <span class="op">=</span> <span class="va">alpha</span>,</span>
 <span>    power <span class="op">=</span> <span class="va">power</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Error: 'required_information_fixed_n' is not an exported object from 'namespace:impart'</span></span>
 <span></span>
 <span><span class="co"># Group Sequential Design Parameters</span></span>
 <span><span class="va">information_rates</span> <span class="op">&lt;-</span></span>
@@ -468,10 +468,9 @@ vignette:</p>
 <span><span class="co"># Inflate information level to account for multiple testing</span></span>
 <span><span class="va">information_adaptive</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/required_information_sequential.html">required_information_sequential</a></span><span class="op">(</span></span>
-<span>    information_fixed <span class="op">=</span> <span class="va">information_fixed</span>,</span>
+<span>    information_single_stage <span class="op">=</span> <span class="va">information_single_stage</span>,</span>
 <span>    trial_design <span class="op">=</span> <span class="va">trial_design</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Error in impart::required_information_sequential(information_fixed = information_fixed, : unused argument (information_fixed = information_fixed)</span></span>
 <span></span>
 <span><span class="co"># Initialize the monitored design</span></span>
 <span><span class="va">monitored_design</span> <span class="op">&lt;-</span></span>
@@ -482,12 +481,12 @@ vignette:</p>
 <span>    information_target <span class="op">=</span> <span class="va">information_adaptive</span>,</span>
 <span>    orthogonalize <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    rng_seed_analysis <span class="op">=</span> <span class="fl">54321</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(expr, envir, enclos): object 'information_adaptive' not found</span></span></code></pre></div>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p>The current information fraction can be computed:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">information_n_50</span><span class="op">$</span><span class="va">information</span><span class="op">/</span><span class="va">information_adaptive</span></span>
-<span><span class="co">#&gt; Error in eval(expr, envir, enclos): object 'information_adaptive' not found</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">information_n_70</span><span class="op">$</span><span class="va">information</span><span class="op">/</span><span class="va">information_adaptive</span></span>
+<span><span class="co">#&gt; estimates </span></span>
+<span><span class="co">#&gt; 0.5062808</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="tools-for-monitoring-information">Tools for Monitoring Information<a class="anchor" aria-label="anchor" href="#tools-for-monitoring-information"></a>
 </h3>
@@ -496,10 +495,10 @@ the information at a particular point in the study, understanding the
 rate at which information is accruing over time can be useful in
 projecting when pre-specified information levels may be met:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data_n_50_trajectory</span> <span class="op">&lt;-</span> </span>
+<code class="sourceCode R"><span><span class="va">data_n_70_trajectory</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="../reference/information_trajectory.html">information_trajectory</a></span><span class="op">(</span></span>
-<span>    prepared_data <span class="op">=</span> <span class="va">data_n_final_50</span>,</span>
-<span>    monitored_design <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    prepared_data <span class="op">=</span> <span class="va">data_n_final_70</span>,</span>
+<span>    monitored_design <span class="op">=</span> <span class="va">monitored_design</span>,</span>
 <span>    estimation_function <span class="op">=</span> <span class="va">standardization</span>,</span>
 <span>    estimation_arguments <span class="op">=</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -510,78 +509,53 @@ projecting when pre-specified information levels may be met:</p>
 <span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span>,</span>
 <span>        outcome_indicator_column <span class="op">=</span> <span class="st">".r_4"</span></span>
 <span>      <span class="op">)</span>,</span>
+<span>    correction_function <span class="op">=</span> <span class="va">standardization_correction</span>,</span>
 <span>    orthogonalize <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    n_min <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>    n_min <span class="op">=</span> <span class="fl">40</span>,</span>
 <span>    n_increment <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>    rng_seed <span class="op">=</span> <span class="fl">23456</span>,</span>
 <span>    control <span class="op">=</span> <span class="fu"><a href="../reference/monitored_analysis_control.html">monitored_analysis_control</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
-<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
-<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
-<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
-<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
-<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
-<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
-<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
-<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
-<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
-<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
-<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
-<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
-<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
+<span><span class="co">#&gt; Error in information$information[i] &lt;- if (orthogonalize) {: replacement has length zero</span></span>
 <span></span>
-<span><span class="va">data_n_50_trajectory</span></span>
-<span><span class="co">#&gt;       times randomization y_1 y_2 y_3 y_4 information information_lag_1</span></span>
-<span><span class="co">#&gt; 1  453.1467            56  44  41  36  30  0.04122672                NA</span></span>
-<span><span class="co">#&gt; 2  466.1324            58  47  42  37  32  0.03642663        0.04122672</span></span>
-<span><span class="co">#&gt; 3  468.1530            58  47  42  37  34  0.05526950        0.03642663</span></span>
-<span><span class="co">#&gt; 4  479.5912            59  48  42  38  36  0.07829199        0.05526950</span></span>
-<span><span class="co">#&gt; 5  511.2584            64  52  47  41  38  0.08848096        0.07829199</span></span>
-<span><span class="co">#&gt; 6  514.7433            64  52  47  41  40  0.09940316        0.08848096</span></span>
-<span><span class="co">#&gt; 7  540.2434            70  55  50  45  42  0.09942606        0.09940316</span></span>
-<span><span class="co">#&gt; 8  558.8427            74  59  50  47  44  0.11661984        0.09942606</span></span>
-<span><span class="co">#&gt; 9  567.3874            75  61  50  48  46  0.12398463        0.11661984</span></span>
-<span><span class="co">#&gt; 10 609.9576            79  66  58  51  48  0.11654796        0.12398463</span></span>
-<span><span class="co">#&gt; 11 645.8408            84  68  62  56  50  0.12426581        0.11654796</span></span>
-<span><span class="co">#&gt;    information_change information_pct_change</span></span>
-<span><span class="co">#&gt; 1                  NA                     NA</span></span>
-<span><span class="co">#&gt; 2       -4.800091e-03           -13.17742276</span></span>
-<span><span class="co">#&gt; 3        1.884287e-02            34.09270498</span></span>
-<span><span class="co">#&gt; 4        2.302249e-02            29.40593307</span></span>
-<span><span class="co">#&gt; 5        1.018897e-02            11.51543593</span></span>
-<span><span class="co">#&gt; 6        1.092220e-02            10.98777881</span></span>
-<span><span class="co">#&gt; 7        2.290031e-05             0.02303251</span></span>
-<span><span class="co">#&gt; 8        1.719378e-02            14.74344496</span></span>
-<span><span class="co">#&gt; 9        7.364789e-03             5.94008266</span></span>
-<span><span class="co">#&gt; 10      -7.436670e-03            -6.38078123</span></span>
-<span><span class="co">#&gt; 11       7.717848e-03             6.21075795</span></span></code></pre></div>
+<span><span class="va">data_n_70_trajectory</span></span>
+<span><span class="co">#&gt; Error in eval(expr, envir, enclos): object 'data_n_70_trajectory' not found</span></span></code></pre></div>
 <p>This trajectory can be smoothed using regression, ideally using a
 method resistant to outliers, such as <code><a href="https://rdrr.io/pkg/deming/man/theilsen.html" class="external-link">deming::theilsen</a></code>.
 Inverse regression can be used to obtain an estimated number of outcomes
 necessary to achieve a given level of information:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
-<span>  <span class="va">information</span> <span class="op">~</span> <span class="va">y_4</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">data_n_50_trajectory</span></span>
+<span>  <span class="va">information_fraction</span> <span class="op">~</span> <span class="va">y_4</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">data_n_70_trajectory</span>,</span>
+<span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in eval(m$data, eframe): object 'data_n_70_trajectory' not found</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span>
-<span>    formula <span class="op">=</span> <span class="va">information</span> <span class="op">~</span> <span class="va">y_4</span>,</span>
-<span>    data <span class="op">=</span> <span class="va">data_n_50_trajectory</span></span>
+<span>    formula <span class="op">=</span> <span class="va">information_fraction</span> <span class="op">~</span> <span class="va">y_4</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">data_n_70_trajectory</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in eval(mf, parent.frame()): object 'data_n_70_trajectory' not found</span></span>
 <span></span>
 <span><span class="co"># Requires `deming` package</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
 <span>  <span class="fu">deming</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/deming/man/theilsen.html" class="external-link">theilsen</a></span><span class="op">(</span></span>
-<span>    formula <span class="op">=</span> <span class="va">information</span> <span class="op">~</span> <span class="va">y_4</span>,</span>
-<span>    data <span class="op">=</span> <span class="va">data_n_50_trajectory</span></span>
+<span>    formula <span class="op">=</span> <span class="va">information_fraction</span> <span class="op">~</span> <span class="va">y_4</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">data_n_70_trajectory</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">3</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in eval(temp, parent.frame()): object 'data_n_70_trajectory' not found</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
+<span>  h <span class="op">=</span> <span class="va">monitored_design</span><span class="op">$</span><span class="va">original_design</span><span class="op">$</span><span class="va">information_fractions</span>,</span>
+<span>  lty <span class="op">=</span> <span class="fl">2</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
