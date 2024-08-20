@@ -64,12 +64,22 @@ estimate_information <-
 
       trial_design <- prior_analysis$trial_design
       ids_by_analysis <- prior_analysis$ids_by_analysis
-      estimates <- prior_analysis$estimates
-      covariance <- prior_analysis$covariance
-      estimates_orthogonal <- prior_analysis$estimates_orthogonal
-      covariance_orthogonal <- prior_analysis$covariance_orthogonal
       bootstrap_ids <- prior_analysis$bootstrap_ids
       bootstrap_results <- prior_analysis$bootstrap_results
+
+      estimates <- prior_analysis$estimates
+      covariance_uncorrected <- prior_analysis$covariance_uncorrected
+      variance <- prior_analysis$variance
+      information <- prior_analysis$information
+      information_uncorrected <- prior_analysis$information_uncorrected
+      estimates_orthogonal <- prior_analysis$estimates_orthogonal
+      covariance_orthogonal_uncorrected <-
+        prior_analysis$covariance_orthogonal_uncorrected
+      variance_orthogonal <- prior_analysis$variance_orthogonal
+      information_orthogonal <- prior_analysis$information_orthogonal
+      information_orthogonal_uncorrected <-
+        prior_analysis$information_orthogonal_uncorrected
+
       information <- prior_analysis$information
 
       rm(prior_analysis)
@@ -81,6 +91,7 @@ estimate_information <-
       bootstrap_ids <- NULL
       bootstrap_results <- NULL
       estimates <- NULL
+      variance <- NULL
       covariance <- NULL
       estimates_orthogonal <- NULL
       covariance_orthogonal <- NULL
@@ -140,7 +151,8 @@ estimate_information <-
 
     estimates <- as.numeric(c(estimates, estimate_k))
     covariance <- covariance_k$covariance
-    variance <- (diag(covariance)*correction_factor)
+    variance <-
+      c(variance, utils::tail(x = diag(covariance), n = 1)*correction_factor)
     information <- 1/variance
 
     # Add to Previous Estimates
@@ -160,7 +172,8 @@ estimate_information <-
         estimates_orthogonal[k] <- orthogonalized_k$estimate_orthogonal
 
         covariance_orthogonal_uncorrected <-
-          c(diag(covariance_orthogonal), orthogonalized_k$covariance_orthogonal)
+          c(diag(covariance_orthogonal_uncorrected),
+            orthogonalized_k$covariance_orthogonal)
 
         covariance_orthogonal_uncorrected <-
           sqrt(covariance_orthogonal_uncorrected) %*%
@@ -174,8 +187,8 @@ estimate_information <-
       information_orthogonal_uncorrected <-
         1/diag(covariance_orthogonal_uncorrected)
     } else {
-      estimates_orthogonal <- NA*estimates
-      covariance_orthogonal <- NA*covariance$covariance
+      estimates_orthogonal <- covariance_orthogonal <- variance_orthogonal <- NA
+      covariance_orthogonal_uncorrected <- matrix(NA)
     }
 
     if(return_results){
@@ -184,7 +197,8 @@ estimate_information <-
       ids_by_analysis <- covariance_k$ids_by_analysis
     } else {
       estimates <- estimates_orthogonal <-
-        bootstrap_ids <- bootstrap_results <- ids_by_analysis <- NULL
+        bootstrap_ids <- bootstrap_results <- ids_by_analysis <-
+        information_orthogonal <- NULL
     }
 
     return(
@@ -197,10 +211,11 @@ estimate_information <-
         variance_uncorrected = diag(covariance),
         information_uncorrected = 1/diag(covariance),
         estimates_orthogonal = estimates_orthogonal,
-        covariance_orthogonal_uncorrected = covariance_orthogonal,
+        covariance_orthogonal_uncorrected = covariance_orthogonal_uncorrected,
         variance_orthogonal = variance_orthogonal,
         information_orthogonal = information_orthogonal,
-        information_orthogonal_uncorrected = 1/diag(covariance_orthogonal),
+        information_orthogonal_uncorrected =
+          1/diag(covariance_orthogonal_uncorrected),
         ids_by_analysis = ids_by_analysis,
         bootstrap_results = bootstrap_results,
         bootstrap_ids = bootstrap_ids,

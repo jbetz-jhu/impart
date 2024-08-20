@@ -42,6 +42,10 @@ calculate_covariance <-
     rng_seed,
     control = monitored_analysis_control()
   ){
+    if(is.null(data$.id)){
+      stop("data must have a subject id column named data$.id")
+    }
+
     current_ids <- unique(data$.id)
     n_current_ids <- length(current_ids)
 

@@ -13,9 +13,9 @@
 #' @param n_cores Scalar number of cores to use.
 #' @param use_load_balancing Logical scalar: Should load balancing be used?
 #'
-#' @return A list containing the specified inputs.
+#' @name monitored_analysis_control
 #'
-#' @export
+#' @return A list containing the default parameters or supplied alternatives.
 #'
 #' @seealso [parallel::parSapplyLB()] and [parallel::parSapply()] for parallel
 #' computing; [impart::monitored_analysis] for conducting information monitored
@@ -25,11 +25,38 @@
 #' @examples
 #' # To be added
 
+
+#' @rdname monitored_analysis_control
+#' @export
 monitored_analysis_control <-
   function(
     orthogonal_and_oblique = FALSE,
     required_packages = character(0),
     n_bootstrap = 1000,
+    n_cores = 1,
+    use_load_balancing = FALSE
+  ){
+    return(
+      list(
+        orthogonal_and_oblique = FALSE,
+        n_bootstrap = n_bootstrap,
+        n_cores = n_cores,
+        use_load_balancing = use_load_balancing,
+        required_packages = required_packages
+      )
+    )
+  }
+
+
+
+
+#' @rdname monitored_analysis_control
+#' @export
+monitored_analysis_control_testing <-
+  function(
+    orthogonal_and_oblique = FALSE,
+    required_packages = character(0),
+    n_bootstrap = 250,
     n_cores = 1,
     use_load_balancing = FALSE
   ){

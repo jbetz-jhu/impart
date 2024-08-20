@@ -9,6 +9,7 @@ information_trajectory(
   monitored_design = NULL,
   estimation_function,
   estimation_arguments,
+  correction_function = NULL,
   orthogonalize,
   n_min = 30,
   n_increment = 5,
@@ -28,6 +29,9 @@ named \code{data}}
 
 \item{estimation_arguments}{A list of any additional arguments needed by
 \code{estimation_function}}
+
+\item{correction_function}{An optional function to adjust the variance
+estimate using parameters from \code{estimation_arguments}}
 
 \item{orthogonalize}{Logical scalar: Should estimates, their covariance,
 and the resulting test statistics be orthogonalized?}

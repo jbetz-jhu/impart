@@ -86,7 +86,10 @@ initialize_monitored_design <-
             null_value = null_value,
             information_target = information_target,
             orthogonalize = orthogonalize,
-            rng_seed_analysis = rng_seed_analysis
+            rng_seed_analysis = rng_seed_analysis,
+            information_fractions = trial_design$informationRates,
+            information_thresholds =
+              information_target*trial_design$informationRates
           )
         ),
         nm = "original_design"

@@ -17,6 +17,8 @@
 #' named \code{data}
 #' @param estimation_arguments A list of any additional arguments needed by
 #' \code{estimation_function}
+#' @param correction_function An optional function to adjust the variance
+#' estimate using parameters from \code{estimation_arguments}
 #' @param orthogonalize Logical scalar: Should estimates, their covariance,
 #' and the resulting test statistics be orthogonalized?
 #' @param n_min A \code{numeric} scalar indicating the minimum sample size for
@@ -43,6 +45,7 @@ information_trajectory <-
     monitored_design = NULL,
     estimation_function,
     estimation_arguments,
+    correction_function = NULL,
     orthogonalize,
     n_min = 30,
     n_increment = 5,
@@ -61,10 +64,32 @@ information_trajectory <-
     primary_outcome <-
       utils::tail(x = prepared_data$variables$outcome_variables, n = 1)
 
+    # If a previous analysis has been conducted, ensure n_min isn't below the
+    # number of outcomes at the previous interim analysis.
+    if(!is.null(monitored_design)){
+      latest_analysis <- monitored_design[[length(monitored_design)]]
+
+      n_previous <- sum(!is.na(latest_analysis$data[primary_outcome]))
+      if(n_min < n_previous){
+        stop("`n_min` (", n_min, ") is at or below the number of complete ",
+             "outcomes at the previous analysis (", n_previous, ").")
+      }
+
+      information_target <-
+        monitored_design$original_design$information_target
+    } else {
+      information_target <- NA
+    }
+
     primary_outcome_counts <-
       outcome_counts[which(outcome_counts$event == primary_outcome),]
 
     n_current <- max(primary_outcome_counts$count_complete, na.rm = TRUE)
+
+    if(n_min >= n_current){
+      stop("`n_min` (", n_min, ") is at or below number of complete outcomes (",
+           n_current, ").")
+    }
 
     information_times <-
       primary_outcome_counts[
@@ -96,6 +121,7 @@ information_trajectory <-
           monitored_design = monitored_design,
           estimation_function = estimation_function,
           estimation_arguments = estimation_arguments,
+          correction_function = correction_function,
           orthogonalize = orthogonalize,
           rng_seed = rng_seed,
           control = control,
@@ -104,9 +130,9 @@ information_trajectory <-
 
       information$information[i] <-
         if(orthogonalize){
-          information_i$information_orthogonal
+          utils::tail(x = information_i$information_orthogonal, n = 1)
         } else {
-          information_i$information
+          utils::tail(x = information_i$information, n = 1)
         }
     }
 
@@ -118,6 +144,9 @@ information_trajectory <-
 
     information$information_pct_change =
       with(information, 100*information_change/information)
+
+    information$information_fraction <-
+      information$information/information_target
 
     return(information)
   }

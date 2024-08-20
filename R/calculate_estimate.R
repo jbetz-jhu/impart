@@ -24,18 +24,14 @@ calculate_estimate <-
   ){
 
     result <-
-      get(
-        x = "estimate",
-        pos =
-          do.call(
-            what = estimation_function,
-            args = c(list(data = data), estimation_arguments)
-          )
+      do.call(
+        what = estimation_function,
+        args = c(list(data = data), estimation_arguments)
       )
 
-    if(length(result) == 1){
-      return(result)
-    } else{
-      stop("Result must have length == 1.")
+    if("estimate" %in% names(result)){
+      return(as.numeric(result["estimate"]))
+    } else {
+      stop("Result must have element named 'estimate'.")
     }
   }

@@ -2,12 +2,21 @@
 % Please edit documentation in R/monitored_analysis_control.R
 \name{monitored_analysis_control}
 \alias{monitored_analysis_control}
+\alias{monitored_analysis_control_testing}
 \title{Control arguments for performing information monitored analyses}
 \usage{
 monitored_analysis_control(
   orthogonal_and_oblique = FALSE,
   required_packages = character(0),
   n_bootstrap = 1000,
+  n_cores = 1,
+  use_load_balancing = FALSE
+)
+
+monitored_analysis_control_testing(
+  orthogonal_and_oblique = FALSE,
+  required_packages = character(0),
+  n_bootstrap = 250,
   n_cores = 1,
   use_load_balancing = FALSE
 )
@@ -28,7 +37,7 @@ replicates to perform}
 \item{use_load_balancing}{Logical scalar: Should load balancing be used?}
 }
 \value{
-A list containing the specified inputs.
+A list containing the default parameters or supplied alternatives.
 }
 \description{
 This provides a way to set and modify the analysis parameters for information

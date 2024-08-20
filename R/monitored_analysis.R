@@ -77,7 +77,7 @@ monitored_analysis <-
     correction_factor <- estimated_information$correction_factor
     information_uncorrected <- estimated_information$information_uncorrected
     estimates_orthogonal <- estimated_information$estimates_orthogonal
-    covariance_orthogonal <- estimated_information$covariance_orthogonal
+    covariance_orthogonal <- estimated_information$covariance_orthogonal_uncorrected
     variance_orthogonal <- estimated_information$variance_orthogonal
     information_orthogonal <- estimated_information$information_orthogonal
     covariance_orthogonal_uncorrected <-

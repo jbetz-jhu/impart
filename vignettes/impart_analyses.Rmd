@@ -106,67 +106,118 @@ monitored_design <-
 ```
 
 
-The data used in this example will also be the same: `impart::example_1`
+The data used in this example will also be the same: `impart::example_1`. Specifically, the data has been reverted to particular points in the study at which the information thresholds have been met:
 
-```{r Example-1-Header}
-head(impart::example_1)
+  - `example_1_ia_1`: Data for Interim Analysis 1
+  - `example_1_ia_2`: Data for Interim Analysis 2
+  - `example_1_final`: Data for Final Analysis
 
+
+```{r Load-Data-Interim-Analysis-1}
+# Data for Interim Analysis 1
+example_1_ia_1 <- impart::example_1_ia_1
+
+head(example_1_ia_1)
+```
+
+
+## Interim Analysis 1
+
+Before conducting the first interim analysis, the information level should be above the pre-specified threshold: the smoothed trajectory can be used to mitigate random variation in the information level.
+
+Analysts will need to specify `estimation_function`, the function used to compute the estimate, and `estimation_arguments`, a list of arguments aside from the data needed for this computation. Estimators may have a variance correction factor that can be computed from the analysis parameters: this can be specified using the `correction_function` argument.
+
+For the standardization estimator computed by `standardization()`, the corresponding small-sample variance correction is `standardization_correction()`: this adjusts the variance according to the sample size in each arm and the number of parameters in each regression model.
+
+
+```{r Compute-Information-Trajectory}
 # Obtain time of last event
 last_event <-
-  example_1[, c(".enrollment_time", ".t_1", ".t_2", ".t_3", ".t_4")] |>
+  example_1_ia_1[, c(".e", ".t_1", ".t_2", ".t_3", ".t_4")] |>
   unlist() |>
   max(na.rm = TRUE) |>
   ceiling()
 
-prepared_final_data <-
+example_1_ia_1_prepared <-
   prepare_monitored_study_data(
-    data = example_1,
+    data = example_1_ia_1,
     study_time = last_event,
     id_variable = ".id",
     covariates_variables = c("x_1", "x_2", "x_3", "x_4"),
-    enrollment_time_variable = ".enrollment_time",
+    enrollment_time_variable = ".e",
     treatment_variable = "tx",
     outcome_variables = c("y_1", "y_2", "y_3", "y_4"),
     outcome_time_variables = c(".t_1", ".t_2", ".t_3", ".t_4"), 
     # Observe missingness 1 week after target study visit
     observe_missing_times = c(30, 60, 90, 120) + 7
   )
+
+data_ia_1_trajectory <- 
+  information_trajectory(
+    prepared_data = example_1_ia_1_prepared,
+    monitored_design = monitored_design,
+    estimation_function = standardization,
+    estimation_arguments =
+      list(
+        estimand = "difference",
+        y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        family = gaussian,
+        treatment_column = "tx",
+        outcome_indicator_column = ".r_4"
+      ),
+    correction_function = standardization_correction,
+    orthogonalize = TRUE,
+    n_min = 50,
+    n_increment = 3,
+    rng_seed = 23456,
+    control = monitored_analysis_control()
+  )
+
+data_ia_1_trajectory
 ```
 
-```{r Create-Interim-Analysis-Datasets}
-data_n_interim_1 <-
-  data_at_time_t(
-    prepared_data = prepared_final_data,
-    study_time = 783
-  )
 
-data_n_interim_2 <-
-  data_at_time_t(
-    prepared_data = prepared_final_data,
-    study_time = 1318
-  )
+Once the trajectory has been computed, it can be smoothed and plotted:
 
-data_n_final <-
-  data_at_time_t(
-    prepared_data = prepared_final_data,
-    study_time = 1478
-  )
 
-data_n_final <- data_n_final$data
+```{r Smooth-Information-Trajectory}
+plot(
+  information ~ y_4,
+  data = data_ia_1_trajectory
+)
 
-# Subset to first 189 Outcomes
-data_n_final <- data_n_final[which(rank(data_n_final$.t_4) <= 189),]
+abline(
+  lm(
+    formula = information ~ y_4,
+    data = data_ia_1_trajectory
+  ),
+  lty = 1
+)
+
+# Requires `deming` package
+abline(
+  deming::theilsen(
+    formula = information ~ y_4,
+    data = data_ia_1_trajectory
+  ),
+  lty = 3
+)
+
+abline(
+  h = monitored_design$original_design$information_thresholds,
+  lty = 2
+)
 ```
 
 
+Once the information level has been confirmed to be above the threshold, conducting the analysis is similar to computing information: 
 
-
-## Interim Analysis 1
 
 ```{r Interim-Analysis-1}
 interim_analysis_1 <-
   monitored_analysis(
-    data = data_n_interim_1$data,
+    data = example_1_ia_1,
     monitored_design = monitored_design,
     estimation_function = standardization,
     estimation_arguments = 
@@ -177,8 +228,9 @@ interim_analysis_1 <-
         family = gaussian,
         treatment_column = "tx",
         outcome_indicator_column = ".r_4"
-      )
-    )
+      ),
+    correction_function = standardization_correction
+  )
 
 interim_analysis_1$interim_analysis_1$decision
 interim_analysis_1$interim_analysis_1$decision_data
@@ -194,10 +246,13 @@ All subsequent analyses are identical in syntax: a new dataset is provided, and
 the result of the previous analysis is passed using the `monitored_design`
 argument.
 
+
 ```{r Interim-Analysis-2}
+example_1_ia_2 <- impart::example_1_ia_2
+
 interim_analysis_2 <-
   monitored_analysis(
-    data = data_n_interim_2$data,
+    data = example_1_ia_2,
     monitored_design = interim_analysis_1,
     estimation_function = standardization,
     estimation_arguments = 
@@ -208,8 +263,9 @@ interim_analysis_2 <-
         family = gaussian,
         treatment_column = "tx",
         outcome_indicator_column = ".r_4"
-      )
-    )
+      ),
+    correction_function = standardization_correction
+  )
 
 interim_analysis_2$interim_analysis_2$decision
 interim_analysis_2$interim_analysis_2$decision_data
@@ -227,9 +283,11 @@ interim_analysis_2$interim_analysis_2$information_fraction_orthogonal
 The syntax is identical for the final analysis:
 
 ```{r Final-Analysis}
+example_1_final <- impart::example_1_final
+
 final_analysis <-
   monitored_analysis(
-    data = data_n_final,
+    data = example_1_final,
     monitored_design = interim_analysis_2,
     estimation_function = standardization,
     estimation_arguments = 
@@ -240,8 +298,9 @@ final_analysis <-
         family = gaussian,
         treatment_column = "tx",
         outcome_indicator_column = ".r_4"
-      )
-    )
+      ),
+    correction_function = standardization_correction
+  )
 
 final_analysis$final_analysis$decision
 final_analysis$final_analysis$decision_data

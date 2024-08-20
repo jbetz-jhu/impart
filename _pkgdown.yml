@@ -2,3 +2,11 @@ url: https://jbetz-jhu.github.io/impart/
 template:
   bootstrap: 5
 
+articles:
+- title: Vignettes
+  desc: Vignettes on using Impart
+  navbar: ~
+  contents:
+  - impart_study_design
+  - impart_monitoring
+  - impart_analyses
