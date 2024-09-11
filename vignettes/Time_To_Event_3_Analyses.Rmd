@@ -1,0 +1,49 @@
+---
+title: "Monitored Analyses for a Time-to-Event Outcome"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Time_To_Event_3_Analyses}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r RMD-Setup, include = FALSE}
+fig_w <- 8
+fig_h <- 8
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  echo = TRUE,
+  message = TRUE,
+  error = TRUE,
+  purl = FALSE,
+  results = "markup",
+  fig.path = "../man/figures/",
+  fig.width = fig_w,
+  fig.height = fig_h,
+  fig.align = "center",
+  out.width = "80%",
+  dpi = 600
+)
+
+options(
+  rmarkdown.html_vignette.check_title = FALSE
+)
+
+set.seed(9876)
+```
+
+```{r Library}
+library(impart)
+```
+
+This vignette demonstrates how to use `impart` to conduct interim and final
+analyses in group sequential or information monitored designs. This builds upon
+the terminology and concepts in the vignettes on study design and information
+monitoring. These can be viewed as follows:
+
+```{r Previous-Vignettes, eval = FALSE}
+vignette("Time_To_Event_1_Study_Design", package = "impart")
+vignette("Time_To_Event_1_Monitoring", package = "impart")
+```

@@ -1,8 +1,8 @@
 ---
-title: "3. Performing Monitored Analyses with `impart`"
+title: "Monitored Analyses for a Continuous Outcome"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{impart_analyses}
+  %\VignetteIndexEntry{Continuous_3_Analyses}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -44,8 +44,8 @@ the terminology and concepts in the vignettes on study design and information
 monitoring. These can be viewed as follows:
 
 ```{r Previous-Vignettes, eval = FALSE}
-vignette("impart_study_design", package = "impart") # Design
-vignette("impart_monitoring", package = "impart") # Information Monitoring
+vignette("Continuous_1_Study_Design", package = "impart")
+vignette("Continuous_2_Monitoring", package = "impart")
 ```
 
 ## Setting Up a Monitored Design:

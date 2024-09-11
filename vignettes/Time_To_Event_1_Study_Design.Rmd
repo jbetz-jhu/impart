@@ -1,0 +1,82 @@
+---
+title: "Study Design for a Time-to-Event Outcome"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Time_To_Event_1_Study_Design}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{pwr}
+  %\VignetteDepends{ggplot2}
+---
+
+```{r RMD-Setup, include = FALSE}
+fig_w <- 8
+fig_h <- 8
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  echo = TRUE,
+  message = TRUE,
+  error = TRUE,
+  purl = FALSE,
+  results = "markup",
+  fig.path = "../man/figures/",
+  fig.width = fig_w,
+  fig.height = fig_h,
+  fig.align = "center",
+  out.width = "80%",
+  dpi = 600
+)
+
+options(
+  rmarkdown.html_vignette.check_title = FALSE
+)
+
+set.seed(9876)
+```
+
+
+```{r Alt-Text, include = FALSE}
+one_sided_upper_fig_alt <-
+  paste0(
+    "A figure showing efficacy and futility stopping boundaries for a group ",
+    "sequential design with three analyses using a one-sided test where ",
+    "higher values of a test statistic indicate the superiority of treatment ",
+    "to control. These analyses are conducted when information reaches 50%, ",
+    "75%, and 100% of the target information level. The x-axis has values of ",
+    "0.50, 0.75, and 100, indicating the information fraction, and the y-axis ",
+    "indicates the non-binding futility boundaries. The efficacy boundaries ",
+    "decrease from left to right, with a boundary of 2.54 at an information ",
+    "fraction of 0.5, and a boundary of 1.72 at an information fraction of 1. ",
+    "The futility boundaries increase from left to right, with a boundary of ",
+    "0.11 at an information fraction of 0.5, converging with to a boundary of ",
+    "1.72 at information fraction of 1."
+  )
+
+one_sided_lower_fig_alt <-
+  paste0(
+    "A figure showing efficacy and futility stopping boundaries for a group ",
+    "sequential design with three analyses using a one-sided test where lower ",
+    "values of a test statistic indicate the superiority of treatment to ",
+    "control. These analyses are conducted when information reaches 50%, 75%, ",
+    "and 100% of the target information level. The x-axis has values of 0.50, ",
+    "0.75, and 100, indicating the information fraction, and the y-axis ",
+    "indicates the non-binding futility boundaries. The efficacy boundaries ",
+    "increase from left to right, with a boundary of -2.54 at an information ",
+    "fraction of 0.5, and a boundary of -1.72 at an information fraction of ",
+    "1. The futility boundaries decrease from left to right, with a boundary ",
+    "of -0.11 at an information fraction of 0.5, converging with to a ",
+    "boundary of 1.72 at information fraction of 1."
+  )
+```
+
+
+```{r Library}
+library(impart)
+library(pwr) # Only required for examples, not for `impart`
+```
+
+# Planning The Study
+
+Planning an information-monitored study is similar in many respects to planning a study with a fixed sample size. Investigators must decide on [the target of statistical inference, also known as an estimand](https://covariateadjustment.github.io/estimands.html): for a time-to-event outcome, there are several outcomes that may be of interest, including the survival probability (SP), the restricted mean survival time (RMST), or hazard ratio (HR). Once the estimand is chosen, decisions must be made about what constitutes a meaningful effect size on the scale of the estimand (e.g. an increase in RMST of 1 year). Finally, the characteristics of the testing procedure must be specified, including the desired Type I Error Rate, statistical power, and direction of alternatives of interest:

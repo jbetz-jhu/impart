@@ -3,10 +3,28 @@ template:
   bootstrap: 5
 
 articles:
-- title: Vignettes
-  desc: Vignettes on using Impart
-  navbar: ~
+- title: Vignettes on Design, Monitoring, & Analysis
+  navbar: Continuous Outcomes
   contents:
-  - impart_study_design
-  - impart_monitoring
-  - impart_analyses
+    - Continuous_1_Study_Design
+    - Continuous_2_Monitoring
+    - Continuous_3_Analyses
+
+- title: Binary Outcomes
+  navbar: Binary Outcomes
+  contents:
+    - Binary_1_Study_Design
+    - Binary_2_Monitoring
+    - Binary_3_Analyses
+
+- title: Time-to-Event Outcomes
+  navbar: Time-to-Event Outcomes
+  contents:
+    - Time_To_Event_1_Study_Design
+    - Time_To_Event_2_Monitoring
+    - Time_To_Event_3_Analyses
+
+- title: Time-to-Event_Outcomes
+  navbar: Time-to-Event_Outcomes
+  contents:
+    - Implementing_New_Methods

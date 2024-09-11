@@ -1,8 +1,8 @@
 ---
-title: "1. Planning Information Monitored Designs with `impart`"
+title: "Study Design for a Binary Outcome"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{impart_study_design}
+  %\VignetteIndexEntry{Binary_1_Study_Design}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{pwr}
@@ -36,6 +36,42 @@ options(
 set.seed(9876)
 ```
 
+
+```{r Alt-Text, include = FALSE}
+one_sided_upper_fig_alt <-
+  paste0(
+    "A figure showing efficacy and futility stopping boundaries for a group ",
+    "sequential design with three analyses using a one-sided test where ",
+    "higher values of a test statistic indicate the superiority of treatment ",
+    "to control. These analyses are conducted when information reaches 50%, ",
+    "75%, and 100% of the target information level. The x-axis has values of ",
+    "0.50, 0.75, and 100, indicating the information fraction, and the y-axis ",
+    "indicates the non-binding futility boundaries. The efficacy boundaries ",
+    "decrease from left to right, with a boundary of 2.54 at an information ",
+    "fraction of 0.5, and a boundary of 1.72 at an information fraction of 1. ",
+    "The futility boundaries increase from left to right, with a boundary of ",
+    "0.11 at an information fraction of 0.5, converging with to a boundary of ",
+    "1.72 at information fraction of 1."
+  )
+
+one_sided_lower_fig_alt <-
+  paste0(
+    "A figure showing efficacy and futility stopping boundaries for a group ",
+    "sequential design with three analyses using a one-sided test where lower ",
+    "values of a test statistic indicate the superiority of treatment to ",
+    "control. These analyses are conducted when information reaches 50%, 75%, ",
+    "and 100% of the target information level. The x-axis has values of 0.50, ",
+    "0.75, and 100, indicating the information fraction, and the y-axis ",
+    "indicates the non-binding futility boundaries. The efficacy boundaries ",
+    "increase from left to right, with a boundary of -2.54 at an information ",
+    "fraction of 0.5, and a boundary of -1.72 at an information fraction of ",
+    "1. The futility boundaries decrease from left to right, with a boundary ",
+    "of -0.11 at an information fraction of 0.5, converging with to a ",
+    "boundary of 1.72 at information fraction of 1."
+  )
+```
+
+
 ```{r Library}
 library(impart)
 library(pwr) # Only required for examples, not for `impart`
@@ -43,11 +79,11 @@ library(pwr) # Only required for examples, not for `impart`
 
 # Planning The Study
 
-Planning information-monitored study is similar in many respects to planning a fixed-sample size study. Investigators decide on an effect size that is meaningful in magnitude, and decide on the appropriate Type I Error Rate, statistical power, and direction of alternatives of interest:
+Planning an information-monitored study is similar in many respects to planning a study with a fixed sample size. Investigators must decide on [the target of statistical inference, also known as an estimand](https://covariateadjustment.github.io/estimands.html): for a binary outcome, the risk difference is usually of interest, although investigators may also be interested in a risk ratio (relative risk), or odds ratio. Once the estimand is chosen, decisions must be made about what constitutes a meaningful effect size on the scale of the estimand (e.g. a 10% absolute reduction in risk or a relative risk of 0.75). Finally, the characteristics of the testing procedure must be specified, including the desired Type I Error Rate, statistical power, and direction of alternatives of interest:
 
 ```{r Universal-Study-Design-Parameters}
 # Universal Study Design Parameters
-minimum_difference <- 5 # Effect Size: Difference in Means of 5 or greater
+minimum_difference <- 0.15 # Effect Size: An absolute risk difference of 
 alpha <- 0.05 # Type I Error Rate
 power <- 0.9 # Statistical Power
 test_sides <- 2 # Direction of Alternatives
@@ -78,50 +114,54 @@ information_single_stage <-
 information_single_stage
 ```
 
-For example, detecting a difference in means of `r minimum_difference` with `r 100*power`% power and a Type I Error rate of `r alpha` using a `r test_sides`-sided test requires an information level of `r information_single_stage`. Investigators can collect data until the precision (the reciprocal of the square of the standard error) reaches this level, and their analysis will have the appropriate power and Type I error control.
+For example, detecting a risk difference difference of `r minimum_difference` with `r 100*power`% power and a Type I Error rate of `r alpha` using a `r test_sides`-sided test requires an information level of `r information_single_stage`. Investigators can collect data until the precision (the reciprocal of the square of the standard error) reaches this level, and their analysis will have the appropriate power and Type I error control.
 
 
 
 
 ## Translating Information into Sample Size
 
-Translating information levels to a sample size requires making some assumption about nuisance parameters, such as the variability of the outcomes in each treatment arm. The `information_to_n_continuous_1_to_1` function takes an information level and values of the nuisance parameters, and gives an approximate sample size. Note that this calculation only takes into account the information contained in the observed outcomes: if some outcomes are missing, or if the analysis makes use of information in baseline covariates and intermediate outcomes, this can change the sample size at which the target information level is reached.
+Translating information levels to a sample size requires making some assumption about nuisance parameters, such as the probability of the outcomes in the control arm. The `information_to_n_binary_1_to_1` function takes an information level and values of the nuisance parameters, and gives an approximate sample size. Note that this calculation only takes into account the information contained in the observed outcomes: if some outcomes are missing, or if the analysis makes use of information in baseline covariates and intermediate outcomes, this can change the sample size at which the target information level is reached.
 
 ```{r Translate-Information-to-N}
-# Assume Equal Variances: 7.5
-approximate_n_sd_7.5 <-
-  impart::information_to_n_continuous_1_to_1(
+# Assume control probability = 0.25
+approximate_n_p0_0.25 <-
+  impart::information_to_n_binary_1_to_1(
     information = information_single_stage,
-    sigma_0 = 7.5,
-    sigma_1 = 7.5,
+    pi_0 = 0.25,
+    delta = minimum_difference,
     round_up = TRUE
   )
-approximate_n_sd_7.5
+approximate_n_p0_0.25
 
 # Compute Power: Fixed Sample Size
-pwr::pwr.t.test(
-  d = minimum_difference/7.5,
+pwr::pwr.2p.test(
+  h = pwr::ES.h(p1 = 0.25 + minimum_difference, p2 = 0.25),
   sig.level = alpha,
   power = power
 )
-# Equal Variances: 10
-approximate_n_sd_10 <-
-  impart::information_to_n_continuous_1_to_1(
+
+# Assume control probability = 0.42
+approximate_n_p0_0.42 <-
+  impart::information_to_n_binary_1_to_1(
     information = information_single_stage,
-    sigma_0 = 10,
-    sigma_1 = 10,
+    pi_0 = 0.42,
+    delta = minimum_difference,
     round_up = TRUE
   )
-approximate_n_sd_10
+approximate_n_p0_0.42
+
 # Compute Power: Fixed Sample Size
-pwr::pwr.t.test(
-  d = minimum_difference/10,
+pwr::pwr.2p.test(
+  h = pwr::ES.h(p1 = 0.42 + minimum_difference, p2 = 0.42),
   sig.level = alpha,
   power = power
 )
 ```
 
-Note that under specific assumptions about the standard deviations in the populations are met, the sample size requirements determined using a fixed sample size design (`pwr::pwr.t.test`) or an information-monitored design (`information_to_n_continuous_1_to_1`) are the same. The advantage of an information-adaptive design is the sample size adapts to the information in the accruing data: rather than making assumptions about the standard deviations in each population, which could result in an over- or under-powered trial, data collection proceeds until the target information level is met, which ensures adequate power and Type I Error control.
+Note that under specific assumptions about the outcome probability in the control arm are met, the sample size requirements determined using the calculation fixed sample size design (`pwr::pwr.2p.test`) or the calculation information-monitored design (`information_to_n_binary_1_to_1`) are similar. The slight differences are due to differences in the approximation (a normal approximation versus the arcsine transformation).
+
+The advantage of an information-adaptive design is the sample size adapts to the information in the accruing data: rather than making assumptions about the outcome probability in the control arm, which could result in an over- or under-powered trial, data collection proceeds until the target information level is met, which ensures adequate power and Type I Error control.
 
 
 
@@ -162,7 +202,7 @@ trial_design <-
 For a one-sided test using RPACT, the default boundaries assume users are testing $H_{0}: \mu_{T} - \mu_{C} < \delta_{0}$ vs. $H_{A}: \mu_{T} - \mu_{C} \ge \delta_{0}$: 
 
 
-```{r Specify-One-Sided-Sequential-Design-Procedure}
+```{r Specify-One-Sided-Sequential-Design-Procedure, fig.alt = one_sided_upper_fig_alt}
 # One sided test: Higher values = Better
 trial_design_one_sided_upper <-
   rpact::getDesignGroupSequential(
@@ -185,7 +225,7 @@ plot(
 Users must [must manually correct the resulting design boundaries](https://github.com/rpact-com/rpact/issues/26) to test $H_{0}: \mu_{T} - \mu_{C} > \delta_{0}$ vs. $H_{A}: \mu_{T} - \mu_{C} \le \delta_{0}$. Until this correction is made, `correct_one_sided_gsd()` should be called on the result, which corrects the futility and efficacy boundaries:
 
 
-```{r Correct-RPACT-One-Sided-Boundaries}
+```{r Correct-RPACT-One-Sided-Boundaries, fig.alt = one_sided_lower_fig_alt}
 trial_design_one_sided_lower <-
   correct_one_sided_gsd(
     trial_design = trial_design_one_sided_upper,
@@ -259,28 +299,28 @@ Appropriately including information from covariates has the potential to increas
 
 ```{r Unadjusted-vs-Adjusted-Analysis}
 # Information Only From Final Outcomes
-impart::information_to_n_continuous_1_to_1(
-    information = information_rates*information_adaptive,
-    sigma_0 = 10,
-    sigma_1 = 10,
-    round_up = FALSE
-  )
+impart::information_to_n_binary_1_to_1(
+  information = information_rates*information_adaptive,
+  pi_0 = 0.25,
+  pi_1 = 0.25 + minimum_difference,
+  round_up = FALSE
+)
 # 10% Relative Efficiency Increase from Covariates
 relative_efficiency <- 1.1
 # Information From Final Outcomes + Covariates
-impart::information_to_n_continuous_1_to_1(
+impart::information_to_n_binary_1_to_1(
   information = information_rates*information_adaptive/relative_efficiency,
-  sigma_0 = 10,
-  sigma_1 = 10,
+  pi_0 = 0.25,
+  pi_1 = 0.25 + minimum_difference,
   round_up = TRUE
 )
 # 20% Relative Efficiency Increase from Covariates
 relative_efficiency <- 1.2
 # Information From Final Outcomes + Covariates
-impart::information_to_n_continuous_1_to_1(
+impart::information_to_n_binary_1_to_1(
   information = information_rates*information_adaptive/relative_efficiency,
-  sigma_0 = 10,
-  sigma_1 = 10,
+  pi_0 = 0.25,
+  pi_1 = 0.25 + minimum_difference,
   round_up = TRUE
 )
 ```
@@ -300,7 +340,7 @@ monitored_design <-
   initialize_monitored_design(
     trial_design = trial_design,
     null_value = 0,
-    maximum_sample_size = 280,
+    maximum_sample_size = 600,
     information_target = information_adaptive,
     orthogonalize = TRUE,
     rng_seed_analysis = 54321

@@ -1,0 +1,93 @@
+---
+title: "Information Monitoring for a Binary Outcome"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Binary_2_Monitoring}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{deming}
+---
+
+```{r RMD-Setup, include = FALSE}
+fig_w <- 8
+fig_h <- 8
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  echo = TRUE,
+  message = TRUE,
+  error = TRUE,
+  purl = FALSE,
+  results = "markup",
+  fig.path = "../man/figures/",
+  fig.width = fig_w,
+  fig.height = fig_h,
+  fig.align = "center",
+  out.width = "80%",
+  dpi = 600
+)
+
+options(
+  rmarkdown.html_vignette.check_title = FALSE
+)
+
+set.seed(9876)
+```
+
+```{r Library}
+library(impart)
+library(deming) # Required for deming::theilsen()
+```
+
+This vignette demonstrates how to use `impart` to monitor the amount of
+information contained in the accrued data so that analyses are not under- or
+over-powered. This builds upon the terminology and concepts in the vignette on
+study design, which can be viewed as follows:
+
+```{r Previous-Vignettes, eval = FALSE}
+vignette("Binary_1_Study_Design", package = "impart")
+```
+
+# Monitoring Ongoing Studies
+
+In a fixed sample size design, the timing of the final analysis is based on the 
+last participant's last visit. Group sequential analyses are based when
+pre-specified fractions of the maximum sample size have their final outcome
+observed. Timing analyses in such studies only depends on counting the number of
+final outcomes observed during the study.
+
+In information-monitored designs, the times at which analyses are performed and
+recruitment is stopped depend on when the information reaches pre-specified
+thresholds. The amount of information contained in the data depends on the
+number of observations, the completeness of the data, the analytic methods used,
+and the interrelationships among the observed data. Depending on the analysis
+methods used, an individual could contribute baseline covariates and treatment
+assignment information, post-randomization outcomes, and even post-randomization
+auxiliary variables.
+
+
+
+
+## Challenges in Information Monitoring
+
+A new challenge in analyzing data in an ongoing trial is how to appropriately
+treat missing data. Suppose the following are observed:
+
+  - A participant is newly enrolled, has their baseline covariates measured, is randomized, is still on study, and has not yet entered any follow-up windows
+  - A participant is randomized, but did not attend any follow-up visits
+
+In both of these cases, the covariates, and treatment assignment are observed,
+but the outcomes are missing. In the first case, outcomes are not yet observed:
+while they are missing, they could still be observed when the participant enters
+the study window. In the latter case, they are known to be missing: the study
+window is closed without the outcome being observed.
+
+A convention can be used to differentiate outcomes that are not yet observed
+from those known to be missing:
+
+  - Completed assessments have both an observed outcome and an observed assessment time.
+  - Missed assessments have a missing outcome, but an observed assessment time: 
+    - If an assessment occurred, but no valid outcome was obtained, the time of the assessment is used.
+    - If an assessment was missed, the end of the study window is used, indicating the last time an outcome could have been observed per protocol.
+  - Not-yet-observed assessments are missing both an outcome and an assessment time.
