@@ -8,11 +8,12 @@ articles:
   Continuous_1_Study_Design: Continuous_1_Study_Design.html
   Continuous_2_Monitoring: Continuous_2_Monitoring.html
   Continuous_3_Analyses: Continuous_3_Analyses.html
+  Group_Sequential_Designs: Group_Sequential_Designs.html
   Implementing_New_Methods: Implementing_New_Methods.html
   Time_To_Event_1_Study_Design: Time_To_Event_1_Study_Design.html
   Time_To_Event_2_Monitoring: Time_To_Event_2_Monitoring.html
   Time_To_Event_3_Analyses: Time_To_Event_3_Analyses.html
-last_built: 2024-09-11T20:58Z
+last_built: 2024-09-12T20:27Z
 urls:
   reference: https://jbetz-jhu.github.io/impart/reference
   article: https://jbetz-jhu.github.io/impart/articles

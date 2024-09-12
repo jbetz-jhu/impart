@@ -36,22 +36,23 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Continuous Outcomes</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Information Monitoring - Continuous Outcomes</h6></li>
     <li><a class="dropdown-item" href="articles/Continuous_1_Study_Design.html">Study Design for a Continuous Outcome</a></li>
     <li><a class="dropdown-item" href="articles/Continuous_2_Monitoring.html">Information Monitoring for a Continuous Outcome</a></li>
     <li><a class="dropdown-item" href="articles/Continuous_3_Analyses.html">Monitored Analyses for a Continuous Outcome</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Binary Outcomes</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Information Monitoring - Binary Outcomes</h6></li>
     <li><a class="dropdown-item" href="articles/Binary_1_Study_Design.html">Study Design for a Binary Outcome</a></li>
     <li><a class="dropdown-item" href="articles/Binary_2_Monitoring.html">Information Monitoring for a Binary Outcome</a></li>
     <li><a class="dropdown-item" href="articles/Binary_3_Analyses.html">Monitored Analyses for a Binary Outcome</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Time-to-Event Outcomes</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Information Monitoring - Time-to-Event Outcomes</h6></li>
     <li><a class="dropdown-item" href="articles/Time_To_Event_1_Study_Design.html">Study Design for a Time-to-Event Outcome</a></li>
     <li><a class="dropdown-item" href="articles/Time_To_Event_2_Monitoring.html">Information Monitoring for a Time-to-Event Outcome</a></li>
     <li><a class="dropdown-item" href="articles/Time_To_Event_3_Analyses.html">Monitored Analyses for a Time-to-Event Outcome</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Time-to-Event_Outcomes</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Additional Vignettes</h6></li>
+    <li><a class="dropdown-item" href="articles/Group_Sequential_Designs.html">Covariate Adjustment in Group Sequential Designs</a></li>
     <li><a class="dropdown-item" href="articles/Implementing_New_Methods.html">Implementing New Methods in `impart`</a></li>
   </ul>
 </li>
@@ -74,9 +75,10 @@
 <!-- badges: start -->
 
 <p>Investigators are faced with many challenges in designing efficient, ethical randomized trials due to competing demands: a trial must collect enough information to identify meaningful benefits or harms with a desired probability, while also minimizing potential harm and suboptimal treatment of participants. Satisfying these competing demands is further complicated by the limited and imprecise information available during the design of a study.</p>
-<p>Studies designed around a fixed sample size are inflexible, requiring investigators to wait until the end of data collection to perform statistical analyses. Group sequential designs are more flexible, allowing studies to be stopped for efficacy or futility according to a pre-planned analyses. Covariate adjustment allows investigators to potentially gain additional precision and power from variables collected on individuals prior to randomization. Unfortunately, the amount of precision gained from covariate adjustment is not known precisely at the outset of a study, complicating the ability to use covariate adjustment to reduce the required sample size. Additionally, some methods of covariate adjustment do not provide the independent increments property required by group sequential design methods.</p>
-<p>Rather than planning analyses based on a specific number of participants, investigators can pre-specify when analyses reach pre-specified levels of precision: this is known as information monitoring (Mehta and Tsiatis 2001). This allows investigators to adapt their study to the precision in the accruing data, reducing the risk of under- or overpowered trials. This also allows investigators to use covariate adjustment to shorten the trial duration, rather than just providing additional power and precision.</p>
-<p>The independent increments property can also be obtained by orthogonalizing estimates and their covariance, allowing covariate adjustment to be included in both group sequential and information monitoring designs.</p>
+<p>Studies designed around a fixed sample size are inflexible, requiring investigators to wait until the end of data collection to perform statistical analyses. Group sequential designs are more flexible, allowing studies to be stopped for efficacy or futility according to a pre-planned analyses, which occur when the number of obtained primary outcomes reach pre-specified fractions of the final sample size.</p>
+<p>Covariate adjustment allows investigators to potentially gain additional precision variables collected on individuals prior to randomization. This potential increase in precision can be used to provide additional power in a fixed sample size design or a group sequential design. Not all methods of covariate adjustment are directly compatible with a group sequential design, since the boundaries for determining efficacy or futility depend on the independent increments assumption. While this assumption fails to hold in some cases, this assumption can be made to hold by orthogonalizing the estimates and their variance-covariance matrix, which allows a much broader class of methods to be used in such designs (Van Lancker, Betz, and Rosenblum 2022).</p>
+<p>A disadvantage of covariate adjustment is that the amount of precision gained from covariate adjustment is not known precisely at the outset of a study. This complicates the ability to use covariate adjustment to reduce the required sample size instead of providing additional power. Rather than planning analyses based on a specific number of participants, investigators can pre-specify when analyses reach pre-specified levels of precision: this is known as information monitoring (Mehta and Tsiatis 2001). This allows investigators to adapt their study to the precision in the accruing data, reducing the risk of under- or overpowered trials. This also allows investigators to use covariate adjustment to shorten the trial duration, rather than just providing additional power and precision.</p>
+<p>The <code>impart</code> package can be used for performing covariate adjustment in group sequential designs or designing, monitoring, and analyzing information monitored designs.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -86,9 +88,9 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jbetz-jhu/impart"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── R CMD build ─────────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;       ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpMxHB2F\remotes532460593196\jbetz-jhu-impart-f8934f5/DESCRIPTION'</span></span>
+<span><span class="co">#&gt;       ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpY7ydui\remotes21c49a84e36\jbetz-jhu-impart-06d167d/DESCRIPTION'</span></span>
 <span><span class="co">#&gt;       ─  preparing 'impart':</span></span>
-<span><span class="co">#&gt;      checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information</span></span>
+<span><span class="co">#&gt;    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information</span></span>
 <span><span class="co">#&gt;       ─  checking for LF line-endings in source and make files and shell scripts</span></span>
 <span><span class="co">#&gt;   ─  checking for empty or unneeded directories</span></span>
 <span><span class="co">#&gt;       ─  building 'impart_0.1.0.tar.gz'</span></span>
