@@ -21,15 +21,25 @@ Studies designed around a fixed sample size are inflexible, requiring
 investigators to wait until the end of data collection to perform
 statistical analyses. Group sequential designs are more flexible,
 allowing studies to be stopped for efficacy or futility according to a
-pre-planned analyses. Covariate adjustment allows investigators to
-potentially gain additional precision and power from variables collected
-on individuals prior to randomization. Unfortunately, the amount of
-precision gained from covariate adjustment is not known precisely at the
-outset of a study, complicating the ability to use covariate adjustment
-to reduce the required sample size. Additionally, some methods of
-covariate adjustment do not provide the independent increments property
-required by group sequential design methods.
+pre-planned analyses, which occur when the number of obtained primary
+outcomes reach pre-specified fractions of the final sample size.
 
+Covariate adjustment allows investigators to potentially gain additional
+precision variables collected on individuals prior to randomization.
+This potential increase in precision can be used to provide additional
+power in a fixed sample size design or a group sequential design. Not
+all methods of covariate adjustment are directly compatible with a group
+sequential design, since the boundaries for determining efficacy or
+futility depend on the independent increments assumption. While this
+assumption fails to hold in some cases, this assumption can be made to
+hold by orthogonalizing the estimates and their variance-covariance
+matrix, which allows a much broader class of methods to be used in such
+designs (Van Lancker, Betz, and Rosenblum 2022).
+
+A disadvantage of covariate adjustment is that the amount of precision
+gained from covariate adjustment is not known precisely at the outset of
+a study. This complicates the ability to use covariate adjustment to
+reduce the required sample size instead of providing additional power.
 Rather than planning analyses based on a specific number of
 participants, investigators can pre-specify when analyses reach
 pre-specified levels of precision: this is known as information
@@ -39,10 +49,9 @@ under- or overpowered trials. This also allows investigators to use
 covariate adjustment to shorten the trial duration, rather than just
 providing additional power and precision.
 
-The independent increments property can also be obtained by
-orthogonalizing estimates and their covariance, allowing covariate
-adjustment to be included in both group sequential and information
-monitoring designs.
+The `impart` package can be used for performing covariate adjustment in
+group sequential designs or designing, monitoring, and analyzing
+information monitored designs.
 
 ## Installation
 
@@ -54,9 +63,9 @@ You can install the development version of impart from
 devtools::install_github("jbetz-jhu/impart")
 #> 
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#>       ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpMxHB2F\remotes532460593196\jbetz-jhu-impart-f8934f5/DESCRIPTION'
+#>       ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpY7ydui\remotes21c49a84e36\jbetz-jhu-impart-06d167d/DESCRIPTION'
 #>       ─  preparing 'impart':
-#>      checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
+#>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
 #>       ─  checking for LF line-endings in source and make files and shell scripts
 #>   ─  checking for empty or unneeded directories
 #>       ─  building 'impart_0.1.0.tar.gz'

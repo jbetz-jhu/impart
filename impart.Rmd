@@ -1,0 +1,75 @@
+---
+output: github_document
+bibliography:
+  - "covariate_adjustment.bib"
+---
+
+<!-- impart.md is generated from README.Rmd. Please edit that file -->
+
+```{r Setup, include = FALSE}
+# Graphical Parameters
+fig_w <- 8
+fig_h <- 8
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  fig.width = fig_w,
+  fig.height = fig_h,
+  fig.align = "center",
+  out.width = "100%",
+  dpi = 600,
+  echo = FALSE,
+  message = FALSE
+)
+```
+
+
+
+
+## Installation
+
+You can install the development version of impart from [GitHub](https://github.com/) using `install.packages` from the `devtools` package:
+
+```{r Install Impart, echo = TRUE}
+# install.packages("devtools") # Install `devtools` if it is not already installed
+devtools::install_github("jbetz-jhu/impart")
+```
+
+## Vignettes
+
+There are several vignettes on how to use `impart`, including group sequential designs and information adaptive designs. For group sequential designs, see the vignette below:
+
+```{r, Vignettes-GSD, echo = TRUE, eval = FALSE}
+vignette("Group_Sequential_Designs", package = "impart") # Design
+```
+
+### Information Monitored Designs
+
+Each vignette is sequential, building upon the previous ones. Since the analysis approach depends on the type of outcome, there are vignettes for continuous, binary, and time-to-event outcomes. Each of which has example data built-in:
+
+```{r Vignettes-Information-Adaptive, echo = TRUE, eval = FALSE}
+vignette("Continuous_1_Study_Design", package = "impart") # Design
+vignette("Continuous_2_Monitoring", package = "impart") # Information Monitoring
+vignette("Continuous_3_Analyses", package = "impart") # Analyses
+
+vignette("Binary_1_Study_Design", package = "impart") # Design
+vignette("Binary_2_Monitoring", package = "impart") # Information Monitoring
+vignette("Binary_3_Analyses", package = "impart") # Analyses
+
+vignette("Time_To_Event_1_Study_Design", package = "impart") # Design
+vignette("Time_To_Event_2_Monitoring", package = "impart") # Information Monitoring
+vignette("Time_To_Event_3_Analyses", package = "impart") # Analyses
+```
+
+
+
+
+### Implementing New Methods with `impart`
+
+Since new methods are constantly under development, `impart` can be extended by functions in other packages. A worked example of including new software is in the vignette below:
+
+```{r, Vignettes-GSD, echo = TRUE, eval = FALSE}
+vignette("Implementing_New_Methods", package = "impart") # Design
+```

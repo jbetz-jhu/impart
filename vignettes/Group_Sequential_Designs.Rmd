@@ -1,0 +1,37 @@
+---
+title: "Covariate Adjustment in Group Sequential Designs"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Group_Sequential_Designs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{pwr}
+  %\VignetteDepends{ggplot2}
+---
+
+```{r RMD-Setup, include = FALSE}
+fig_w <- 8
+fig_h <- 8
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  echo = TRUE,
+  message = TRUE,
+  error = TRUE,
+  purl = FALSE,
+  results = "markup",
+  fig.path = "../man/figures/",
+  fig.width = fig_w,
+  fig.height = fig_h,
+  fig.align = "center",
+  out.width = "80%",
+  dpi = 600
+)
+
+options(
+  rmarkdown.html_vignette.check_title = FALSE
+)
+
+set.seed(9876)
+```

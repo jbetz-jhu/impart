@@ -4,27 +4,28 @@ template:
 
 articles:
 - title: Vignettes on Design, Monitoring, & Analysis
-  navbar: Continuous Outcomes
+  navbar: Information Monitoring - Continuous Outcomes
   contents:
     - Continuous_1_Study_Design
     - Continuous_2_Monitoring
     - Continuous_3_Analyses
 
 - title: Binary Outcomes
-  navbar: Binary Outcomes
+  navbar: Information Monitoring - Binary Outcomes
   contents:
     - Binary_1_Study_Design
     - Binary_2_Monitoring
     - Binary_3_Analyses
 
-- title: Time-to-Event Outcomes
-  navbar: Time-to-Event Outcomes
+- title: Information Monitoring - Time-to-Event Outcomes
+  navbar: Information Monitoring - Time-to-Event Outcomes
   contents:
     - Time_To_Event_1_Study_Design
     - Time_To_Event_2_Monitoring
     - Time_To_Event_3_Analyses
 
-- title: Time-to-Event_Outcomes
-  navbar: Time-to-Event_Outcomes
+- title: Additional Vignettes
+  navbar: Additional Vignettes
   contents:
+    - Group_Sequential_Designs
     - Implementing_New_Methods
