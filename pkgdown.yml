@@ -2,18 +2,19 @@ pandoc: 3.1.11
 pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
-  Binary_1_Study_Design: Binary_1_Study_Design.html
-  Binary_2_Monitoring: Binary_2_Monitoring.html
-  Binary_3_Analyses: Binary_3_Analyses.html
-  Continuous_1_Study_Design: Continuous_1_Study_Design.html
-  Continuous_2_Monitoring: Continuous_2_Monitoring.html
-  Continuous_3_Analyses: Continuous_3_Analyses.html
-  Group_Sequential_Designs: Group_Sequential_Designs.html
-  Implementing_New_Methods: Implementing_New_Methods.html
-  Time_To_Event_1_Study_Design: Time_To_Event_1_Study_Design.html
-  Time_To_Event_2_Monitoring: Time_To_Event_2_Monitoring.html
-  Time_To_Event_3_Analyses: Time_To_Event_3_Analyses.html
-last_built: 2024-09-12T20:27Z
+  analyses_binary: analyses_binary.html
+  analyses_continuous: analyses_continuous.html
+  analyses_group_sequential: analyses_group_sequential.html
+  analyses_time_to_event: analyses_time_to_event.html
+  design_binary: design_binary.html
+  design_continuous: design_continuous.html
+  design_time_to_event: design_time_to_event.html
+  impart: impart.html
+  monitoring_binary: monitoring_binary.html
+  monitoring_continuous: monitoring_continuous.html
+  monitoring_time_to_event: monitoring_time_to_event.html
+  new_methods_in_impart: new_methods_in_impart.html
+last_built: 2024-09-13T15:34Z
 urls:
   reference: https://jbetz-jhu.github.io/impart/reference
   article: https://jbetz-jhu.github.io/impart/articles
