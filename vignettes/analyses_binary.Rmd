@@ -1,8 +1,10 @@
 ---
-title: "Monitored Analyses for a Time-to-Event Outcome"
+title: "Monitored Analyses for a Binary Outcome"
+description: >
+  Performing interim and final analyses for a binary outcome
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Time_To_Event_3_Analyses}
+  %\VignetteIndexEntry{Monitored Analyses for a Binary Outcome}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -41,9 +43,8 @@ library(impart)
 This vignette demonstrates how to use `impart` to conduct interim and final
 analyses in group sequential or information monitored designs. This builds upon
 the terminology and concepts in the vignettes on study design and information
-monitoring. These can be viewed as follows:
+monitoring. To see all available vignettes in impart, use the `vignettes` command:
 
-```{r Previous-Vignettes, eval = FALSE}
-vignette("Time_To_Event_1_Study_Design", package = "impart")
-vignette("Time_To_Event_1_Monitoring", package = "impart")
+```{r List-Vignettes, eval = FALSE}
+print(vignette(package = "impart"))
 ```

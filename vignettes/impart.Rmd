@@ -1,0 +1,45 @@
+---
+title: "Getting Started with `impart`"
+description: >
+  Learning about group sequential and information monitored designs with `impart`
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with `impart`}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+There are several excellent resources available to provide both background on group sequential design methods and examples of planning and analyses using R:
+
+  - The [`rpact`](https://www.rpact.org/) package for group sequential designs
+    - [`rpact` vignettes](https://www.rpact.org/#vignettes)
+  - The [`gsDesign`](https://keaven.github.io/gsDesign/) package for group sequential designs
+    - [Group Sequential Designs Made Easy](https://keaven.github.io/gsd-shiny/) by Keaven Anderson and Nan Xiao
+
+Since group sequential design methodology can also implemented in information monitoring trials, users should understand the fundamentals of these designs.
+
+
+
+
+## Using `impart`
+
+There are several vignettes built into `impart`: these include vignettes on information monitoring designs as well as group sequential designs. To see all available vignettes in impart, use the `vignettes` command:
+
+```{r List-Vignettes}
+print(vignette(package = "impart"))
+```
+
+
+If you are using `impart` in practice, please 
+
+```{r Citing-Impart}
+citation(package = "impart")
+```
+

@@ -22,7 +22,7 @@ Description: Software for designing, monitoring, and analyzing experiments
     orthogonalized to provide the 'independent increments' assumption which
     underpins the valid use of group sequential stopping boundaries.
 License: GPL (>= 3)
-URL: https://jbetz-jhu.github.io/impart/
+URL: https://jbetz-jhu.github.io/impart/, https://github.com/jbetz-jhu/impart
 Depends: 
     R (>= 2.10)
 Imports: 

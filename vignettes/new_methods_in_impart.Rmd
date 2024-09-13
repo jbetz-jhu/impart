@@ -1,8 +1,8 @@
 ---
-title: "Covariate Adjustment in Group Sequential Designs"
+title: "Implementing New Methods in `impart`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Group_Sequential_Designs}
+  %\VignetteIndexEntry{Implementing New Methods in `impart`}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{pwr}

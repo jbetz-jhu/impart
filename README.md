@@ -12,7 +12,7 @@
 Investigators are faced with many challenges in designing efficient,
 ethical randomized trials due to competing demands: a trial must collect
 enough information to identify meaningful benefits or harms with a
-desired probability, while also minimizing potential harm and suboptimal
+desired probability while also minimizing potential harm and suboptimal
 treatment of participants. Satisfying these competing demands is further
 complicated by the limited and imprecise information available during
 the design of a study.
@@ -25,16 +25,14 @@ pre-planned analyses, which occur when the number of obtained primary
 outcomes reach pre-specified fractions of the final sample size.
 
 Covariate adjustment allows investigators to potentially gain additional
-precision variables collected on individuals prior to randomization.
-This potential increase in precision can be used to provide additional
-power in a fixed sample size design or a group sequential design. Not
-all methods of covariate adjustment are directly compatible with a group
-sequential design, since the boundaries for determining efficacy or
-futility depend on the independent increments assumption. While this
-assumption fails to hold in some cases, this assumption can be made to
-hold by orthogonalizing the estimates and their variance-covariance
-matrix, which allows a much broader class of methods to be used in such
-designs (Van Lancker, Betz, and Rosenblum 2022).
+precision by utilizing information collected from individuals prior to
+randomization in the statistical analysis. This potential increase in
+precision can be used to provide additional power in a fixed sample size
+design or a group sequential design. Not all methods of covariate
+adjustment are directly compatible with group sequential designs, but a
+broad class of methods can be made compatible by performing an
+orthogonalization of the resulting estimates and their
+variance-covariance matrix (Van Lancker, Betz, and Rosenblum 2022).
 
 A disadvantage of covariate adjustment is that the amount of precision
 gained from covariate adjustment is not known precisely at the outset of
@@ -63,7 +61,7 @@ You can install the development version of impart from
 devtools::install_github("jbetz-jhu/impart")
 #> 
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#>       ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\RtmpY7ydui\remotes21c49a84e36\jbetz-jhu-impart-06d167d/DESCRIPTION'
+#>          checking for file 'C:\Users\jbetz\AppData\Local\Temp\Rtmp8mEBtO\remotes3f4280a339d\jbetz-jhu-impart-151f98d/DESCRIPTION' ...  ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\Rtmp8mEBtO\remotes3f4280a339d\jbetz-jhu-impart-151f98d/DESCRIPTION'
 #>       ─  preparing 'impart':
 #>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
 #>       ─  checking for LF line-endings in source and make files and shell scripts
@@ -73,17 +71,8 @@ devtools::install_github("jbetz-jhu/impart")
 #> 
 ```
 
-## Vignettes
-
-There are three vignettes on how to use `impart`, each focusing on a
-different phase of a study. Each vignette is sequential, building upon
-the previous ones.
-
-``` r
-vignette("impart_study_design", package = "impart") # Design
-vignette("impart_monitoring", package = "impart") # Information Monitoring
-vignette("impart_analyses", package = "impart") # Analyses
-```
+There are several vignettes built into `impart`: These are listed in the
+‘Articles’ tab above, and can be listed in the R console:
 
 ------------------------------------------------------------------------
 

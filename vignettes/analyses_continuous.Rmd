@@ -1,8 +1,10 @@
 ---
 title: "Monitored Analyses for a Continuous Outcome"
+description: >
+  Performing interim and final analyses for a continuous outcome
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Continuous_3_Analyses}
+  %\VignetteIndexEntry{Monitored Analyses for a Continuous Outcome}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -41,11 +43,10 @@ library(impart)
 This vignette demonstrates how to use `impart` to conduct interim and final
 analyses in group sequential or information monitored designs. This builds upon
 the terminology and concepts in the vignettes on study design and information
-monitoring. These can be viewed as follows:
+monitoring. To see all available vignettes in impart, use the `vignettes` command:
 
-```{r Previous-Vignettes, eval = FALSE}
-vignette("Continuous_1_Study_Design", package = "impart")
-vignette("Continuous_2_Monitoring", package = "impart")
+```{r List-Vignettes, eval = FALSE}
+print(vignette(package = "impart"))
 ```
 
 ## Setting Up a Monitored Design:

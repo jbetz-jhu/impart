@@ -1,8 +1,10 @@
 ---
-title: "Study Design for a Continuous Outcome"
+title: "Designing Information Monitored Trials for Continuous Outcomes"
+description: >
+  How to design an information monitored randomized trial for continuous outcomes
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Continuous_1_Study_Design}
+  %\VignetteIndexEntry{Designing Information Monitored Trials for Continuous Outcomes}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{pwr}

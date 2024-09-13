@@ -1,8 +1,10 @@
 ---
-title: "Study Design for a Binary Outcome"
+title: "Designing Information Monitored Trials for Binary Outcomes"
+description: >
+  How to design an information monitored randomized trial for binary outcomes
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Binary_1_Study_Design}
+  %\VignetteIndexEntry{Designing Information Monitored Trials for Binary Outcomes}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{pwr}

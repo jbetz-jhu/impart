@@ -1,8 +1,10 @@
 ---
-title: "Information Monitoring for a Time-to-Event Outcome"
+title: "Monitoring Information for a Time-to-Event Outcome"
+description: >
+  How to determine analysis times for a time-to-event outcome
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Time_To_Event_2_Monitoring}
+  %\VignetteIndexEntry{Monitoring Information for a Time-to-Event Outcome}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{deming}
@@ -42,11 +44,10 @@ library(deming) # Required for deming::theilsen()
 
 This vignette demonstrates how to use `impart` to monitor the amount of
 information contained in the accrued data so that analyses are not under- or
-over-powered. This builds upon the terminology and concepts in the vignette on
-study design, which can be viewed as follows:
+over-powered. To see all available vignettes in impart, use the `vignettes` command:
 
-```{r Previous-Vignettes, eval = FALSE}
-vignette("Time_To_Event_1_Study_Design", package = "impart")
+```{r List-Vignettes, eval = FALSE}
+print(vignette(package = "impart"))
 ```
 
 # Monitoring Ongoing Studies

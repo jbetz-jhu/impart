@@ -1,4 +1,13 @@
 url: https://jbetz-jhu.github.io/impart/
+authors:
+  Kelly Van Lancker:
+    href: https://kellyvanlancker.com/
+  Josh Betz:
+    href: https://publichealth.jhu.edu/faculty/2679/joshua-betz
+  Michael Rosenblum:
+    href: https://mrosenblumbiostat.wordpress.com/
+
+
 template:
   bootstrap: 5
 
@@ -6,26 +15,26 @@ articles:
 - title: Vignettes on Design, Monitoring, & Analysis
   navbar: Information Monitoring - Continuous Outcomes
   contents:
-    - Continuous_1_Study_Design
-    - Continuous_2_Monitoring
-    - Continuous_3_Analyses
+    - design_continuous
+    - monitoring_continuous
+    - analyses_continuous
 
 - title: Binary Outcomes
   navbar: Information Monitoring - Binary Outcomes
   contents:
-    - Binary_1_Study_Design
-    - Binary_2_Monitoring
-    - Binary_3_Analyses
+    - design_binary
+    - monitoring_binary
+    - analyses_binary
 
 - title: Information Monitoring - Time-to-Event Outcomes
   navbar: Information Monitoring - Time-to-Event Outcomes
   contents:
-    - Time_To_Event_1_Study_Design
-    - Time_To_Event_2_Monitoring
-    - Time_To_Event_3_Analyses
+    - design_time_to_event
+    - monitoring_time_to_event
+    - analyses_time_to_event
 
 - title: Additional Vignettes
   navbar: Additional Vignettes
   contents:
-    - Group_Sequential_Designs
-    - Implementing_New_Methods
+    - analyses_group_sequential
+    - new_methods_in_impart
