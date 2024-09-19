@@ -12,6 +12,7 @@ Software for designing, monitoring, and analyzing experiments with covariate adj
 Useful links:
 \itemize{
   \item \url{https://jbetz-jhu.github.io/impart/}
+  \item \url{https://github.com/jbetz-jhu/impart}
 }
 
 }

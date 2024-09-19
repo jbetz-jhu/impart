@@ -3,6 +3,31 @@ test_that(
   code = {
     ### Unadjusted, Not Orthogonalized: Stage 2 ################################
     expect_no_condition(
+      monitored_analysis(
+        data = example_1_ia_1,
+        monitored_design = monitored_design,
+        estimation_function = standardization,
+        estimation_arguments =
+          list(
+            estimand = "difference",
+            y0_formula = y_4 ~ 1,
+            y1_formula = y_4 ~ 1,
+            family = gaussian,
+            treatment_column = "tx",
+            outcome_indicator_column = ".r_4"
+          ),
+        correction_function = standardization_correction,
+        orthogonalize = FALSE,
+        rng_seed = 12345,
+        control =
+          monitored_analysis_control(
+            n_bootstrap = 100
+          )
+      )
+    )
+
+
+    expect_no_condition(
       interim_analysis_1 <-
         monitored_analysis(
           data = example_1_ia_1,
@@ -20,7 +45,9 @@ test_that(
           correction_function = standardization_correction,
           orthogonalize = FALSE,
           rng_seed = 12345,
-          control = monitored_analysis_control_testing()
+          control = monitored_analysis_control_testing(
+            n_bootstrap = 100
+          )
         )
     )
 
@@ -47,7 +74,9 @@ test_that(
           correction_function = standardization_correction,
           orthogonalize = FALSE,
           rng_seed = 12345,
-          control = monitored_analysis_control_testing()
+          control = monitored_analysis_control_testing(
+            n_bootstrap = 100
+          )
         )
     )
 
@@ -77,7 +106,9 @@ test_that(
           correction_function = standardization_correction,
           orthogonalize = FALSE,
           rng_seed = 12345,
-          control = monitored_analysis_control_testing()
+          control = monitored_analysis_control_testing(
+            n_bootstrap = 100
+          )
         )
     )
 
@@ -114,7 +145,9 @@ test_that(
           correction_function = standardization_correction,
           orthogonalize = TRUE,
           rng_seed = 12345,
-          control = monitored_analysis_control_testing()
+          control = monitored_analysis_control_testing(
+            n_bootstrap = 100
+          )
         )
     )
 
@@ -141,7 +174,9 @@ test_that(
           correction_function = standardization_correction,
           orthogonalize = TRUE,
           rng_seed = 12345,
-          control = monitored_analysis_control_testing()
+          control = monitored_analysis_control_testing(
+            n_bootstrap = 100
+          )
         )
     )
 
@@ -171,7 +206,9 @@ test_that(
           correction_function = standardization_correction,
           orthogonalize = TRUE,
           rng_seed = 12345,
-          control = monitored_analysis_control_testing()
+          control = monitored_analysis_control_testing(
+            n_bootstrap = 100
+          )
         )
     )
 

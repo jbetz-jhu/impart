@@ -66,11 +66,11 @@ required_information_single_stage <-
       stop("`sides` must be either 1 or 2.")
     }
 
-    if(any(power < 0) | any(power > 1)){
+    if(any(power < 0) | any(power >= 1)){
       stop("`power` must be in the interval (`alpha` = ", alpha, ", 1)")
     }
 
-    if(any(alpha < 0) | any(alpha > 1)){
+    if(any(alpha < 0) | any(alpha >= 1)){
       stop("`alpha` must be in the interval (0, 1)")
     }
 

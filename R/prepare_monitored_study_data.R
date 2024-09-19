@@ -125,6 +125,8 @@ prepare_monitored_study_data <-
             paste0(msg, "`", names(outcome_time_differences)[i], "`: rows (",
                    paste(rows_affected, collapse = ", "), "); ")
         }
+
+        stop(msg)
       }
     }
 

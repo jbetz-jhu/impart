@@ -5,6 +5,9 @@
 
 <!-- badges: start -->
 
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/jbetz-jhu/impart/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jbetz-jhu/impart/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/jbetz-jhu/impart/graph/badge.svg?token=75LYU8AN1H)](https://codecov.io/gh/jbetz-jhu/impart)  
 <!-- badges: end -->
@@ -61,11 +64,11 @@ You can install the development version of impart from
 devtools::install_github("jbetz-jhu/impart")
 #> 
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#>          checking for file 'C:\Users\jbetz\AppData\Local\Temp\Rtmp8mEBtO\remotes3f4280a339d\jbetz-jhu-impart-151f98d/DESCRIPTION' ...  ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\Rtmp8mEBtO\remotes3f4280a339d\jbetz-jhu-impart-151f98d/DESCRIPTION'
+#>          checking for file 'C:\Users\jbetz\AppData\Local\Temp\Rtmp0KkBzC\remotes42cc6fcc6226\jbetz-jhu-impart-c00c0fe/DESCRIPTION' ...     checking for file 'C:\Users\jbetz\AppData\Local\Temp\Rtmp0KkBzC\remotes42cc6fcc6226\jbetz-jhu-impart-c00c0fe/DESCRIPTION' ...   ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\Rtmp0KkBzC\remotes42cc6fcc6226\jbetz-jhu-impart-c00c0fe/DESCRIPTION'
 #>       ─  preparing 'impart':
 #>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
 #>       ─  checking for LF line-endings in source and make files and shell scripts
-#>   ─  checking for empty or unneeded directories
+#>       ─  checking for empty or unneeded directories
 #>       ─  building 'impart_0.1.0.tar.gz'
 #>      
 #> 
