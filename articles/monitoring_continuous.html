@@ -303,12 +303,12 @@ this is not yet known at day 90: <code>.r_1</code> is
 <span><span class="co"># Data known at study day 90</span></span>
 <span><span class="va">data_90</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">show_cols</span>, <span class="st">".e"</span>, <span class="st">".t_1"</span>, <span class="st">"y_1"</span>, <span class="st">".r_1"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;   .id        x_2        x_3        x_4 tx       .e     .t_1      y_1 .r_1</span></span>
-<span><span class="co">#&gt; 1   1  0.1971432 -0.8425884  0.2794844  0  2.24846 25.01538 1.591873    1</span></span>
-<span><span class="co">#&gt; 2   2 -0.7384296  0.1315016 -1.2419134  1 11.05565 55.05565       NA    0</span></span>
-<span><span class="co">#&gt; 3   3  0.4997821  1.6932555 -0.4063889  0 16.96591 60.96591       NA    0</span></span>
-<span><span class="co">#&gt; 4   4 -0.2189937 -1.7719120  0.1936013  1 25.13396 59.84544 1.212620    1</span></span>
-<span><span class="co">#&gt; 5   5  0.9282685  0.8078133  0.9317145  0 50.07301 75.94952 8.655326    1</span></span>
-<span><span class="co">#&gt; 6   6  1.1756811  0.0226265 -0.2556343  1 50.93935 80.29181 6.902055    1</span></span></code></pre></div>
+<span><span class="co">#&gt; 1   1  0.1971432 -0.8425884  0.2794844  0  2.24846 27.26384 1.591873    1</span></span>
+<span><span class="co">#&gt; 2   2 -0.7384296  0.1315016 -1.2419134  1 11.05565 66.11130       NA    0</span></span>
+<span><span class="co">#&gt; 3   3  0.4997821  1.6932555 -0.4063889  0 16.96591 77.93183       NA    0</span></span>
+<span><span class="co">#&gt; 4   4 -0.2189937 -1.7719120  0.1936013  1 25.13396 84.97941 1.212620    1</span></span>
+<span><span class="co">#&gt; 5   5  0.9282685  0.8078133  0.9317145  0 50.07301       NA       NA   NA</span></span>
+<span><span class="co">#&gt; 6   6  1.1756811  0.0226265 -0.2556343  1 50.93935       NA       NA   NA</span></span></code></pre></div>
 <p>If <code>observe_missing_times</code> were set to <code>0</code> for
 each outcome, any outcome that is <code>NA</code> and has a recorded
 time of assessment will be treated as missing.</p>
@@ -436,16 +436,26 @@ against the target information level for analyses:</p>
 <span>    orthogonalize <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    rng_seed <span class="op">=</span> <span class="fl">23456</span></span>
 <span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
+<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
+<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
+<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
+<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
+<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
+<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
+<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
+<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
+<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
 <span></span>
 <span><span class="va">information_n_70</span><span class="op">$</span><span class="va">covariance_uncorrected</span></span>
 <span><span class="co">#&gt;           estimates</span></span>
-<span><span class="co">#&gt; estimates  4.333183</span></span>
+<span><span class="co">#&gt; estimates  53.11447</span></span>
 <span><span class="va">information_n_70</span><span class="op">$</span><span class="va">information</span></span>
-<span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt; 0.2307772</span></span>
+<span><span class="co">#&gt;  estimates </span></span>
+<span><span class="co">#&gt; 0.01882726</span></span>
 <span><span class="va">information_n_70</span><span class="op">$</span><span class="va">covariance_orthogonal_uncorrected</span></span>
 <span><span class="co">#&gt;           estimates</span></span>
-<span><span class="co">#&gt; estimates  4.333183</span></span>
+<span><span class="co">#&gt; estimates  53.11447</span></span>
 <span><span class="va">information_n_70</span><span class="op">$</span><span class="va">information_orthogonal</span></span>
 <span><span class="co">#&gt; NULL</span></span></code></pre></div>
 <p>When a study is designed with interim and final analyses,
@@ -506,8 +516,8 @@ vignette:</p>
 <p>The current information fraction can be computed:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">information_n_70</span><span class="op">$</span><span class="va">information</span><span class="op">/</span><span class="va">information_adaptive</span></span>
-<span><span class="co">#&gt; estimates </span></span>
-<span><span class="co">#&gt; 0.5062808</span></span></code></pre></div>
+<span><span class="co">#&gt;  estimates </span></span>
+<span><span class="co">#&gt; 0.04130338</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="tools-for-monitoring-information">Tools for Monitoring Information<a class="anchor" aria-label="anchor" href="#tools-for-monitoring-information"></a>
 </h3>
@@ -537,7 +547,7 @@ projecting when pre-specified information levels may be met:</p>
 <span>    rng_seed <span class="op">=</span> <span class="fl">23456</span>,</span>
 <span>    control <span class="op">=</span> <span class="fu"><a href="../reference/monitored_analysis_control.html">monitored_analysis_control</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Error in information$information[i] &lt;- if (orthogonalize) {: replacement has length zero</span></span>
+<span><span class="co">#&gt; Error in information_trajectory(prepared_data = data_n_final_70, monitored_design = monitored_design, : `n_min` (40) is at or below number of complete outcomes (28).</span></span>
 <span></span>
 <span><span class="va">data_n_70_trajectory</span></span>
 <span><span class="co">#&gt; Error: object 'data_n_70_trajectory' not found</span></span></code></pre></div>
