@@ -112,3 +112,34 @@
 #'   \item{years_to_recurrence}{Time to recurrence/censoring in years}
 #' }
 "colon_cancer"
+
+
+
+
+#' test_data: A dataset used for testing package functions
+#'
+#' This data.frame contains two time to event outcomes and two numeric outcomes,
+#' and is used for internal testing purposes. Enrollment time starts at day 0,
+#' with two individuals enrolled per day. The event time for the first event
+#' is the ceiling of the participant ID divided by 2. The event time for the
+#' second event is the participant ID multiplied by 2. The outcome time for the
+#' numeric outcome is equal to the participant ID, and the second outcome time
+#' is always 5 greater than the first outcome time.
+#'
+#' @format ## `test_data`
+#' A data frame with 10 rows and 12 columns:
+#' \describe{
+#'   \item{.id}{Participant ID}
+#'   \item{enrollment}{Entry time}
+#'   \item{x_1}{A binary covariate}
+#'   \item{tx}{Binary treatment assignment}
+#'   \item{tte_1}{time to `event_1`}
+#'   \item{tte_2}{time to `event_2`}
+#'   \item{event_1}{Event 1 indicator}
+#'   \item{event_2}{Event 2 indicator}
+#'   \item{y_1}{Intermediate outcome - 1 of 2}
+#'   \item{y_2}{Final Outcome - 2 of 2}
+#'   \item{.t_1}{Time of intermediate outcome}
+#'   \item{.t_2}{Time of final outcome}
+#' }
+"test_data"

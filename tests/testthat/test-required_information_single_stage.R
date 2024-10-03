@@ -72,6 +72,5 @@ test_that(
           power = c(0.8, 0.9)
         )
     )
-
   }
 )

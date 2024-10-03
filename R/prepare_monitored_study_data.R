@@ -106,6 +106,17 @@ prepare_monitored_study_data <-
       )
     }
 
+    # Check that all outcome variables for time-to-event are binary
+    if(time_to_event){
+      if(!all(unlist(data[, outcome_variables]) %in% c(0:1))){
+        stop("All variables in `outcome_variables` must be binary for time-to-event outcomes")
+      }
+
+      if(!all(unlist(data[, outcome_time_variables]) > 0)){
+        stop("All outcome times must be greater than 0.")
+      }
+    }
+
     if(outcomes_sequential){
       # Check for inconsistencies in Outcome Timing
       outcome_time_differences <-

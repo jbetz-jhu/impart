@@ -57,25 +57,35 @@ information monitored designs.
 ## Installation
 
 You can install the development version of impart from
-[GitHub](https://github.com/) using:
+[GitHub](https://github.com/) using `install_github` from the `devtools`
+package:
 
 ``` r
-# install.packages("devtools")
+# install.packages("devtools") # If not already installed, install devtools
 devtools::install_github("jbetz-jhu/impart")
-#> 
-#> ── R CMD build ─────────────────────────────────────────────────────────────────
-#>          checking for file 'C:\Users\jbetz\AppData\Local\Temp\Rtmp0KkBzC\remotes42cc6fcc6226\jbetz-jhu-impart-c00c0fe/DESCRIPTION' ...     checking for file 'C:\Users\jbetz\AppData\Local\Temp\Rtmp0KkBzC\remotes42cc6fcc6226\jbetz-jhu-impart-c00c0fe/DESCRIPTION' ...   ✔  checking for file 'C:\Users\jbetz\AppData\Local\Temp\Rtmp0KkBzC\remotes42cc6fcc6226\jbetz-jhu-impart-c00c0fe/DESCRIPTION'
-#>       ─  preparing 'impart':
-#>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
-#>       ─  checking for LF line-endings in source and make files and shell scripts
-#>       ─  checking for empty or unneeded directories
-#>       ─  building 'impart_0.1.0.tar.gz'
-#>      
-#> 
 ```
 
 There are several vignettes built into `impart`: These are listed in the
 ‘Articles’ tab above, and can be listed in the R console:
+
+``` r
+vignette(package = "impart")
+```
+
+| Title | Item |
+|:---|:---|
+| Covariate Adjustment in Group Sequential Designs (source, html) | analyses_group_sequential |
+| Designing Information Monitored Trials for Binary Outcomes (source, html) | design_binary |
+| Designing Information Monitored Trials for Continuous Outcomes (source, html) | design_continuous |
+| Designing Information Monitored Trials for Time-to-Event Outcomes (source, html) | design_time_to_event |
+| Getting Started with `impart` (source, html) | impart |
+| Implementing New Methods in `impart` (source, html) | new_methods_in_impart |
+| Monitored Analyses for a Binary Outcome (source, html) | analyses_binary |
+| Monitored Analyses for a Continuous Outcome (source, html) | analyses_continuous |
+| Monitored Analyses for a Time-to-Event Outcome (source, html) | analyses_time_to_event |
+| Monitoring Information for a Binary Outcome (source, html) | monitoring_binary |
+| Monitoring Information for a Continuous Outcome (source, html) | monitoring_continuous |
+| Monitoring Information for a Time-to-Event Outcome (source, html) | monitoring_time_to_event |
 
 ------------------------------------------------------------------------
 

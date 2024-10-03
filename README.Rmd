@@ -56,17 +56,22 @@ The `impart` package can be used for performing covariate adjustment in group se
 
 ## Installation
 
-You can install the development version of impart from [GitHub](https://github.com/) using:
+You can install the development version of impart from [GitHub](https://github.com/) using `install_github` from the `devtools` package:
 
-```{r Install Impart, echo = TRUE}
-# install.packages("devtools")
+```{r Install Impart, echo = TRUE, eval = FALSE}
+# install.packages("devtools") # If not already installed, install devtools
 devtools::install_github("jbetz-jhu/impart")
 ```
 
 There are several vignettes built into `impart`: These are listed in the 'Articles' tab above, and can be listed in the R console:
 
-```{r List-Vignettes, eval = FALSE}
-print(vignette(package = "impart"))
+```{r List-Vignettes, echo = TRUE, eval = FALSE}
+vignette(package = "impart")
+```
+
+```{r List-Vignettes-Table, echo = FALSE}
+impart_vignettes <- vignette(package = "impart")
+knitr::kable(impart_vignettes$results[, c("Title", "Item")])
 ```
 
 

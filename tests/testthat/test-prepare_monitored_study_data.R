@@ -1,7 +1,6 @@
 test_that(
-  desc = "Error Handling Works",
+  desc = "Error Handling Works - Continuous/Binary",
   code = {
-
     expect_error(
       object =
         prepare_monitored_study_data(
@@ -188,6 +187,56 @@ test_that(
 
 
 test_that(
+  desc = "Error Handling Works - Time-to-Event",
+  code = {
+    expect_error(
+      object =
+        prepare_monitored_study_data(
+          data =
+            within(
+              data = test_data,
+              expr = {tte_1[1:3] <- -tte_1[1:3]}
+            ),
+          study_time = 20,
+          id_variable = ".id",
+          covariates_variables = c("x_1"),
+          enrollment_time_variable = "enrollment",
+          treatment_variable = c("tx"),
+          outcome_variables = c("event_1", "event_2"),
+          outcome_time_variables = c("tte_1", "tte_2"),
+          observe_missing_times = c(0, 0),
+          outcomes_sequential = FALSE,
+          time_to_event = TRUE
+        ),
+      regexp = "All outcome times must be greater than 0"
+    )
+
+    expect_error(
+      object =
+        prepare_monitored_study_data(
+          data =
+            within(
+              data = test_data,
+              expr = {event_1[1:3] <- 5}
+            ),
+          study_time = 20,
+          id_variable = ".id",
+          covariates_variables = c("x_1"),
+          enrollment_time_variable = "enrollment",
+          treatment_variable = c("tx"),
+          outcome_variables = c("event_1", "event_2"),
+          outcome_time_variables = c("tte_1", "tte_2"),
+          observe_missing_times = c(0, 0),
+          outcomes_sequential = FALSE,
+          time_to_event = TRUE
+        ),
+      regexp = "All variables in `outcome_variables`"
+    )
+  }
+)
+
+
+test_that(
   desc = "Test Continuous, Binary, Time-to-Event Data",
   code = {
     expect_no_condition(
@@ -205,6 +254,23 @@ test_that(
           observe_missing_times = c(30, 60, 90, 120) + 7,
           outcomes_sequential = TRUE,
           time_to_event = FALSE
+        )
+    )
+
+    expect_no_condition(
+      object =
+        prepare_monitored_study_data(
+          data = test_data,
+          study_time = 20,
+          id_variable = ".id",
+          covariates_variables = c("x_1"),
+          enrollment_time_variable = "enrollment",
+          treatment_variable = c("tx"),
+          outcome_variables = c("event_1", "event_2"),
+          outcome_time_variables = c("tte_1", "tte_2"),
+          observe_missing_times = c(0, 0),
+          outcomes_sequential = FALSE,
+          time_to_event = TRUE
         )
     )
   }

@@ -35,3 +35,38 @@ options(
 
 set.seed(9876)
 ```
+
+`impart` has built-in methods for covariate adjustment that allow for continuous and binary outcomes, but is designed to be able to use methods from other R packages. This vignette demonstrates how to use new methods with `impart`, allowing new software to be used in information monitoring and group sequential designs.
+
+
+
+
+```{r}
+library(speff2trial)
+# Extract two treatment arms: Lev+5FU (Chemotherapy) and Obs (Observation)
+colon_cancer_5fu_vs_obs <-
+  subset(
+    x = colon_cancer,
+    arm %in% c("Lev+5FU", "Obs")
+  ) |>
+  droplevels()
+  
+
+sp_unadjusted <-
+  survival::coxph(
+    formula =
+      survival::Surv(time = years_to_death, event = event_death) ~ arm,
+    data = colon_cancer_5fu_vs_obs
+  )
+
+sp_full <-
+  speff2trial::speffSurv(
+    formula =
+      survival::Surv(time = years_to_death, event = event_death) ~
+      age + sex + obstruction + perforation + organ_adherence + positive_nodes +
+      differentiation +local_spread,
+    data = colon_cancer_5fu_vs_obs,
+    trt.id = "arm",
+    fixed = TRUE
+  )
+```
