@@ -87,6 +87,15 @@ vignette(package = "impart")
 | Monitoring Information for a Continuous Outcome (source, html) | monitoring_continuous |
 | Monitoring Information for a Time-to-Event Outcome (source, html) | monitoring_time_to_event |
 
+**NOTE:** `impart` is tested using the [`testthat`
+package](https://testthat.r-lib.org/) with a continuous integration
+workflow, and test coverage assessed using
+[codecov](https://codecov.io/gh/jbetz-jhu/impart). Vignettes currently
+cover the complete workflow for trials with a continuous outcome. Other
+vignettes on binary, ordinal, and time-to-event outcomes are under
+active development. Please check back to see if there have been updates
+to the `impart` software or documentation.
+
 ------------------------------------------------------------------------
 
 ## Background for Information Monitoring

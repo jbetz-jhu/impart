@@ -136,7 +136,7 @@ approximate_n_sd_7.5 <-
   )
 approximate_n_sd_7.5
 
-# Compute Power: Fixed Sample Size
+# Compute Fixed Sample Size Requirement
 pwr::pwr.t.test(
   d = minimum_difference/7.5,
   sig.level = alpha,
@@ -151,7 +151,7 @@ approximate_n_sd_10 <-
     round_up = TRUE
   )
 approximate_n_sd_10
-# Compute Power: Fixed Sample Size
+# Compute Fixed Sample Size Requirement
 pwr::pwr.t.test(
   d = minimum_difference/10,
   sig.level = alpha,

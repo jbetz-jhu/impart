@@ -13,7 +13,9 @@ test_data <-
     y_1 = 1:10,
     y_2 = 1:10 + 5,
     .t_1 = 1:10,
-    .t_2 = 1:10 + 5
+    .t_2 = 1:10 + 7
   )
+
+test_data$y_2[2*(1:5)] <- NA
 
 usethis::use_data(test_data, overwrite = TRUE)

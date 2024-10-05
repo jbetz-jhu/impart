@@ -70,7 +70,7 @@ data_at_time_t <-
         wide_data[[outcome_times[i]]] <- observed_time_at_time_t
 
       } else {
-        observed_time <- data[, renamed_outcome_times[i]] + enrollment_time
+        observed_time <- data[, renamed_outcome_times[i]]
         enrollment_to_outcome <- observed_time - enrollment_time
         not_yet_observed <-
           is.na(observed_time) | (observed_time > study_time)
@@ -98,7 +98,6 @@ data_at_time_t <-
           stop("Undetermined outcomes in rows: ",
                paste0(which(outcome_undetermined), collapse = ", "))
         }
-
 
         outcome_indicator <- NA*is_observed_complete
         outcome_indicator[which(is_observed_complete)] <- 1

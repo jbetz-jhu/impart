@@ -35,3 +35,108 @@ options(
 
 set.seed(9876)
 ```
+
+
+
+
+# Planning The Study
+
+Planning an information-monitored study is similar in many respects to planning a study with a fixed sample size. Investigators must decide on [the target of statistical inference, also known as an estimand](https://covariateadjustment.github.io/estimands.html): for a continuous outcome, the difference in means or a ratio of means may be of interest. Once the estimand is chosen, decisions must be made about what constitutes a meaningful effect size on the scale of the estimand (e.g. a difference in means of 5 or a ratio of means of 1.25). Finally, the characteristics of the testing procedure must be specified, including the desired Type I Error Rate, statistical power, and direction of alternatives of interest:
+
+```{r Universal-Study-Design-Parameters}
+# Universal Study Design Parameters
+minimum_difference <- 5 # Effect Size: Difference in Means of 5 or greater
+alpha <- 0.05 # Type I Error Rate
+power <- 0.9 # Statistical Power
+test_sides <- 2 # Direction of Alternatives
+```
+
+
+
+
+## Sample Size Calculations: Fixed Sample Size
+
+If the standard deviation in the population is assumed to be 10, the fixed sample size required to identify a difference in means of `r minimum_difference` with `r 100*power`% power and `r 100*alpha`% Familywise Type I Error with a `r test_sides`-sided test is:
+
+```{r Translate-Information-to-N}
+# Compute Fixed Sample Size Requirement
+fixed_n_sd_10 <-
+  pwr::pwr.t.test(
+    d = minimum_difference/10,
+    sig.level = alpha,
+    power = power
+  )
+
+fixed_n_sd_10
+```
+
+Note that this is the number of observed outcomes: this sample size must be increased to account for missing data:
+
+```{r}
+pr_missing <- 0.2 # 20% missing outcomes
+
+fixed_n_total <- 2*ceiling(fixed_n_sd_10$n)/(1 - pr_missing)
+```
+
+Accounting for `r 100*pr_missing`% missing outcomes, a sample size of `r fixed_n_total` will be needed to obtain `r 2*ceiling(fixed_n_sd_10$n)` primary outcomes.
+
+
+
+
+## Adjusting Information for Multiple Analyses
+
+Rather than waiting until all `r fixed_n_total` participants complete the study, interim analyses may be useful to evaluate the efficacy of the intervention, and perhaps whether a trial should be stopped for futility using a group sequential design:
+
+```{r Group-Sequential-Design-Parameters}
+# Group Sequential Design Parameters
+information_rates <-
+  c(0.50, 0.75, 1.00) # Analyses at 50%, 75%, and 100% of the Total Sample Size
+type_of_design <- "asOF" # O'Brien-Fleming Alpha Spending
+type_beta_spending <- "bsOF" # O'Brien-Fleming Beta Spending
+```
+
+The `getDesignGroupSequential` function in the `rpact` library can be used to specify the appropriate study design. For example, a two-sided test comparing  $H_{0}: \mu_{T} - \mu_{C} = \delta_{0}$ vs. $H_{A}: \mu_{T} - \mu_{C} \neq \delta_{0}$
+
+```{r Specify-Two-Sided-Sequential-Design-Procedure}
+# Set up group sequential testing procedure
+trial_design <-
+  rpact::getDesignGroupSequential(
+    alpha = alpha,
+    beta = 1 - power,
+    sided = 2,
+    informationRates = information_rates,
+    typeOfDesign = type_of_design,
+    typeBetaSpending = type_beta_spending,
+    bindingFutility = FALSE
+  )
+```
+
+When doing sequential analyses in an group sequential design, the final sample size must be adjusted. The sample size inflation factor can be obtained and used to obtain the final sample size for a group sequential design:
+
+```{r Adjust-Information-Target-Using-GSD}
+# Obtain inflation factor to preserve Type I Error: adjust fixed sample size
+inflation_factor <-
+  rpact::getDesignCharacteristics(trial_design)$inflationFactor
+
+group_sequential_n_total <- ceiling(fixed_n_total*inflation_factor)
+group_sequential_n_total
+
+# Determine sample sizes when analyses will take place
+group_sequential_n_analyses <-
+  ceiling(information_rates*group_sequential_n_total)
+
+group_sequential_n_analyses
+```
+
+Interim analyses require a `r 100*round((inflation_factor - 1), 2)`% increase in the overall sample size, but allow for two pre-planned analyses for efficacy. Enrollment will continue until `r group_sequential_n_analyses[3]` participants are recruited: the first interim analysis will occur when `r group_sequential_n_analyses[1]` participants have their primary outcome measured: if the trial is not stopped, the second interim analysis will occur when `r group_sequential_n_analyses[2]` participants have been assessed for the primary outcome. If the trial has not stopped after the second interim analysis, the final analysis will occur when all `r group_sequential_n_analyses[3]` participants reach the end of the study.
+
+
+
+
+## Performing Interim Analysis 1
+
+Once `r group_sequential_n_analyses[1]` participants have had their final outcomes obtained, the first interim analysis can proceed:
+
+```{r}
+
+```

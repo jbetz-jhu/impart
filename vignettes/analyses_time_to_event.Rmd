@@ -45,6 +45,13 @@ analyses in group sequential or information monitored designs. This builds upon
 the terminology and concepts in the vignettes on study design and information
 monitoring. To see all available vignettes in impart, use the `vignettes` command:
 
-```{r List-Vignettes, eval = FALSE}
-print(vignette(package = "impart"))
+```{r List-Vignettes, echo = TRUE, eval = FALSE}
+vignette(package = "impart")
 ```
+
+```{r List-Vignettes-Table, echo = FALSE}
+impart_vignettes <- vignette(package = "impart")
+knitr::kable(impart_vignettes$results[, c("Title", "Item")])
+```
+
+**NOTE:** This section is under development and will be posted shortly.

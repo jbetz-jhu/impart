@@ -158,11 +158,12 @@ test_that(
 )
 
 test_that(
-  desc = "Continuous Outcomes",
+  desc = "Continuous/Binary/Ordinal Outcomes",
   code = {
     expect_no_condition(
       object =
-        prepared_test_data_numeric <-
+        # prepared_test_data_numeric <-
+        prepared_data <-
         prepare_monitored_study_data(
           data = test_data,
           study_time = 20,
@@ -172,9 +173,25 @@ test_that(
           treatment_variable = c("tx"),
           outcome_variables = c("y_1", "y_2"),
           outcome_time_variables = c(".t_1", ".t_2"),
-          observe_missing_times = c(0, 5),
+          observe_missing_times = c(7, 14),
           outcomes_sequential = TRUE
         )
     )
+
+    # # Check Against Double Coding of Event Counts
+    # event_times <-
+    #   c(1:10, (1:10) + 7) |> unique() |> sort()
+    #
+    # numeric_at_time_t <- list()
+    #
+    # n_outcome_1 <- n_outcome_2 <- event_times*NA
+    #
+    # for(i in 1:length(event_times)){
+    #   numeric_at_time_t[[i]] <-
+    #     data_at_time_t(
+    #       prepared_data = prepared_test_data_numeric,
+    #       study_time = event_times[i]
+    #     )
+    # }
   }
 )

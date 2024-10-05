@@ -187,7 +187,8 @@ estimate_information <-
       information_orthogonal_uncorrected <-
         1/diag(covariance_orthogonal_uncorrected)
     } else {
-      estimates_orthogonal <- covariance_orthogonal <- variance_orthogonal <- NA
+      estimates_orthogonal <- covariance_orthogonal <- variance_orthogonal <-
+        information_orthogonal <- NA
       covariance_orthogonal_uncorrected <- matrix(NA)
     }
 
@@ -197,8 +198,7 @@ estimate_information <-
       ids_by_analysis <- covariance_k$ids_by_analysis
     } else {
       estimates <- estimates_orthogonal <-
-        bootstrap_ids <- bootstrap_results <- ids_by_analysis <-
-        information_orthogonal <- NULL
+        bootstrap_ids <- bootstrap_results <- ids_by_analysis <- NULL
     }
 
     return(

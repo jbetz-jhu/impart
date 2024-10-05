@@ -32,12 +32,24 @@ Since group sequential design methodology can also implemented in information mo
 
 There are several vignettes built into `impart`: these include vignettes on information monitoring designs as well as group sequential designs. To see all available vignettes in impart, use the `vignettes` command:
 
-```{r List-Vignettes}
-print(vignette(package = "impart"))
+```{r List-Vignettes, echo = TRUE, eval = FALSE}
+vignette(package = "impart")
 ```
 
+```{r List-Vignettes-Table, echo = FALSE}
+impart_vignettes <- vignette(package = "impart")
+knitr::kable(impart_vignettes$results[, c("Title", "Item")])
+```
 
-If you are using `impart` in practice, please 
+Vignettes include example data and code to show you how to use `impart` for information monitoring and group sequential designs.
+
+**NOTE:** `impart` is tested using the [`testthat` package](https://testthat.r-lib.org/) with a continuous integration workflow, and test coverage assessed using [codecov](https://codecov.io/gh/jbetz-jhu/impart). Vignettes currently cover the complete workflow for trials with a continuous outcome. Other vignettes on binary, ordinal, and time-to-event outcomes are under active development. Please check back to see if there have been updates to the `impart` software or documentation.
+
+
+
+## Citing `impart`
+
+If you are using `impart` in practice, please cite our work. This helps us identify how our work impacts the practice of randomized trials.
 
 ```{r Citing-Impart}
 citation(package = "impart")

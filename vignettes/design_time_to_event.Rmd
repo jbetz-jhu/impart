@@ -82,3 +82,5 @@ library(pwr) # Only required for examples, not for `impart`
 # Planning The Study
 
 Planning an information-monitored study is similar in many respects to planning a study with a fixed sample size. Investigators must decide on [the target of statistical inference, also known as an estimand](https://covariateadjustment.github.io/estimands.html): for a time-to-event outcome, there are several outcomes that may be of interest, including the survival probability (SP), the restricted mean survival time (RMST), or hazard ratio (HR). Once the estimand is chosen, decisions must be made about what constitutes a meaningful effect size on the scale of the estimand (e.g. an increase in RMST of 1 year). Finally, the characteristics of the testing procedure must be specified, including the desired Type I Error Rate, statistical power, and direction of alternatives of interest:
+
+**NOTE:** This section is under development and will be posted shortly.

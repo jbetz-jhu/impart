@@ -46,8 +46,13 @@ This vignette demonstrates how to use `impart` to monitor the amount of
 information contained in the accrued data so that analyses are not under- or
 over-powered. To see all available vignettes in impart, use the `vignettes` command:
 
-```{r List-Vignettes, eval = FALSE}
-print(vignette(package = "impart"))
+```{r List-Vignettes, echo = TRUE, eval = FALSE}
+vignette(package = "impart")
+```
+
+```{r List-Vignettes-Table, echo = FALSE}
+impart_vignettes <- vignette(package = "impart")
+knitr::kable(impart_vignettes$results[, c("Title", "Item")])
 ```
 
 # Monitoring Ongoing Studies
@@ -418,7 +423,9 @@ data_n_70_trajectory <-
     n_min = 40,
     n_increment = 2,
     rng_seed = 23456,
-    control = monitored_analysis_control()
+    # Note: control = monitored_analysis_control() is the default
+    # This does more bootstrap replicates by default
+    control = monitored_analysis_control_testing() 
   )
 
 data_n_70_trajectory
