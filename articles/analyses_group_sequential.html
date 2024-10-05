@@ -83,8 +83,129 @@
 
     
     
-
-  </main>
+<div class="section level2">
+<h2 id="planning-the-study">Planning The Study<a class="anchor" aria-label="anchor" href="#planning-the-study"></a>
+</h2>
+<p>Planning an information-monitored study is similar in many respects
+to planning a study with a fixed sample size. Investigators must decide
+on <a href="https://covariateadjustment.github.io/estimands.html" class="external-link">the
+target of statistical inference, also known as an estimand</a>: for a
+continuous outcome, the difference in means or a ratio of means may be
+of interest. Once the estimand is chosen, decisions must be made about
+what constitutes a meaningful effect size on the scale of the estimand
+(e.g. a difference in means of 5 or a ratio of means of 1.25). Finally,
+the characteristics of the testing procedure must be specified,
+including the desired Type I Error Rate, statistical power, and
+direction of alternatives of interest:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Universal Study Design Parameters</span></span>
+<span><span class="va">minimum_difference</span> <span class="op">&lt;-</span> <span class="fl">5</span> <span class="co"># Effect Size: Difference in Means of 5 or greater</span></span>
+<span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.05</span> <span class="co"># Type I Error Rate</span></span>
+<span><span class="va">power</span> <span class="op">&lt;-</span> <span class="fl">0.9</span> <span class="co"># Statistical Power</span></span>
+<span><span class="va">test_sides</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="co"># Direction of Alternatives</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="sample-size-calculations-fixed-sample-size">Sample Size Calculations: Fixed Sample Size<a class="anchor" aria-label="anchor" href="#sample-size-calculations-fixed-sample-size"></a>
+</h3>
+<p>If the standard deviation in the population is assumed to be 10, the
+fixed sample size required to identify a difference in means of 5 with
+90% power and 5% Familywise Type I Error with a 2-sided test is:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compute Fixed Sample Size Requirement</span></span>
+<span><span class="va">fixed_n_sd_10</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">pwr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html" class="external-link">pwr.t.test</a></span><span class="op">(</span></span>
+<span>    d <span class="op">=</span> <span class="va">minimum_difference</span><span class="op">/</span><span class="fl">10</span>,</span>
+<span>    sig.level <span class="op">=</span> <span class="va">alpha</span>,</span>
+<span>    power <span class="op">=</span> <span class="va">power</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">fixed_n_sd_10</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;      Two-sample t test power calculation </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;               n = 85.03128</span></span>
+<span><span class="co">#&gt;               d = 0.5</span></span>
+<span><span class="co">#&gt;       sig.level = 0.05</span></span>
+<span><span class="co">#&gt;           power = 0.9</span></span>
+<span><span class="co">#&gt;     alternative = two.sided</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; NOTE: n is number in *each* group</span></span></code></pre></div>
+<p>Note that this is the number of observed outcomes: this sample size
+must be increased to account for missing data:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pr_missing</span> <span class="op">&lt;-</span> <span class="fl">0.2</span> <span class="co"># 20% missing outcomes</span></span>
+<span></span>
+<span><span class="va">fixed_n_total</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">ceiling</a></span><span class="op">(</span><span class="va">fixed_n_sd_10</span><span class="op">$</span><span class="va">n</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">pr_missing</span><span class="op">)</span></span></code></pre></div>
+<p>Accounting for 20% missing outcomes, a sample size of 215 will be
+needed to obtain 172 primary outcomes.</p>
+</div>
+<div class="section level3">
+<h3 id="adjusting-information-for-multiple-analyses">Adjusting Information for Multiple Analyses<a class="anchor" aria-label="anchor" href="#adjusting-information-for-multiple-analyses"></a>
+</h3>
+<p>Rather than waiting until all 215 participants complete the study,
+interim analyses may be useful to evaluate the efficacy of the
+intervention, and perhaps whether a trial should be stopped for futility
+using a group sequential design:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Group Sequential Design Parameters</span></span>
+<span><span class="va">information_rates</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.50</span>, <span class="fl">0.75</span>, <span class="fl">1.00</span><span class="op">)</span> <span class="co"># Analyses at 50%, 75%, and 100% of the Total Sample Size</span></span>
+<span><span class="va">type_of_design</span> <span class="op">&lt;-</span> <span class="st">"asOF"</span> <span class="co"># O'Brien-Fleming Alpha Spending</span></span>
+<span><span class="va">type_beta_spending</span> <span class="op">&lt;-</span> <span class="st">"bsOF"</span> <span class="co"># O'Brien-Fleming Beta Spending</span></span></code></pre></div>
+<p>The <code>getDesignGroupSequential</code> function in the
+<code>rpact</code> library can be used to specify the appropriate study
+design. For example, a two-sided test comparing
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>μ</mi><mi>T</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>C</mi></msub><mo>=</mo><msub><mi>δ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">H_{0}: \mu_{T} - \mu_{C} = \delta_{0}</annotation></semantics></math>
+vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mi>A</mi></msub><mo>:</mo><msub><mi>μ</mi><mi>T</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>C</mi></msub><mo>≠</mo><msub><mi>δ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">H_{A}: \mu_{T} - \mu_{C} \neq \delta_{0}</annotation></semantics></math></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Set up group sequential testing procedure</span></span>
+<span><span class="va">trial_design</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rpact-com.github.io/rpact/reference/getDesignGroupSequential.html" class="external-link">getDesignGroupSequential</a></span><span class="op">(</span></span>
+<span>    alpha <span class="op">=</span> <span class="va">alpha</span>,</span>
+<span>    beta <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">power</span>,</span>
+<span>    sided <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>    informationRates <span class="op">=</span> <span class="va">information_rates</span>,</span>
+<span>    typeOfDesign <span class="op">=</span> <span class="va">type_of_design</span>,</span>
+<span>    typeBetaSpending <span class="op">=</span> <span class="va">type_beta_spending</span>,</span>
+<span>    bindingFutility <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<p>When doing sequential analyses in an group sequential design, the
+final sample size must be adjusted. The sample size inflation factor can
+be obtained and used to obtain the final sample size for a group
+sequential design:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Obtain inflation factor to preserve Type I Error: adjust fixed sample size</span></span>
+<span><span class="va">inflation_factor</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">rpact</span><span class="fu">::</span><span class="fu"><a href="https://rpact-com.github.io/rpact/reference/getDesignCharacteristics.html" class="external-link">getDesignCharacteristics</a></span><span class="op">(</span><span class="va">trial_design</span><span class="op">)</span><span class="op">$</span><span class="va">inflationFactor</span></span>
+<span></span>
+<span><span class="va">group_sequential_n_total</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">ceiling</a></span><span class="op">(</span><span class="va">fixed_n_total</span><span class="op">*</span><span class="va">inflation_factor</span><span class="op">)</span></span>
+<span><span class="va">group_sequential_n_total</span></span>
+<span><span class="co">#&gt; [1] 234</span></span>
+<span></span>
+<span><span class="co"># Determine sample sizes when analyses will take place</span></span>
+<span><span class="va">group_sequential_n_analyses</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">ceiling</a></span><span class="op">(</span><span class="va">information_rates</span><span class="op">*</span><span class="va">group_sequential_n_total</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">group_sequential_n_analyses</span></span>
+<span><span class="co">#&gt; [1] 117 176 234</span></span></code></pre></div>
+<p>Interim analyses require a 8% increase in the overall sample size,
+but allow for two pre-planned analyses for efficacy. Enrollment will
+continue until 234 participants are recruited: the first interim
+analysis will occur when 117 participants have their primary outcome
+measured: if the trial is not stopped, the second interim analysis will
+occur when 176 participants have been assessed for the primary outcome.
+If the trial has not stopped after the second interim analysis, the
+final analysis will occur when all 234 participants reach the end of the
+study.</p>
+</div>
+<div class="section level3">
+<h3 id="performing-interim-analysis-1">Performing Interim Analysis 1<a class="anchor" aria-label="anchor" href="#performing-interim-analysis-1"></a>
+</h3>
+<p>Once 117 participants have had their final outcomes obtained, the
+first interim analysis can proceed:</p>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

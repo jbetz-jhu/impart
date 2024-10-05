@@ -95,7 +95,14 @@ designs. This builds upon the terminology and concepts in the vignettes
 on study design and information monitoring. To see all available
 vignettes in impart, use the <code>vignettes</code> command:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"impart"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"impart"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Title</th>
+<th align="left">Item</th>
+</tr></thead>
+<tbody></tbody>
+</table>
 <div class="section level2">
 <h2 id="setting-up-a-monitored-design">Setting Up a Monitored Design:<a class="anchor" aria-label="anchor" href="#setting-up-a-monitored-design"></a>
 </h2>
@@ -251,10 +258,34 @@ parameters in each regression model.</p>
 <span>    rng_seed <span class="op">=</span> <span class="fl">23456</span>,</span>
 <span>    control <span class="op">=</span> <span class="fu"><a href="../reference/monitored_analysis_control.html">monitored_analysis_control</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Error in information_trajectory(prepared_data = example_1_ia_1_prepared, : `n_min` (50) is at or below number of complete outcomes (34).</span></span>
 <span></span>
 <span><span class="va">data_ia_1_trajectory</span></span>
-<span><span class="co">#&gt; Error: object 'data_ia_1_trajectory' not found</span></span></code></pre></div>
+<span><span class="co">#&gt;       times randomization y_1 y_2 y_3 y_4 information information_lag_1</span></span>
+<span><span class="co">#&gt; 1  551.8682            90  69  57  53  50   0.1380683                NA</span></span>
+<span><span class="co">#&gt; 2  595.6751            96  77  63  58  53   0.1425721         0.1380683</span></span>
+<span><span class="co">#&gt; 3  630.7461           100  79  70  64  56   0.1482429         0.1425721</span></span>
+<span><span class="co">#&gt; 4  634.3194           100  79  70  64  59   0.1711911         0.1482429</span></span>
+<span><span class="co">#&gt; 5  658.6659           109  82  72  69  62   0.1696971         0.1711911</span></span>
+<span><span class="co">#&gt; 6  662.6718           110  82  72  69  65   0.1665782         0.1696971</span></span>
+<span><span class="co">#&gt; 7  701.1256           117  96  80  71  68   0.1805331         0.1665782</span></span>
+<span><span class="co">#&gt; 8  717.5104           119  96  82  73  71   0.2098995         0.1805331</span></span>
+<span><span class="co">#&gt; 9  753.7782           126 101  91  83  74   0.2179450         0.2098995</span></span>
+<span><span class="co">#&gt; 10 758.3298           128 101  91  85  77   0.2021433         0.2179450</span></span>
+<span><span class="co">#&gt; 11 778.4102           131 105  94  88  80   0.2070840         0.2021433</span></span>
+<span><span class="co">#&gt; 12 781.6646           131 106  94  89  83   0.2181654         0.2070840</span></span>
+<span><span class="co">#&gt;    information_change information_pct_change information_fraction</span></span>
+<span><span class="co">#&gt; 1                  NA                     NA            0.3028952</span></span>
+<span><span class="co">#&gt; 2         0.004503855              3.1590008            0.3127758</span></span>
+<span><span class="co">#&gt; 3         0.005670759              3.8253158            0.3252163</span></span>
+<span><span class="co">#&gt; 4         0.022948176             13.4050071            0.3755602</span></span>
+<span><span class="co">#&gt; 5        -0.001493985             -0.8803831            0.3722827</span></span>
+<span><span class="co">#&gt; 6        -0.003118900             -1.8723338            0.3654404</span></span>
+<span><span class="co">#&gt; 7         0.013954871              7.7298147            0.3960547</span></span>
+<span><span class="co">#&gt; 8         0.029366413             13.9907033            0.4604790</span></span>
+<span><span class="co">#&gt; 9         0.008045561              3.6915549            0.4781294</span></span>
+<span><span class="co">#&gt; 10       -0.015801736             -7.8170963            0.4434634</span></span>
+<span><span class="co">#&gt; 11        0.004940738              2.3858613            0.4543024</span></span>
+<span><span class="co">#&gt; 12        0.011081351              5.0793349            0.4786128</span></span></code></pre></div>
 <p>Once the trajectory has been computed, it can be smoothed and
 plotted:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -262,7 +293,6 @@ plotted:</p>
 <span>  <span class="va">information</span> <span class="op">~</span> <span class="va">y_4</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">data_ia_1_trajectory</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(m$data, eframe): object 'data_ia_1_trajectory' not found</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span>
@@ -271,7 +301,6 @@ plotted:</p>
 <span>  <span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(mf, parent.frame()): object 'data_ia_1_trajectory' not found</span></span>
 <span></span>
 <span><span class="co"># Requires `deming` package</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
@@ -281,13 +310,12 @@ plotted:</p>
 <span>  <span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(temp, parent.frame()): object 'data_ia_1_trajectory' not found</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
 <span>  h <span class="op">=</span> <span class="va">monitored_design</span><span class="op">$</span><span class="va">original_design</span><span class="op">$</span><span class="va">information_thresholds</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="../reference/figures/Smooth-Information-Trajectory-1.png" width="80%" style="display: block; margin: auto;"></p>
 <p>Once the information level has been confirmed to be above the
 threshold, conducting the analysis is similar to computing
 information:</p>

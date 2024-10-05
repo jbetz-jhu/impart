@@ -95,7 +95,14 @@ the amount of information contained in the accrued data so that analyses
 are not under- or over-powered. To see all available vignettes in
 impart, use the <code>vignettes</code> command:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"impart"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"impart"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Title</th>
+<th align="left">Item</th>
+</tr></thead>
+<tbody></tbody>
+</table>
 <div class="section level2">
 <h2 id="monitoring-ongoing-studies">Monitoring Ongoing Studies<a class="anchor" aria-label="anchor" href="#monitoring-ongoing-studies"></a>
 </h2>
@@ -303,12 +310,12 @@ this is not yet known at day 90: <code>.r_1</code> is
 <span><span class="co"># Data known at study day 90</span></span>
 <span><span class="va">data_90</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">show_cols</span>, <span class="st">".e"</span>, <span class="st">".t_1"</span>, <span class="st">"y_1"</span>, <span class="st">".r_1"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;   .id        x_2        x_3        x_4 tx       .e     .t_1      y_1 .r_1</span></span>
-<span><span class="co">#&gt; 1   1  0.1971432 -0.8425884  0.2794844  0  2.24846 27.26384 1.591873    1</span></span>
-<span><span class="co">#&gt; 2   2 -0.7384296  0.1315016 -1.2419134  1 11.05565 66.11130       NA    0</span></span>
-<span><span class="co">#&gt; 3   3  0.4997821  1.6932555 -0.4063889  0 16.96591 77.93183       NA    0</span></span>
-<span><span class="co">#&gt; 4   4 -0.2189937 -1.7719120  0.1936013  1 25.13396 84.97941 1.212620    1</span></span>
-<span><span class="co">#&gt; 5   5  0.9282685  0.8078133  0.9317145  0 50.07301       NA       NA   NA</span></span>
-<span><span class="co">#&gt; 6   6  1.1756811  0.0226265 -0.2556343  1 50.93935       NA       NA   NA</span></span></code></pre></div>
+<span><span class="co">#&gt; 1   1  0.1971432 -0.8425884  0.2794844  0  2.24846 25.01538 1.591873    1</span></span>
+<span><span class="co">#&gt; 2   2 -0.7384296  0.1315016 -1.2419134  1 11.05565 55.05565       NA    0</span></span>
+<span><span class="co">#&gt; 3   3  0.4997821  1.6932555 -0.4063889  0 16.96591 60.96591       NA    0</span></span>
+<span><span class="co">#&gt; 4   4 -0.2189937 -1.7719120  0.1936013  1 25.13396 59.84544 1.212620    1</span></span>
+<span><span class="co">#&gt; 5   5  0.9282685  0.8078133  0.9317145  0 50.07301 75.94952 8.655326    1</span></span>
+<span><span class="co">#&gt; 6   6  1.1756811  0.0226265 -0.2556343  1 50.93935 80.29181 6.902055    1</span></span></code></pre></div>
 <p>If <code>observe_missing_times</code> were set to <code>0</code> for
 each outcome, any outcome that is <code>NA</code> and has a recorded
 time of assessment will be treated as missing.</p>
@@ -436,28 +443,19 @@ against the target information level for analyses:</p>
 <span>    orthogonalize <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    rng_seed <span class="op">=</span> <span class="fl">23456</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
-<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
-<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
-<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
-<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
-<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
-<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
-<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
-<span><span class="co">#&gt; Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :</span></span>
-<span><span class="co">#&gt; prediction from rank-deficient fit; attr(*, "non-estim") has doubtful cases</span></span>
 <span></span>
 <span><span class="va">information_n_70</span><span class="op">$</span><span class="va">covariance_uncorrected</span></span>
 <span><span class="co">#&gt;           estimates</span></span>
-<span><span class="co">#&gt; estimates  53.11447</span></span>
+<span><span class="co">#&gt; estimates  4.333183</span></span>
 <span><span class="va">information_n_70</span><span class="op">$</span><span class="va">information</span></span>
-<span><span class="co">#&gt;  estimates </span></span>
-<span><span class="co">#&gt; 0.01882726</span></span>
+<span><span class="co">#&gt; estimates </span></span>
+<span><span class="co">#&gt; 0.2307772</span></span>
 <span><span class="va">information_n_70</span><span class="op">$</span><span class="va">covariance_orthogonal_uncorrected</span></span>
 <span><span class="co">#&gt;           estimates</span></span>
-<span><span class="co">#&gt; estimates  53.11447</span></span>
+<span><span class="co">#&gt; estimates  4.333183</span></span>
 <span><span class="va">information_n_70</span><span class="op">$</span><span class="va">information_orthogonal</span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+<span><span class="co">#&gt;           estimates</span></span>
+<span><span class="co">#&gt; estimates 0.2307772</span></span></code></pre></div>
 <p>When a study is designed with interim and final analyses,
 <code>monitored_design</code> allows the user to pass the results of
 previously conducted analyses to <code>estimate_information</code>.</p>
@@ -516,8 +514,8 @@ vignette:</p>
 <p>The current information fraction can be computed:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">information_n_70</span><span class="op">$</span><span class="va">information</span><span class="op">/</span><span class="va">information_adaptive</span></span>
-<span><span class="co">#&gt;  estimates </span></span>
-<span><span class="co">#&gt; 0.04130338</span></span></code></pre></div>
+<span><span class="co">#&gt; estimates </span></span>
+<span><span class="co">#&gt; 0.5062808</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="tools-for-monitoring-information">Tools for Monitoring Information<a class="anchor" aria-label="anchor" href="#tools-for-monitoring-information"></a>
 </h3>
@@ -545,12 +543,46 @@ projecting when pre-specified information levels may be met:</p>
 <span>    n_min <span class="op">=</span> <span class="fl">40</span>,</span>
 <span>    n_increment <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>    rng_seed <span class="op">=</span> <span class="fl">23456</span>,</span>
-<span>    control <span class="op">=</span> <span class="fu"><a href="../reference/monitored_analysis_control.html">monitored_analysis_control</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="co"># Note: control = monitored_analysis_control() is the default</span></span>
+<span>    <span class="co"># This does more bootstrap replicates by default</span></span>
+<span>    control <span class="op">=</span> <span class="fu"><a href="../reference/monitored_analysis_control.html">monitored_analysis_control_testing</a></span><span class="op">(</span><span class="op">)</span> </span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Error in information_trajectory(prepared_data = data_n_final_70, monitored_design = monitored_design, : `n_min` (40) is at or below number of complete outcomes (28).</span></span>
 <span></span>
 <span><span class="va">data_n_70_trajectory</span></span>
-<span><span class="co">#&gt; Error: object 'data_n_70_trajectory' not found</span></span></code></pre></div>
+<span><span class="co">#&gt;       times randomization y_1 y_2 y_3 y_4 information information_lag_1</span></span>
+<span><span class="co">#&gt; 1  491.3059            79  59  49  43  40  0.02354317                NA</span></span>
+<span><span class="co">#&gt; 2  506.9791            83  64  52  46  42  0.06373427        0.02354317</span></span>
+<span><span class="co">#&gt; 3  518.1410            84  64  54  47  44  0.06273970        0.06373427</span></span>
+<span><span class="co">#&gt; 4  527.6485            85  65  54  50  46  0.06672800        0.06273970</span></span>
+<span><span class="co">#&gt; 5  538.5259            86  68  56  52  48  0.11713994        0.06672800</span></span>
+<span><span class="co">#&gt; 6  551.8682            90  69  57  53  50  0.12625125        0.11713994</span></span>
+<span><span class="co">#&gt; 7  578.2366            95  73  61  56  52  0.14664434        0.12625125</span></span>
+<span><span class="co">#&gt; 8  597.3935            96  77  63  58  54  0.15105217        0.14664434</span></span>
+<span><span class="co">#&gt; 9  630.7461           100  79  70  64  56  0.14185643        0.15105217</span></span>
+<span><span class="co">#&gt; 10 633.0925           100  79  70  64  58  0.15632099        0.14185643</span></span>
+<span><span class="co">#&gt; 11 635.4027           100  79  70  64  60  0.16605940        0.15632099</span></span>
+<span><span class="co">#&gt; 12 658.6659           109  82  72  69  62  0.18410677        0.16605940</span></span>
+<span><span class="co">#&gt; 13 662.5691           110  82  72  69  64  0.17192467        0.18410677</span></span>
+<span><span class="co">#&gt; 14 675.4510           113  87  74  70  66  0.17923912        0.17192467</span></span>
+<span><span class="co">#&gt; 15 701.1256           117  96  80  71  68  0.17267007        0.17923912</span></span>
+<span><span class="co">#&gt; 16 707.0069           117  96  81  73  70  0.18025072        0.17267007</span></span>
+<span><span class="co">#&gt;    information_change information_pct_change information_fraction</span></span>
+<span><span class="co">#&gt; 1                  NA                     NA           0.05164918</span></span>
+<span><span class="co">#&gt; 2        0.0401910997              63.060421           0.13982070</span></span>
+<span><span class="co">#&gt; 3       -0.0009945712              -1.585234           0.13763880</span></span>
+<span><span class="co">#&gt; 4        0.0039883015               5.976953           0.14638836</span></span>
+<span><span class="co">#&gt; 5        0.0504119382              43.035653           0.25698243</span></span>
+<span><span class="co">#&gt; 6        0.0091113103               7.216808           0.27697089</span></span>
+<span><span class="co">#&gt; 7        0.0203930945              13.906499           0.32170941</span></span>
+<span><span class="co">#&gt; 8        0.0044078303               2.918085           0.33137934</span></span>
+<span><span class="co">#&gt; 9       -0.0091957493              -6.482434           0.31120564</span></span>
+<span><span class="co">#&gt; 10       0.0144645633               9.253117           0.34293810</span></span>
+<span><span class="co">#&gt; 11       0.0097384163               5.864417           0.36430230</span></span>
+<span><span class="co">#&gt; 12       0.0180473670               9.802663           0.40389475</span></span>
+<span><span class="co">#&gt; 13      -0.0121821058              -7.085723           0.37716956</span></span>
+<span><span class="co">#&gt; 14       0.0073144562               4.080837           0.39321606</span></span>
+<span><span class="co">#&gt; 15      -0.0065690556              -3.804397           0.37880482</span></span>
+<span><span class="co">#&gt; 16       0.0075806509               4.205615           0.39543531</span></span></code></pre></div>
 <p>This trajectory can be smoothed using regression, ideally using a
 method resistant to outliers, such as <code><a href="https://rdrr.io/pkg/deming/man/theilsen.html" class="external-link">deming::theilsen</a></code>.
 Inverse regression can be used to obtain an estimated number of outcomes
@@ -561,7 +593,6 @@ necessary to achieve a given level of information:</p>
 <span>  data <span class="op">=</span> <span class="va">data_n_70_trajectory</span>,</span>
 <span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(m$data, eframe): object 'data_n_70_trajectory' not found</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span>
@@ -570,7 +601,6 @@ necessary to achieve a given level of information:</p>
 <span>  <span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(mf, parent.frame()): object 'data_n_70_trajectory' not found</span></span>
 <span></span>
 <span><span class="co"># Requires `deming` package</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
@@ -580,13 +610,12 @@ necessary to achieve a given level of information:</p>
 <span>  <span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(temp, parent.frame()): object 'data_n_70_trajectory' not found</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
 <span>  h <span class="op">=</span> <span class="va">monitored_design</span><span class="op">$</span><span class="va">original_design</span><span class="op">$</span><span class="va">information_fractions</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="../reference/figures/Plot-Trajectory-1.png" alt="A plot of the time series of information with linear regression fits superimposed on top." width="80%" style="display: block; margin: auto;"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
