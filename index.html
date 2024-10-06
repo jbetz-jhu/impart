@@ -78,8 +78,8 @@
 
 <p>Investigators are faced with many challenges in designing efficient, ethical randomized trials due to competing demands: a trial must collect enough information to identify meaningful benefits or harms with a desired probability while also minimizing potential harm and suboptimal treatment of participants. Satisfying these competing demands is further complicated by the limited and imprecise information available during the design of a study.</p>
 <p>Studies designed around a fixed sample size are inflexible, requiring investigators to wait until the end of data collection to perform statistical analyses. Group sequential designs are more flexible, allowing studies to be stopped for efficacy or futility according to a pre-planned analyses, which occur when the number of obtained primary outcomes reach pre-specified fractions of the final sample size.</p>
-<p>Covariate adjustment allows investigators to potentially gain additional precision by utilizing information collected from individuals prior to randomization in the statistical analysis. This potential increase in precision can be used to provide additional power in a fixed sample size design or a group sequential design. Not all methods of covariate adjustment are directly compatible with group sequential designs, but a broad class of methods can be made compatible by performing an orthogonalization of the resulting estimates and their variance-covariance matrix (Van Lancker, Betz, and Rosenblum 2022).</p>
-<p>A disadvantage of covariate adjustment is that the amount of precision gained from covariate adjustment is not known precisely at the outset of a study. This complicates the ability to use covariate adjustment to reduce the required sample size instead of providing additional power. Rather than planning analyses based on a specific number of participants, investigators can pre-specify when analyses reach pre-specified levels of precision: this is known as information monitoring (Mehta and Tsiatis 2001). This allows investigators to adapt their study to the precision in the accruing data, reducing the risk of under- or overpowered trials. This also allows investigators to use covariate adjustment to shorten the trial duration, rather than just providing additional power and precision.</p>
+<p>Covariate adjustment allows investigators to potentially gain additional precision by utilizing information collected from individuals prior to randomization in the statistical analysis. This potential increase in precision can be used to provide additional power in a fixed sample size design or a group sequential design. Not all methods of covariate adjustment are directly compatible with group sequential designs, but a broad class of methods can be made compatible by performing an orthogonalization of the resulting estimates and their variance-covariance matrix (Van Lancker, Betz, and Rosenblum 2022). This package enables implementing this orthogonalization.</p>
+<p>Another disadvantage of covariate adjustment is that the amount of precision gained from covariate adjustment is not known precisely at the outset of a study. This complicates the ability to use covariate adjustment to reduce the required sample size instead of providing additional power. Rather than planning analyses based on a specific number of participants, investigators can pre-specify when analyses reach pre-specified levels of precision: this is known as information monitoring (Mehta and Tsiatis 2001). This allows investigators to adapt their study to the precision in the accruing data, reducing the risk of under- or overpowered trials. This also allows investigators to use covariate adjustment to shorten the trial duration, rather than just providing additional power and precision.</p>
 <p>The <code>impart</code> package can be used for performing covariate adjustment in group sequential designs or designing, monitoring, and analyzing information monitored designs.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -155,6 +155,24 @@
 <hr>
 </div>
 <div class="section level2">
+<h2 id="background-for-group-sequential-designs-under-violation-of-independent-increments-property">Background for Group Sequential Designs Under Violation of Independent Increments Property<a class="anchor" aria-label="anchor" href="#background-for-group-sequential-designs-under-violation-of-independent-increments-property"></a>
+</h2>
+<p>Group sequential designs (GSD) are a commonly used type of clinical trial design that involves pre-planned interim analyses where the trial can be stopped early for efficacy or futility. These designs are prevalent in confirmatory clinical trials for ethical and efficiency reasons as they potentially save time and resources by allowing early termination of the trial.</p>
+<hr>
+<div class="section level3">
+<h3 id="incompatibility">Incompatibility<a class="anchor" aria-label="anchor" href="#incompatibility"></a>
+</h3>
+<p>Many covariate adjusted estimators are incompatible withcommonly used stopping boundaries in GSDs, when models used to construct the estimators are misspecified. Specifically, to apply GSDs, the sequential test statistics need to have the independent increments covariance structure in order to control Type I error Jennison and Turnbull (1997). However, this general theory of Scharfstein, Tsiatis, and Robins (1997) and Jennison and Turnbull (1997) is not guaranteed to hold for covariate adjusted estimators under model misspecification, which is likely to be the case in practice. In particular, under model misspecification, covariate adjusted estimators can fail to have this independent increments property when using data (e.g., baseline covariates, short-term endpoints) of pipeline patients (i.e., patients enrolled but not in the study long enough to have their primary outcomes measured at the (interim) analysis). This lack of independent increments can generally occur when estimators use working models; see e.g., Rosenblum et al. (2015) for augmented inverse probability weighted estimators and Shoben and Emerson (2014) for estimators based on generalized estimating equations. A long list of further examples is provided by Jennison and Turnbull (1997) and Kim and Tsiatis (2020).</p>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="solution-orthogonalization">Solution: Orthogonalization<a class="anchor" aria-label="anchor" href="#solution-orthogonalization"></a>
+</h3>
+<p>We implement the general method of Van Lancker, Betz, and Rosenblum (2022) that extends the highly useful and fundamental theory of information-monitoring in GSDs Jennison and Turnbull (1997) so that it can be used with any regular, asymptotically linear estimator. This covers many estimators in RCTs. The method uses orthogonalization to produce modified estimators that (1) have the independent increments property needed to apply GSDs, and (2) simultaneously improve (or leave unchanged) the variance at each analysis.</p>
+<hr>
+</div>
+</div>
+<div class="section level2">
 <h2 id="background-for-information-monitoring">Background for Information Monitoring<a class="anchor" aria-label="anchor" href="#background-for-information-monitoring"></a>
 </h2>
 <p>We can estimate the precision required to achieve power <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>β</mi><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1 - \beta)</annotation></semantics></math> to identify a treatment effect <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>δ</mi><annotation encoding="application/x-tex">\delta</annotation></semantics></math> with a <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>-sided test with type I error rate <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> using:</p>
@@ -204,14 +222,29 @@ Benkeser, David, Iván Dı́az, Alex Luedtke, Jodi Segal, Daniel Scharfstein, an
 <div id="ref-Fay2018" class="csl-entry">
 Fay, Michael P., and Yaakov Malinovsky. 2018. “Confidence Intervals of the Mann-Whitney Parameter That Are Compatible with the Wilcoxon-Mann-Whitney Test.” <em>Statistics in Medicine</em> 37 (27): 3991–4006. <a href="https://doi.org/10.1002/sim.7890" class="external-link uri">https://doi.org/10.1002/sim.7890</a>.
 </div>
+<div id="ref-jennison1997group" class="csl-entry">
+Jennison, Christopher, and Bruce W Turnbull. 1997. “Group-Sequential Analysis Incorporating Covariate Information.” <em>Journal of the American Statistical Association</em> 92 (440): 1330–41.
+</div>
 <div id="ref-Jennison1999" class="csl-entry">
 Jennison, Christopher, and Bruce W. Turnbull. 1999. <em>Group Sequential Methods with Applications to Clinical Trials</em>. Chapman; Hall/CRC. <a href="https://doi.org/10.1201/9780367805326" class="external-link uri">https://doi.org/10.1201/9780367805326</a>.
+</div>
+<div id="ref-kim2020independent" class="csl-entry">
+Kim, KyungMann, and Anastasios A Tsiatis. 2020. “Independent Increments in Group Sequential Tests: A Review.” <em>SORT-Statistics and Operations Research Transactions</em> 44 (2): 223–64.
 </div>
 <div id="ref-Lakens2021" class="csl-entry">
 Lakens, Daniel, Friedrich Pahlke, and Gernot Wassmer. 2021. “Group Sequential Designs: A Tutorial,” January. <a href="https://doi.org/10.31234/osf.io/x4azm" class="external-link uri">https://doi.org/10.31234/osf.io/x4azm</a>.
 </div>
 <div id="ref-Mehta2001" class="csl-entry">
 Mehta, Cyrus R., and Anastasios A. Tsiatis. 2001. “Flexible Sample Size Considerations Using Information-Based Interim Monitoring.” <em>Drug Information Journal</em> 35 (4): 1095–1112. <a href="https://doi.org/10.1177/009286150103500407" class="external-link uri">https://doi.org/10.1177/009286150103500407</a>.
+</div>
+<div id="ref-rosenblum2015" class="csl-entry">
+Rosenblum, Michael, Tianchen Qian, Yu Du, and Huitong and Qiu. 2015. “Adaptive Enrichment Designs for Randomized Trials with Delayed Endpoints, Using Locally Efficient Estimators to Improve Precision.” <a href="https://biostats.bepress.com/jhubiostat/paper275" class="external-link uri">https://biostats.bepress.com/jhubiostat/paper275</a>. Dept. Of Biostatistics Working Papers.
+</div>
+<div id="ref-scharfstein1997semiparametric" class="csl-entry">
+Scharfstein, Daniel O, Anastasios A Tsiatis, and James M Robins. 1997. “Semiparametric Efficiency and Its Implication on the Design and Analysis of Group-Sequential Studies.” <em>Journal of the American Statistical Association</em> 92 (440): 1342–50.
+</div>
+<div id="ref-shoben2014violations" class="csl-entry">
+Shoben, Abigail B, and Scott S Emerson. 2014. “Violations of the Independent Increment Assumption When Using Generalized Estimating Equation in Longitudinal Group Sequential Trials.” <em>Statistics in Medicine</em> 33 (29): 5041–56.
 </div>
 <div id="ref-VanLancker2022" class="csl-entry">
 Van Lancker, Kelly, Joshua Betz, and Michael Rosenblum. 2022. “Combining Covariate Adjustment with Group Sequential, Information Adaptive Designs to Improve Randomized Trial Efficiency.” <em>arXiv Preprint arXiv:1409.0473</em>. <a href="https://doi.org/10.48550/ARXIV.2201.12921" class="external-link uri">https://doi.org/10.48550/ARXIV.2201.12921</a>.
