@@ -35,15 +35,16 @@ design or a group sequential design. Not all methods of covariate
 adjustment are directly compatible with group sequential designs, but a
 broad class of methods can be made compatible by performing an
 orthogonalization of the resulting estimates and their
-variance-covariance matrix (Van Lancker, Betz, and Rosenblum 2022).
+variance-covariance matrix (Van Lancker, Betz, and Rosenblum 2022). This
+package enables implementing this orthogonalization.
 
-A disadvantage of covariate adjustment is that the amount of precision
-gained from covariate adjustment is not known precisely at the outset of
-a study. This complicates the ability to use covariate adjustment to
-reduce the required sample size instead of providing additional power.
-Rather than planning analyses based on a specific number of
-participants, investigators can pre-specify when analyses reach
-pre-specified levels of precision: this is known as information
+Another disadvantage of covariate adjustment is that the amount of
+precision gained from covariate adjustment is not known precisely at the
+outset of a study. This complicates the ability to use covariate
+adjustment to reduce the required sample size instead of providing
+additional power. Rather than planning analyses based on a specific
+number of participants, investigators can pre-specify when analyses
+reach pre-specified levels of precision: this is known as information
 monitoring (Mehta and Tsiatis 2001). This allows investigators to adapt
 their study to the precision in the accruing data, reducing the risk of
 under- or overpowered trials. This also allows investigators to use
@@ -95,6 +96,54 @@ cover the complete workflow for trials with a continuous outcome. Other
 vignettes on binary, ordinal, and time-to-event outcomes are under
 active development. Please check back to see if there have been updates
 to the `impart` software or documentation.
+
+------------------------------------------------------------------------
+
+## Background for Group Sequential Designs Under Violation of Independent Increments Property
+
+Group sequential designs (GSD) are a commonly used type of clinical
+trial design that involves pre-planned interim analyses where the trial
+can be stopped early for efficacy or futility. These designs are
+prevalent in confirmatory clinical trials for ethical and efficiency
+reasons as they potentially save time and resources by allowing early
+termination of the trial.
+
+------------------------------------------------------------------------
+
+### Incompatibility
+
+Many covariate adjusted estimators are incompatible withcommonly used
+stopping boundaries in GSDs, when models used to construct the
+estimators are misspecified. Specifically, to apply GSDs, the sequential
+test statistics need to have the independent increments covariance
+structure in order to control Type I error Jennison and Turnbull (1997).
+However, this general theory of Scharfstein, Tsiatis, and Robins (1997)
+and Jennison and Turnbull (1997) is not guaranteed to hold for covariate
+adjusted estimators under model misspecification, which is likely to be
+the case in practice. In particular, under model misspecification,
+covariate adjusted estimators can fail to have this independent
+increments property when using data (e.g., baseline covariates,
+short-term endpoints) of pipeline patients (i.e., patients enrolled but
+not in the study long enough to have their primary outcomes measured at
+the (interim) analysis). This lack of independent increments can
+generally occur when estimators use working models; see e.g., Rosenblum
+et al. (2015) for augmented inverse probability weighted estimators and
+Shoben and Emerson (2014) for estimators based on generalized estimating
+equations. A long list of further examples is provided by Jennison and
+Turnbull (1997) and Kim and Tsiatis (2020).
+
+------------------------------------------------------------------------
+
+### Solution: Orthogonalization
+
+We implement the general method of Van Lancker, Betz, and Rosenblum
+(2022) that extends the highly useful and fundamental theory of
+information-monitoring in GSDs Jennison and Turnbull (1997) so that it
+can be used with any regular, asymptotically linear estimator. This
+covers many estimators in RCTs. The method uses orthogonalization to
+produce modified estimators that (1) have the independent increments
+property needed to apply GSDs, and (2) simultaneously improve (or leave
+unchanged) the variance at each analysis.
 
 ------------------------------------------------------------------------
 
@@ -227,11 +276,27 @@ Wilcoxon-Mann-Whitney Test.” *Statistics in Medicine* 37 (27):
 
 </div>
 
+<div id="ref-jennison1997group" class="csl-entry">
+
+Jennison, Christopher, and Bruce W Turnbull. 1997. “Group-Sequential
+Analysis Incorporating Covariate Information.” *Journal of the American
+Statistical Association* 92 (440): 1330–41.
+
+</div>
+
 <div id="ref-Jennison1999" class="csl-entry">
 
 Jennison, Christopher, and Bruce W. Turnbull. 1999. *Group Sequential
 Methods with Applications to Clinical Trials*. Chapman; Hall/CRC.
 <https://doi.org/10.1201/9780367805326>.
+
+</div>
+
+<div id="ref-kim2020independent" class="csl-entry">
+
+Kim, KyungMann, and Anastasios A Tsiatis. 2020. “Independent Increments
+in Group Sequential Tests: A Review.” *SORT-Statistics and Operations
+Research Transactions* 44 (2): 223–64.
 
 </div>
 
@@ -249,6 +314,34 @@ Mehta, Cyrus R., and Anastasios A. Tsiatis. 2001. “Flexible Sample Size
 Considerations Using Information-Based Interim Monitoring.” *Drug
 Information Journal* 35 (4): 1095–1112.
 <https://doi.org/10.1177/009286150103500407>.
+
+</div>
+
+<div id="ref-rosenblum2015" class="csl-entry">
+
+Rosenblum, Michael, Tianchen Qian, Yu Du, and Huitong and Qiu. 2015.
+“Adaptive Enrichment Designs for Randomized Trials with Delayed
+Endpoints, Using Locally Efficient Estimators to Improve Precision.”
+https://biostats.bepress.com/jhubiostat/paper275. Dept. Of Biostatistics
+Working Papers.
+
+</div>
+
+<div id="ref-scharfstein1997semiparametric" class="csl-entry">
+
+Scharfstein, Daniel O, Anastasios A Tsiatis, and James M Robins. 1997.
+“Semiparametric Efficiency and Its Implication on the Design and
+Analysis of Group-Sequential Studies.” *Journal of the American
+Statistical Association* 92 (440): 1342–50.
+
+</div>
+
+<div id="ref-shoben2014violations" class="csl-entry">
+
+Shoben, Abigail B, and Scott S Emerson. 2014. “Violations of the
+Independent Increment Assumption When Using Generalized Estimating
+Equation in Longitudinal Group Sequential Trials.” *Statistics in
+Medicine* 33 (29): 5041–56.
 
 </div>
 
