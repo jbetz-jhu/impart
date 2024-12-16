@@ -21,17 +21,12 @@ data_at_time_t <-
     prepared_data,
     study_time
   ){
-    if(
-      !is.list(prepared_data) |
-       !all(
-         c("data", "original_data", "variables", "study_time") %in%
-         names(prepared_data)
-       )
-    ){
-      stop("`data` must come from `prepare_monitored_study_data`")
+
+    if(!"monitored_study_data" %in% class(prepared_data)){
+      stop("`prepared_data` must come from `prepare_monitored_study_data`")
     }
 
-    time_to_event <- prepared_data$variables$time_to_event
+    time_to_event <- prepared_data$time_to_event
 
     data <- prepared_data$data
 
@@ -40,6 +35,7 @@ data_at_time_t <-
 
     outcome_times <- prepared_data$variables$outcome_time_variables
     renamed_outcome_times <- prepared_data$variables$renamed_outcome_times
+
 
     wide_data <-
       list(
@@ -69,6 +65,8 @@ data_at_time_t <-
         wide_data[[outcome_variables[i]]] <- outcome_i_at_time_t
         wide_data[[outcome_times[i]]] <- observed_time_at_time_t
 
+        wide_data[[paste0(".t_", i)]] <- observed_time_at_time_t
+        wide_data[[paste0(".r_", i)]] <- observed_time <= study_time
       } else {
         observed_time <- data[, renamed_outcome_times[i]]
         enrollment_to_outcome <- observed_time - enrollment_time
@@ -113,15 +111,8 @@ data_at_time_t <-
       }
     }
 
-    original_data = prepared_data$original_data
-    variables = prepared_data$variables
+    prepared_data$data <- do.call(what = cbind, args = wide_data)
+    prepared_data$study_time <- study_time
 
-    return(
-      list(
-        data = do.call(what = cbind, args = wide_data),
-        original_data = original_data,
-        variables = variables,
-        study_time = study_time
-      )
-    )
+    return(prepared_data)
   }

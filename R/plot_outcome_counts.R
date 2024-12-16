@@ -21,6 +21,7 @@
 #' assist in reading of counts. \code{time_increment} is a \code{numeric}
 #' scalar indicating the increment between vertical lines on the time axis.
 #' @param color_palette A vector of colors for each event.
+#' @param legend_placement Location of the plot legend. See \code{?legend}
 #'
 #' @return NULL
 #' @export
@@ -35,17 +36,17 @@ plot_outcome_counts <-
     type = "tc",
     count_increment = 10,
     time_increment = 30,
-    color_palette = NULL
+    color_palette = NULL,
+    legend_placement = "topleft"
   ) {
 
-    if(!is.null(study_time)){
-      prepared_data <-
-        data_at_time_t(
-          prepared_data = prepared_data,
-          study_time = study_time
-        )
-      study_time <- prepared_data$study_time
-    }
+    outcome_counts <-
+      count_outcomes(
+        prepared_data = prepared_data,
+        study_time = study_time
+      )
+
+    time_to_event <- prepared_data$time_to_event
 
     type <- tolower(type)
     plot_total <- length(grep(pattern = "t", x =  type)) > 0
@@ -59,11 +60,6 @@ plot_outcome_counts <-
            "(event count).")
     }
 
-    outcome_counts <-
-      count_outcomes(
-        prepared_data = prepared_data,
-        study_time = study_time
-      )
 
     if(plot_events){
       if(!("count_events" %in% names(outcome_counts))){
@@ -88,7 +84,7 @@ plot_outcome_counts <-
         max(outcome_counts$count_total, na.rm = TRUE)
       } else if(plot_complete){
         max(outcome_counts$count_complete, na.rm = TRUE)
-      } else if(plot_complete){
+      } else if(plot_events){
         max(outcome_counts$count_events, na.rm = TRUE)
       }
 
@@ -100,7 +96,8 @@ plot_outcome_counts <-
       xlim = range(outcome_counts$time),
       ylim = c(0, y_max),
       xlab = "Study Time",
-      ylab = "Count"
+      ylab = "Count",
+      las = 1
     )
 
     graphics::abline(
@@ -118,12 +115,14 @@ plot_outcome_counts <-
         outcome_counts[which(outcome_counts$event == events[i]),]
 
       if(plot_total){
-        graphics::lines(
-          count_total ~ time,
-          data = plot_i_data[order(plot_i_data$count_total),],
-          col = i,
-          type = "S"
-        )
+        if(!time_to_event){
+          graphics::lines(
+            count_total ~ time,
+            data = plot_i_data[order(plot_i_data$count_total),],
+            col = i,
+            type = "S"
+          )
+        }
       }
 
       if(plot_complete){
@@ -153,11 +152,12 @@ plot_outcome_counts <-
 
     if(plot_complete) {
       legend_text <- c(legend_text, "Complete")
-      legend_lty <- c(legend_lty, 1)
+      legend_lty <- c(legend_lty, 2)
     }
     if(plot_total) {
-      legend_text <- c(legend_text, "Non-missing")
-      legend_lty <- c(legend_lty, 2)
+      legend_text <-
+        c(legend_text, "Total")
+      legend_lty <- c(legend_lty, 1)
     }
     if(plot_events) {
       legend_text <- c(legend_text, "Events")
@@ -165,7 +165,7 @@ plot_outcome_counts <-
     }
 
     graphics::legend(
-      x ="bottomright",
+      x = "bottomright",
       legend = legend_text,
       lty = legend_lty,
       inset = c(0, 1),
@@ -177,7 +177,7 @@ plot_outcome_counts <-
     events[1] <- "RND"
 
     graphics::legend(
-      x = "topleft",
+      x = legend_placement,
       legend = events,
       col = color_palette,
       lty = 1,

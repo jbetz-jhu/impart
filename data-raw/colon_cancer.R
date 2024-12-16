@@ -1,3 +1,6 @@
+# Colon Cancer Data: DOI: 10.1056/NEJM199002083220602
+set.seed(12345)
+
 library(survival)
 library(dplyr)
 library(tidyr)
@@ -219,3 +222,38 @@ colon_cancer <-
   )
 
 usethis::use_data(colon_cancer, overwrite = TRUE)
+
+# Subset colon cancer data to active treatment arms: Lev, Lev+5FU
+colon_cancer_active <-
+  subset(
+    x = colon_cancer,
+    subset = arm %in% c("Lev+5FU", "Lev")
+  )
+
+colon_cancer_active$tx <-
+  with(
+    data = colon_cancer_active,
+    1*(arm == "Lev+5FU") + 0*(arm == "Lev")
+  )
+
+
+
+
+# Add simulated recruitment time: March 1984 to October 1987
+enrollment_duration <-
+  difftime(
+    time1 = as.Date("1987-10-31"),
+    time2 = as.Date("1984-03-01"),
+    units = "days"
+  ) |>
+  as.numeric()
+
+colon_cancer_active$enroll_time <-
+  runif(
+    n = nrow(colon_cancer_active),
+    min = 0,
+    max = enrollment_duration/365.25
+  ) |>
+  sort()
+
+usethis::use_data(colon_cancer_active, overwrite = TRUE)

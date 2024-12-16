@@ -24,18 +24,32 @@ count_outcomes <-
     study_time = NULL
   ){
 
+    # Revert to data at earlier point in study, if applicable
     if(!is.null(study_time)){
       prepared_data <-
         data_at_time_t(
           prepared_data = prepared_data,
           study_time = study_time
         )
+    } else {
+      study_time <- prepared_data$study_time
+    }
+
+    time_to_event <- prepared_data$time_to_event
+
+    # Convert time: randomization-to-event to study-initiation-to-event
+    if(time_to_event){
+
+      time_to_event_vars <-
+        paste0(".t_", 1:length(prepared_data$variables$outcome_time_variables))
+
+      prepared_data$data[, time_to_event_vars] <-
+        prepared_data$data[, time_to_event_vars] + prepared_data$data$`.e`
     }
 
     data <- prepared_data$data
 
-    data <-
-      data[rank(x = data$`.e`, ties.method = "first"),]
+    data <- data[rank(x = data$`.e`, ties.method = "first"),]
 
     id_variable <- prepared_data$variables$id_variable
     outcome_variables <- prepared_data$variables$outcome_variables
@@ -60,54 +74,47 @@ count_outcomes <-
         )
       )
 
-    long_times[[1]]$count_complete <- long_times[[1]]$count_total
-
-    if(binary_outcome){
-      long_times[[1]]$count_events <- NA
-    }
-
+    long_times[[1]]$count_events <-
+      long_times[[1]]$count_complete <-
+      long_times[[1]]$count_total
 
     for(i in 1:length(outcome_variables)){
-      complete_times <- data[, outcome_time_variables[i]]
+      # Reorder data by outcome time: Remove rows with missing outcome times
+      data_i <-
+        data[
+          order(
+            x = data[, outcome_time_variables[i]],
+            na.last = NA
+          ),
+        ]
 
-      if(binary_outcome){
-        event_times <- complete_times
-        event_times[which(!(data[, outcome_variables[i]] %in% 1))] <- NA
-      }
-
-      complete_times[which(is.na(data[, outcome_variables[i]]))] <- NA
-
-      event_times_i <-
+      event_time_data_i <-
         data.frame(
-          id = data[, id_variable],
+          id = data_i[, id_variable],
           event = outcome_variables[i],
-          value = data[, outcome_variables[i]],
-          time = data[, outcome_time_variables[i]],
+          value = data_i[, outcome_variables[i]],
+          time = data_i[, outcome_time_variables[i]],
           count_total =
-            rank(
-              x = data[, outcome_time_variables[i]],
-              na.last = "keep",
-              ties.method = "first"
-            ),
+            if(time_to_event){
+              NA
+            } else {
+              1:nrow(data_i)
+            },
           count_complete =
-            rank(
-              x = complete_times,
-              na.last = "keep",
-              ties.method = "first"
-            )
+            if(time_to_event){
+              cumsum(data_i[, paste0(".r_", i)])
+            } else {
+              no = cumsum(data_i[, paste0(".r_", i)] %in% 1)
+            },
+          count_events =
+            if(binary_outcome){
+              cumsum(data_i[, outcome_variables[i]] %in% 1)
+            } else {
+              NA
+            }
         )
 
-      if(binary_outcome){
-        event_times_i$count_events <-
-          rank(
-            x = event_times,
-            na.last = "keep",
-            ties.method = "first"
-          )
-      }
-
-      long_times[[length(long_times) + 1]] <-
-        event_times_i[order(event_times_i$time),]
+      long_times[[length(long_times) + 1]] <- event_time_data_i
     }
 
     long_times <-

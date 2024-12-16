@@ -47,6 +47,10 @@ prepare_monitored_study_data <-
     outcomes_sequential = TRUE,
     time_to_event = FALSE
   ){
+    if(!is.finite(study_time)){
+      stop("`study_time` must be numeric and not missing.")
+    }
+
     missing_vars <-
       setdiff(
         x = c(id_variable, covariates_variables, enrollment_time_variable,
@@ -200,7 +204,7 @@ prepare_monitored_study_data <-
       wide_data[[paste0(".r_", i)]] <- 1*outcome_indicator
     }
 
-    return(
+    prepared_data <-
       list(
         data = do.call(what = cbind, args = wide_data),
         original_data = data,
@@ -217,7 +221,13 @@ prepare_monitored_study_data <-
           renamed_outcome_times = paste0(".t_", 1:n_outcomes),
           outcome_indicators = paste0(".r_", 1:n_outcomes)
         ),
-        study_time = study_time
+        study_time = study_time,
+        observe_missing_times = observe_missing_times,
+        outcomes_sequential = outcomes_sequential,
+        time_to_event = time_to_event
       )
-    )
+
+    class(prepared_data) <- c("monitored_study_data", class(prepared_data))
+
+    return(prepared_data)
   }

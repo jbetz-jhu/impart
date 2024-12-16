@@ -24,7 +24,7 @@ Description: Software for designing, monitoring, and analyzing experiments
 License: GPL (>= 3)
 URL: https://jbetz-jhu.github.io/impart/, https://github.com/jbetz-jhu/impart
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5)
 Imports: 
     boot,
     methods,

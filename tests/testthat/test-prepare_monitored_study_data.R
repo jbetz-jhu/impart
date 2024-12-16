@@ -16,6 +16,24 @@ test_that(
           outcomes_sequential = TRUE,
           time_to_event = FALSE
         ),
+      regexp = "must be numeric and not missing"
+    )
+
+    expect_error(
+      object =
+        prepare_monitored_study_data(
+          data = example_1,
+          study_time = 1988,
+          id_variable = "..id",
+          covariates_variables = c(".x_1", ".x_2", ".x_3", ".x_4"),
+          enrollment_time_variable = "..enrollment_time",
+          treatment_variable = c(".tx"),
+          outcome_variables = c(".y_1", ".y_2", ".y_3", ".y_4"),
+          outcome_time_variables = c("..t_1", "..t_2", "..t_3", "..t_4"),
+          observe_missing_times = c(30, 60, 90, 120) + 7,
+          outcomes_sequential = TRUE,
+          time_to_event = FALSE
+        ),
       regexp = "Variables not contained"
     )
 
@@ -189,6 +207,24 @@ test_that(
 test_that(
   desc = "Error Handling Works - Time-to-Event",
   code = {
+    expect_error(
+      object =
+        prepare_monitored_study_data(
+          data = test_data,
+          study_time = "abcd",
+          id_variable = ".id",
+          covariates_variables = c("x_1"),
+          enrollment_time_variable = "enrollment",
+          treatment_variable = c("tx"),
+          outcome_variables = c("event_1", "event_2"),
+          outcome_time_variables = c("tte_1", "tte_2"),
+          observe_missing_times = c(0, 0),
+          outcomes_sequential = FALSE,
+          time_to_event = TRUE
+        ),
+      regexp = "`study_time` must be numeric"
+    )
+
     expect_error(
       object =
         prepare_monitored_study_data(

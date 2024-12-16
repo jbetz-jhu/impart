@@ -93,7 +93,7 @@
 #' to years. For more information, see \code{?survival::colon}.
 #'
 #' @format ## `colon_cancer`
-#' A data frame with 929 rows and 15 columns:
+#' A tibble: 929 × 15
 #' \describe{
 #'   \item{.id}{Participant ID}
 #'   \item{arm}{Treatment Assignment}
@@ -112,6 +112,39 @@
 #'   \item{years_to_recurrence}{Time to recurrence/censoring in years}
 #' }
 "colon_cancer"
+
+
+
+
+#' colon_cancer: Processed Moerton Colon Cancer Data
+#'
+#' Data from an adjuvant chemotherapy trial for colon cancer with variables
+#' renamed and labeled, missing covariates imputed, and time scale converted
+#' to years. For more information, see \code{?survival::colon}.
+#'
+#' @format ## `colon_cancer_active`
+#' A tibble: 614 × 18
+#' \describe{
+#'   \item{.id}{Participant ID}
+#'   \item{arm}{Treatment Assignment}
+#'   \item{age}{Patient age}
+#'   \item{sex}{Patient sex}
+#'   \item{obstruction}{Colon obstruction by tumor}
+#'   \item{perforation}{Colon perforation by tumor}
+#'   \item{organ_adherence}{Organ adherence by tumor}
+#'   \item{positive_nodes}{Lymph nodes with detectable cancer}
+#'   \item{differentiation}{Differentiation of tumor}
+#'   \item{local_spread}{Extent of local spread of tumor}
+#'   \item{time_surgery_registration}{Time from surgery to registration}
+#'   \item{event_death}{Death on study (1 = yes, 0 = no)}
+#'   \item{event_recurrence}{Recurrence (1 = yes, 0 = no)}
+#'   \item{years_to_death}{Time to death/censoring in years}
+#'   \item{years_to_recurrence}{Time to recurrence/censoring in years}
+#'   \item{tx}{Binary treatment indicator (1 = Lev+5FU, 0 = Lev)}
+#'   \item{death}{Binary event indicator (1 = Death, 0 = Censored)}
+#'   \item{enroll_time}{Simulated enrollment time}
+#' }
+"colon_cancer_active"
 
 
 

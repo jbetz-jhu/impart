@@ -10,7 +10,8 @@ plot_outcome_counts(
   type = "tc",
   count_increment = 10,
   time_increment = 30,
-  color_palette = NULL
+  color_palette = NULL,
+  legend_placement = "topleft"
 )
 }
 \arguments{
@@ -33,6 +34,8 @@ assist in reading of counts. \code{time_increment} is a \code{numeric}
 scalar indicating the increment between vertical lines on the time axis.}
 
 \item{color_palette}{A vector of colors for each event.}
+
+\item{legend_placement}{Location of the plot legend. See \code{?legend}}
 }
 \description{
 An appropriate analysis must take into account the amount of data available
