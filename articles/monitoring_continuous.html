@@ -8,8 +8,8 @@
 <title>Monitoring Information for a Continuous Outcome • impart</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Monitoring Information for a Continuous Outcome">
 <meta name="description" content="How to determine analysis times for a continuous outcome
 ">
@@ -362,34 +362,34 @@ time:</p>
 <span>  <span class="va">example_1_counts</span>,</span>
 <span>  <span class="va">event</span> <span class="op">==</span> <span class="st">"randomization"</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;           event     time count_total count_complete</span></span>
-<span><span class="co">#&gt; 1 randomization  2.24846           1              1</span></span>
-<span><span class="co">#&gt; 2 randomization 11.05565           2              2</span></span>
-<span><span class="co">#&gt; 3 randomization 16.96591           3              3</span></span>
-<span><span class="co">#&gt; 4 randomization 25.13396           4              4</span></span>
-<span><span class="co">#&gt; 5 randomization 50.07301           5              5</span></span>
-<span><span class="co">#&gt; 6 randomization 50.93935           6              6</span></span>
+<span><span class="co">#&gt;           event     time count_total count_complete count_events</span></span>
+<span><span class="co">#&gt; 1 randomization  2.24846           1              1            1</span></span>
+<span><span class="co">#&gt; 2 randomization 11.05565           2              2            2</span></span>
+<span><span class="co">#&gt; 3 randomization 16.96591           3              3            3</span></span>
+<span><span class="co">#&gt; 4 randomization 25.13396           4              4            4</span></span>
+<span><span class="co">#&gt; 5 randomization 50.07301           5              5            5</span></span>
+<span><span class="co">#&gt; 6 randomization 50.93935           6              6            6</span></span>
 <span></span>
 <span><span class="co"># Timing of first n observations of `y_4`</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span></span>
 <span>  <span class="va">example_1_counts</span>,</span>
 <span>  <span class="va">event</span> <span class="op">==</span> <span class="st">"y_4"</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      event     time count_total count_complete</span></span>
-<span><span class="co">#&gt; 1106   y_4 133.0050           1              1</span></span>
-<span><span class="co">#&gt; 2106   y_4 145.0556           2             NA</span></span>
-<span><span class="co">#&gt; 316    y_4 150.9659           3             NA</span></span>
-<span><span class="co">#&gt; 416    y_4 154.3419           4              2</span></span>
-<span><span class="co">#&gt; 816    y_4 171.3021           5              3</span></span>
-<span><span class="co">#&gt; 716    y_4 177.3249           6              4</span></span>
+<span><span class="co">#&gt;      event     time count_total count_complete count_events</span></span>
+<span><span class="co">#&gt; 1201   y_4 133.0050           1              1           NA</span></span>
+<span><span class="co">#&gt; 1202   y_4 145.0556           2              1           NA</span></span>
+<span><span class="co">#&gt; 1203   y_4 150.9659           3              1           NA</span></span>
+<span><span class="co">#&gt; 1204   y_4 154.3419           4              2           NA</span></span>
+<span><span class="co">#&gt; 1205   y_4 171.3021           5              3           NA</span></span>
+<span><span class="co">#&gt; 1206   y_4 177.3249           6              4           NA</span></span>
 <span></span>
 <span><span class="co"># Find when n observations of `y_4` are first available:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span></span>
 <span>  <span class="va">example_1_counts</span>,</span>
 <span>  <span class="va">event</span> <span class="op">==</span> <span class="st">"y_4"</span> <span class="op">&amp;</span> <span class="va">count_complete</span> <span class="op">==</span> <span class="fl">70</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt;     event     time count_total count_complete</span></span>
-<span><span class="co">#&gt; 944   y_4 707.0069          96             70</span></span></code></pre></div>
+<span><span class="co">#&gt;      event     time count_total count_complete count_events</span></span>
+<span><span class="co">#&gt; 1296   y_4 707.0069          96             70           NA</span></span></code></pre></div>
 <p>This can also be used with <code>data_at_time_t</code> to reconstruct
 the study data when a particular number of observations have
 accrued:</p>
@@ -552,37 +552,49 @@ projecting when pre-specified information levels may be met:</p>
 <span><span class="co">#&gt;       times randomization y_1 y_2 y_3 y_4 information information_lag_1</span></span>
 <span><span class="co">#&gt; 1  491.3059            79  59  49  43  40  0.02354317                NA</span></span>
 <span><span class="co">#&gt; 2  506.9791            83  64  52  46  42  0.06373427        0.02354317</span></span>
-<span><span class="co">#&gt; 3  518.1410            84  64  54  47  44  0.06273970        0.06373427</span></span>
-<span><span class="co">#&gt; 4  527.6485            85  65  54  50  46  0.06672800        0.06273970</span></span>
-<span><span class="co">#&gt; 5  538.5259            86  68  56  52  48  0.11713994        0.06672800</span></span>
-<span><span class="co">#&gt; 6  551.8682            90  69  57  53  50  0.12625125        0.11713994</span></span>
-<span><span class="co">#&gt; 7  578.2366            95  73  61  56  52  0.14664434        0.12625125</span></span>
-<span><span class="co">#&gt; 8  597.3935            96  77  63  58  54  0.15105217        0.14664434</span></span>
-<span><span class="co">#&gt; 9  630.7461           100  79  70  64  56  0.14185643        0.15105217</span></span>
-<span><span class="co">#&gt; 10 633.0925           100  79  70  64  58  0.15632099        0.14185643</span></span>
-<span><span class="co">#&gt; 11 635.4027           100  79  70  64  60  0.16605940        0.15632099</span></span>
-<span><span class="co">#&gt; 12 658.6659           109  82  72  69  62  0.18410677        0.16605940</span></span>
-<span><span class="co">#&gt; 13 662.5691           110  82  72  69  64  0.17192467        0.18410677</span></span>
-<span><span class="co">#&gt; 14 675.4510           113  87  74  70  66  0.17923912        0.17192467</span></span>
-<span><span class="co">#&gt; 15 701.1256           117  96  80  71  68  0.17267007        0.17923912</span></span>
-<span><span class="co">#&gt; 16 707.0069           117  96  81  73  70  0.18025072        0.17267007</span></span>
+<span><span class="co">#&gt; 3  508.6034            83  64  52  46  42  0.06373427        0.06373427</span></span>
+<span><span class="co">#&gt; 4  518.1410            84  64  54  47  44  0.06273970        0.06373427</span></span>
+<span><span class="co">#&gt; 5  527.2583            85  65  54  50  44  0.06569907        0.06273970</span></span>
+<span><span class="co">#&gt; 6  527.6485            85  65  54  50  46  0.06672800        0.06569907</span></span>
+<span><span class="co">#&gt; 7  538.5259            86  68  56  52  48  0.11713994        0.06672800</span></span>
+<span><span class="co">#&gt; 8  540.6071            87  68  57  52  48  0.09814035        0.11713994</span></span>
+<span><span class="co">#&gt; 9  551.8682            90  69  57  53  50  0.12625125        0.09814035</span></span>
+<span><span class="co">#&gt; 10 555.9573            92  70  60  54  50  0.12003936        0.12625125</span></span>
+<span><span class="co">#&gt; 11 578.2366            95  73  61  56  52  0.14664434        0.12003936</span></span>
+<span><span class="co">#&gt; 12 579.6637            95  73  61  57  52  0.14664434        0.14664434</span></span>
+<span><span class="co">#&gt; 13 582.8345            95  73  63  57  52  0.14664434        0.14664434</span></span>
+<span><span class="co">#&gt; 14 597.3935            96  77  63  58  54  0.15105217        0.14664434</span></span>
+<span><span class="co">#&gt; 15 630.7461           100  79  70  64  56  0.14185643        0.15105217</span></span>
+<span><span class="co">#&gt; 16 633.0925           100  79  70  64  58  0.15632099        0.14185643</span></span>
+<span><span class="co">#&gt; 17 635.4027           100  79  70  64  60  0.16605940        0.15632099</span></span>
+<span><span class="co">#&gt; 18 658.6659           109  82  72  69  62  0.18410677        0.16605940</span></span>
+<span><span class="co">#&gt; 19 662.5691           110  82  72  69  64  0.17192467        0.18410677</span></span>
+<span><span class="co">#&gt; 20 675.4510           113  87  74  70  66  0.17923912        0.17192467</span></span>
+<span><span class="co">#&gt; 21 701.1256           117  96  80  71  68  0.17267007        0.17923912</span></span>
+<span><span class="co">#&gt; 22 707.0069           117  96  81  73  70  0.18025072        0.17267007</span></span>
 <span><span class="co">#&gt;    information_change information_pct_change information_fraction</span></span>
 <span><span class="co">#&gt; 1                  NA                     NA           0.05164918</span></span>
 <span><span class="co">#&gt; 2        0.0401910997              63.060421           0.13982070</span></span>
-<span><span class="co">#&gt; 3       -0.0009945712              -1.585234           0.13763880</span></span>
-<span><span class="co">#&gt; 4        0.0039883015               5.976953           0.14638836</span></span>
-<span><span class="co">#&gt; 5        0.0504119382              43.035653           0.25698243</span></span>
-<span><span class="co">#&gt; 6        0.0091113103               7.216808           0.27697089</span></span>
-<span><span class="co">#&gt; 7        0.0203930945              13.906499           0.32170941</span></span>
-<span><span class="co">#&gt; 8        0.0044078303               2.918085           0.33137934</span></span>
-<span><span class="co">#&gt; 9       -0.0091957493              -6.482434           0.31120564</span></span>
-<span><span class="co">#&gt; 10       0.0144645633               9.253117           0.34293810</span></span>
-<span><span class="co">#&gt; 11       0.0097384163               5.864417           0.36430230</span></span>
-<span><span class="co">#&gt; 12       0.0180473670               9.802663           0.40389475</span></span>
-<span><span class="co">#&gt; 13      -0.0121821058              -7.085723           0.37716956</span></span>
-<span><span class="co">#&gt; 14       0.0073144562               4.080837           0.39321606</span></span>
-<span><span class="co">#&gt; 15      -0.0065690556              -3.804397           0.37880482</span></span>
-<span><span class="co">#&gt; 16       0.0075806509               4.205615           0.39543531</span></span></code></pre></div>
+<span><span class="co">#&gt; 3        0.0000000000               0.000000           0.13982070</span></span>
+<span><span class="co">#&gt; 4       -0.0009945712              -1.585234           0.13763880</span></span>
+<span><span class="co">#&gt; 5        0.0029593721               4.504435           0.14413109</span></span>
+<span><span class="co">#&gt; 6        0.0010289294               1.541975           0.14638836</span></span>
+<span><span class="co">#&gt; 7        0.0504119382              43.035653           0.25698243</span></span>
+<span><span class="co">#&gt; 8       -0.0189995846             -19.359605           0.21530101</span></span>
+<span><span class="co">#&gt; 9        0.0281108949              22.265835           0.27697089</span></span>
+<span><span class="co">#&gt; 10      -0.0062118854              -5.174874           0.26334321</span></span>
+<span><span class="co">#&gt; 11       0.0266049799              18.142520           0.32170941</span></span>
+<span><span class="co">#&gt; 12       0.0000000000               0.000000           0.32170941</span></span>
+<span><span class="co">#&gt; 13       0.0000000000               0.000000           0.32170941</span></span>
+<span><span class="co">#&gt; 14       0.0044078303               2.918085           0.33137934</span></span>
+<span><span class="co">#&gt; 15      -0.0091957493              -6.482434           0.31120564</span></span>
+<span><span class="co">#&gt; 16       0.0144645633               9.253117           0.34293810</span></span>
+<span><span class="co">#&gt; 17       0.0097384163               5.864417           0.36430230</span></span>
+<span><span class="co">#&gt; 18       0.0180473670               9.802663           0.40389475</span></span>
+<span><span class="co">#&gt; 19      -0.0121821058              -7.085723           0.37716956</span></span>
+<span><span class="co">#&gt; 20       0.0073144562               4.080837           0.39321606</span></span>
+<span><span class="co">#&gt; 21      -0.0065690556              -3.804397           0.37880482</span></span>
+<span><span class="co">#&gt; 22       0.0075806509               4.205615           0.39543531</span></span></code></pre></div>
 <p>This trajectory can be smoothed using regression, ideally using a
 method resistant to outliers, such as <code><a href="https://rdrr.io/pkg/deming/man/theilsen.html" class="external-link">deming::theilsen</a></code>.
 Inverse regression can be used to obtain an estimated number of outcomes
