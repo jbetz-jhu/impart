@@ -219,7 +219,8 @@ colon_cancer <-
   ) %>%
   dplyr::select(
     dplyr::all_of(x = names(colon_cancer))
-  )
+  ) %>%
+  as.data.frame()
 
 usethis::use_data(colon_cancer, overwrite = TRUE)
 

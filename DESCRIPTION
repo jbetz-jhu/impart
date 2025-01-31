@@ -26,9 +26,7 @@ URL: https://jbetz-jhu.github.io/impart/, https://github.com/jbetz-jhu/impart
 Depends: 
     R (>= 3.5)
 Imports: 
-    boot,
     methods,
-    mvtnorm,
     parallel,
     rpact,
     stats,
@@ -41,7 +39,8 @@ Suggests:
     rlang,
     rmarkdown,
     survival,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    speff2trial
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3

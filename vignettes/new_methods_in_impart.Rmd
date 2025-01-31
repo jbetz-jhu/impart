@@ -36,13 +36,33 @@ options(
 set.seed(9876)
 ```
 
-`impart` has built-in methods for covariate adjustment that allow for continuous and binary outcomes, but is designed to be able to use methods from other R packages. This vignette demonstrates how to use new methods with `impart`, allowing new software to be used in information monitoring and group sequential designs.
+
+`impart` has several built-in methods for covariate adjustment, but is designed to work with methods from other R packages. This vignette will demonstrate how to integrate other software by writing a [wrapper function](https://en.wikipedia.org/wiki/Wrapper_function), and test the resulting function to make sure it works with `impart`.
 
 
 
 
-```{r}
-library(speff2trial)
+## Notes for Developers
+
+`impart` was written to minimize dependencies to avoid the potential problems that may arise when dependencies are deprecated or updated. This includes dependence on common, relatively mature packages such as the [tidyverse](https://www.tidyverse.org/) ecosystem.
+
+While some code works identically for `tibble`s and base R `data.frame`s, these objects behave  differently under [vector subsetting](https://r4ds.had.co.nz/tibbles.html) - `my_tbl_df[, 1]` or `my_tbl_df[, 1:2]` return a `tbl_df` whereas `my_df[, 1]` returns a vector and `my_df[, 1:2]` returns a `data.frame`. Results of `dim`, `length`, `nrow`, `ncol`, and other functions may differ between a `tbl_df` and a `data.frame`: if this is not handled appropriately, this can result in explicit errors (resulting in a `stop`) or silently returning erroneous results. The connection between error messages and the cause of the error is often unclear without looking at source code.
+
+
+For this reason, `impart::monitored_analysis` checks to ensure that data are passed as a `data.frame`: a `tbl_df` can be easily coerced to a `data.frame` using `as.data.frame()`. If some function depends on having a `tbl_df` and is unable to accept a `data.frame`, the wrapper should include a step to coerce the input back to a `tbl_df` before being passed to the function for analysis.
+
+
+
+
+## Implementing `speff2trial::speffSurv()` in `impart`
+
+The `speff2trial::speffSurv()` in the [`speff2trial` package on CRAN](https://cran.r-project.org/web/packages/speff2trial/index.html) computes a covariate-adjusted marginal [hazard ratio](https://covariateadjustment.github.io/estimands.html#survival_estimands). The [repo for this package is hosted on Github](https://github.com/mjuraska/speff2trial). This vignette shows how to create a wrapper for this function, which is already integrated in the package as `impart::speffsurv_impart()`. 
+
+The `impart::colon_cancer` dataset will be used to test the wrapper, using the outcome of `years_to_death`: a time-to-event outcome that is subject to censoring. 
+
+```{r Load-Colon-Cancer-Data}
+library(impart)
+
 # Extract two treatment arms: Lev+5FU (Chemotherapy) and Obs (Observation)
 colon_cancer_5fu_vs_obs <-
   subset(
@@ -50,16 +70,24 @@ colon_cancer_5fu_vs_obs <-
     arm %in% c("Lev+5FU", "Obs")
   ) |>
   droplevels()
-  
 
-sp_unadjusted <-
-  survival::coxph(
-    formula =
-      survival::Surv(time = years_to_death, event = event_death) ~ arm,
-    data = colon_cancer_5fu_vs_obs
-  )
+head(colon_cancer_5fu_vs_obs)
+```
 
-sp_full <-
+
+
+
+The wrapper function should take in all of the necessary arguments to address missing data, compute the estimate, and return the result. The result should either be a `numeric` vector named `estimate`, or a `list` containing a numeric vector named `estimate`. The value of `estimate` is extracted by `impart::calculate_estimate()` to obtain estimates and bootstrap confidence intervals.
+
+First, run the function that requires implementation: see the documentation of the function (e.g. `?speff2trial::speffSurv`) for details:
+
+
+
+
+```{r Run-Example}
+library(speff2trial)
+
+speffsurv_example <-
   speff2trial::speffSurv(
     formula =
       survival::Surv(time = years_to_death, event = event_death) ~
@@ -70,3 +98,317 @@ sp_full <-
     fixed = TRUE
   )
 ```
+
+
+The `summary` or `print` methods can be helpful in identifying the appropriate value to extract:
+
+
+```{r Summarize-Example-Output}
+summary(speffsurv_example)
+```
+
+
+Next, inspect the output: 
+
+
+```{r Inspect-Output}
+names(speffsurv_example)
+
+str(speffsurv_example)
+```
+
+
+This function returns a `list`, and the marginal hazard ratio estimates are in a named numeric vector called `beta`.
+
+
+
+
+## An Example Wrapper
+
+A wrapper is needed to take in the appropriate arguments, compute the estimate, and then return a vector named `estimate` or a list containing that vector. 
+
+```{r Example-Wrapper}
+speffsurv_impart_demo <-
+  function(
+    data,
+    estimand = "log_hazard_ratio",
+    formula,
+    treatment_column = NULL,
+    alpha = 0.05,
+    ci = FALSE
+  ){
+    if(!(estimand %in% c("log_hazard_ratio"))){
+      stop("`estimand` must be \"log_hazard_ratio\".")
+    }
+
+    if(!(treatment_column %in% names(data))){
+      stop("`treatment_column` (", treatment_column, ") must be in `data`.")
+    }
+
+    # Check for event indicators that are missing times, vice versa
+    outcome_cols <-
+      all.vars(update(old = formula, new = . ~ 0))
+    
+    if(length(outcome_cols == 2)){
+      miss_rows <- which(rowSums(is.na(data[, outcome_cols])) == 1)
+      if(length(miss_rows) > 0){
+        stop("Indicators missing an event time or event times missing an",
+             "outcome indicator: rows ", paste0(miss_rows, collapse = ", "))
+      }
+    }
+    
+    # Get baseline covariates from formula
+    baseline_covariates <-
+      all.vars(update(old = formula, new = 0 ~ .))
+
+    # Impute any missing values using mean/mode imputation
+    data <-
+      impute_covariates_mean_mode(
+        data = data,
+        baseline_covariates = baseline_covariates
+      )
+
+    # Subset to individuals whose outcomes have been assessed:
+    speffsurv_result <-
+      speff2trial::speffSurv(
+        formula = formula,
+        data = data,
+        trt.id = treatment_column,
+        conf.level = 1 - alpha,
+        fixed = TRUE
+      )
+
+    # Return CI if specified
+    if(ci){
+      speffsurv_summary <-
+        data.frame(summary(speffsurv_result)$tab)
+      lcl <- speffsurv_summary["Speff", "LowerCI"]
+      ucl <- speffsurv_summary["Speff", "UpperCI"]
+    } else {
+      lcl = NULL
+      ucl = NULL
+    }
+
+    return(
+      list(
+        estimate = as.numeric(speffsurv_result$beta["Speff"]),
+        se = sqrt(as.numeric(speffsurv_result$varbeta["Speff"])),
+        lcl = lcl,
+        ucl = ucl,
+        alpha = alpha,
+        estimand = estimand
+      )
+    )
+  }
+```
+
+
+Compare the results of the wrapper to the summary:
+
+
+```{r Test-Wrapper}
+summary(speffsurv_example)
+
+speffsurv_impart_demo(
+  data = colon_cancer_5fu_vs_obs,
+  estimand = "log_hazard_ratio",
+  formula = 
+    survival::Surv(time = years_to_death, event = event_death) ~
+    age + sex + obstruction + perforation + organ_adherence + positive_nodes +
+    differentiation + local_spread,
+  treatment_column = "arm",
+  alpha = 0.05,
+  ci = FALSE
+)
+
+speffsurv_impart_demo(
+  data = colon_cancer_5fu_vs_obs,
+  estimand = "log_hazard_ratio",
+  formula = 
+    survival::Surv(time = years_to_death, event = event_death) ~
+    age + sex + obstruction + perforation + organ_adherence + positive_nodes +
+    differentiation + local_spread,
+  treatment_column = "arm",
+  alpha = 0.05,
+  ci = TRUE
+)
+```
+
+
+The wrapper should also be tested on missing data, making sure they are addressed successfully:
+
+
+```{r Test-Missing}
+colon_cancer_5fu_vs_obs_mcar <- colon_cancer_5fu_vs_obs
+
+# Set some categorical/continuous variables to NA
+set.seed(seed = 12345)
+miss_rows <- sample(x = 1:nrow(colon_cancer_5fu_vs_obs), size = 10)
+colon_cancer_5fu_vs_obs_mcar$age[miss_rows] <- NA
+colon_cancer_5fu_vs_obs_mcar$sex[miss_rows] <- NA
+colon_cancer_5fu_vs_obs_mcar$positive_nodes[miss_rows] <- NA
+
+speffsurv_impart_demo(
+  data = colon_cancer_5fu_vs_obs_mcar,
+  estimand = "log_hazard_ratio",
+  formula = 
+    survival::Surv(time = years_to_death, event = event_death) ~
+    age + sex + obstruction + perforation + organ_adherence + positive_nodes +
+    differentiation + local_spread,
+  treatment_column = "arm",
+  alpha = 0.05,
+  ci = TRUE
+)
+```
+
+
+
+
+## Testing the Wrapper
+
+All wrappers should be appropriately tested: the [testthat package](https://testthat.r-lib.org/) provides a suite of functions that simplify specifying and executing a testing workflow.
+
+```{r Load-testthat}
+library(testthat)
+```
+
+A suggested test workflow includes, but is not limited to:
+
+  - Testing for missing covariate data
+  - Testing for missing outcome data
+    - For time-to-event, checking both event indicators and event times
+  - Checking for compatibility with input that contains:
+    - `numeric`, `integer`, `logical`, `factor`, `string`
+  - Checking for [`labelled` data from `haven`](https://haven.tidyverse.org/index.html)
+
+
+
+
+### 1. Complete Data
+
+```{r Test-1-Complete-Data}
+test_that(
+  desc = "Complete Data",
+  code =
+    {
+      expect_no_condition(
+        object =
+          speffsurv_impart_demo(
+            data = colon_cancer_5fu_vs_obs,
+            estimand = "log_hazard_ratio",
+            formula = 
+              survival::Surv(time = years_to_death, event = event_death) ~
+              age + sex + obstruction + perforation + organ_adherence + positive_nodes +
+              differentiation + local_spread,
+            treatment_column = "arm",
+            alpha = 0.05,
+            ci = FALSE
+          )
+      )
+    }
+)
+```
+
+
+
+
+### 2. Missing Covariates
+
+```{r Test-2-Missing-Covariates}
+test_that(
+  desc = "Missing Covariates",
+  code =
+    {
+      set.seed(seed = 12345)
+      colon_cancer_5fu_vs_obs_mcar <- colon_cancer_5fu_vs_obs
+      miss_rows <- sample(x = 1:nrow(colon_cancer_5fu_vs_obs), size = 10)
+      colon_cancer_5fu_vs_obs_mcar$age[miss_rows] <- NA
+      colon_cancer_5fu_vs_obs_mcar$sex[miss_rows] <- NA
+      colon_cancer_5fu_vs_obs_mcar$positive_nodes[miss_rows] <- NA
+      
+      expect_no_condition(
+        object =
+          speffsurv_impart_demo(
+            data = colon_cancer_5fu_vs_obs_mcar,
+            estimand = "log_hazard_ratio",
+            formula = 
+              survival::Surv(time = years_to_death, event = event_death) ~
+              age + sex + obstruction + perforation + organ_adherence + positive_nodes +
+              differentiation + local_spread,
+            treatment_column = "arm",
+            alpha = 0.05,
+            ci = TRUE
+          )
+      )
+    }
+)
+```
+
+
+
+
+### 3. Missing Outcome Indicator
+
+```{r Test-3-Missing-Outcome-Indicator}
+test_that(
+  desc = "Missing Outcome Indicator",
+  code =
+    {
+      set.seed(seed = 23456)
+      colon_cancer_5fu_vs_obs_mcar <- colon_cancer_5fu_vs_obs
+      miss_rows <- sample(x = 1:nrow(colon_cancer_5fu_vs_obs), size = 10)
+      colon_cancer_5fu_vs_obs_mcar$event_death[miss_rows] <- NA
+
+      expect_error(
+        object =
+          speffsurv_impart_demo(
+            data = colon_cancer_5fu_vs_obs_mcar,
+            estimand = "log_hazard_ratio",
+            formula = 
+              survival::Surv(time = years_to_death, event = event_death) ~
+              age + sex + obstruction + perforation + organ_adherence + positive_nodes +
+              differentiation + local_spread,
+            treatment_column = "arm",
+            alpha = 0.05,
+            ci = TRUE
+          ),
+        regexp = "Indicators missing an event time"
+      )
+    }
+)
+```
+
+
+
+
+### 4. Missing Outcome Times
+
+```{r Test-4-Missing-Outcome-Times}
+test_that(
+  desc = "Missing Outcome Times",
+  code =
+    {
+      set.seed(seed = 23456)
+      colon_cancer_5fu_vs_obs_mcar <- colon_cancer_5fu_vs_obs
+      miss_rows <- sample(x = 1:nrow(colon_cancer_5fu_vs_obs), size = 10)
+      colon_cancer_5fu_vs_obs_mcar$years_to_death[miss_rows] <- NA
+
+      expect_error(
+        object =
+          speffsurv_impart_demo(
+            data = colon_cancer_5fu_vs_obs_mcar,
+            estimand = "log_hazard_ratio",
+            formula = 
+              survival::Surv(time = years_to_death, event = event_death) ~
+              age + sex + obstruction + perforation + organ_adherence + positive_nodes +
+              differentiation + local_spread,
+            treatment_column = "arm",
+            alpha = 0.05,
+            ci = TRUE
+          ),
+        regexp = "Indicators missing an event time"
+      )
+    }
+)
+```
+

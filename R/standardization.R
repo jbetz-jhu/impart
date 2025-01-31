@@ -1,4 +1,4 @@
-#' Compute stanadardization (i.e. G-Computation) estimator
+#' Compute standardization (i.e. G-Computation) estimator
 #'
 #' Computes the estimate of a contrast of means for continuous and binary
 #' outcomes on the additive scale, relative scale. Computing a marginal odds
@@ -20,10 +20,24 @@
 #' indicators (e.g. `.r_1`, `.r_2`, ...). The outcome indicators indicate
 #' whether an outcome has been observed (`1`), is missing (`0`), or not yet
 #' obtained (\code{NA}).
+#' @param outcome_formula A [stats::formula] specifying the relationship between
+#' the outcome and covariates in the combined sample (treatment and control).
+#' \strong{Note:} if \code{outcome_formula} is specified, both \code{y0_formula}
+#' and \code{y1_formula} must be \code{NULL}.
 #' @param y0_formula A [stats::formula] specifying the relationship between the
-#' outcome and covariates in the control arm.
+#' outcome and covariates in the control arm using treatment-stratified outcome
+#' models. \strong{Note:} if \code{y0_formula} is specified, \code{y1_formula}
+#' must be specified and \code{outcome_formula} must be \code{NULL}.
 #' @param y1_formula A [stats::formula] specifying the relationship between the
-#' outcome and covariates in the treatment arm.
+#' outcome and covariates in the treatment arm using treatment-stratified
+#' outcome models. \strong{Note:} if \code{y1_formula} is specified,
+#' \code{y0_formula} must be specified and \code{outcome_formula} must be
+#' \code{NULL}.
+#' @param estimand A \code{character} scalar: "difference" (for a difference in
+#' means or risk difference), "ratio" (for a ratio of means or relative risk),
+#' or "oddsratio" (for an odds ratio for a binary outcome).
+#' @param family The [stats::family] for the outcome regression model
+
 #' @param treatment_column A \code{character} scalar indicating the column
 #' containing the treatment indicator.
 #' @param outcome_indicator_column A \code{character} scalar indicating the column
@@ -52,25 +66,21 @@
 #'
 
 #' @rdname standardization
-#' @param estimand A \code{character} scalar: "difference" (for a difference in
-#' means or risk difference), "ratio" (for a ratio of means or relative risk),
-#' or "oddsratio" (for an odds ratio for a binary outcome).
-#' @param family The [stats::family] for the outcome regression model
 #' @export
 standardization <-
   function(
     data,
-    estimand = "difference",
-    y0_formula,
-    y1_formula,
+    outcome_formula = NULL,
+    y0_formula = NULL,
+    y1_formula = NULL,
     family,
-    treatment_column = NULL,
-    outcome_indicator_column = NULL
-  ){
-
+    estimand = "difference",
+    outcome_indicator_column = NULL,
+    treatment_column = NULL
+  ) {
     if(!(estimand %in% c("difference", "ratio", "oddsratio"))){
-      stop("`estimand` must be one of the following: \"difference\", \"ratio\", ",
-           "or \"oddsratio\".")
+      stop("`estimand` must be one of the following: \"difference\", ",
+           "\"ratio\", or \"oddsratio\".")
     }
 
     if(!all(c(treatment_column, outcome_indicator_column) %in% names(data))){
@@ -79,23 +89,179 @@ standardization <-
            "be in `data`.")
     }
 
+    if(
+      !xor(
+        x = is.null(outcome_formula),
+        y = (is.null(y0_formula) & is.null(y1_formula))
+      )
+    ) {
+      stop(
+        "Either `outcome_formula` should be specified or both `y0_formula` and ",
+        "`y1_formula` should be specified, not both."
+      )
+    }
+
+    # Get baseline covariates from `outcome_formula`
+    if(!is.null(outcome_formula)){
+      baseline_covariates <-
+        setdiff(
+          x = all.vars(stats::update(old = outcome_formula, new = 0 ~ .)),
+          y = treatment_column
+        )
+    } else {
+      baseline_covariates <-
+        unique(
+          x = c(all.vars(stats::update(old = y0_formula, new = 0 ~ .)),
+                all.vars(stats::update(old = y1_formula, new = 0 ~ .)))
+        )
+    }
+
+
+    # Impute any missing values using mean/mode imputation
+    data <-
+      impute_covariates_mean_mode(
+        data = data,
+        baseline_covariates = baseline_covariates
+      )
+
     # Subset to individuals whose outcomes have been assessed:
     data_assessed <-
       data[which(data[, outcome_indicator_column] %in% c(0, 1)),]
 
+    if(is.null(outcome_formula)){
+      formula_list <-
+        list(
+          y0_formula = y0_formula,
+          y1_formula = y1_formula
+        )
+    } else {
+      formula_list <- list(outcome_formula = outcome_formula)
+    }
+
+    fn_args <-
+      c(
+        list(
+          data = data,
+          estimand = estimand,
+          family = family,
+          outcome_indicator_column = outcome_indicator_column,
+          treatment_column = treatment_column
+        ),
+        formula_list
+      )
+
+    if(!is.null(outcome_formula)){
+      do.call(
+        what = standardization_tx_formula,
+        args = fn_args
+      )
+    } else if(!(is.null(y0_formula) & is.null(y1_formula))){
+      do.call(
+        what = standardization_tx_stratified,
+        args = fn_args
+      )
+    }
+  }
+
+
+
+
+standardization_tx_formula <-
+  function(
+    data,
+    outcome_formula,
+    treatment_column,
+    outcome_indicator_column,
+    estimand,
+    family
+  ){
+    outcome_model <-
+      stats::glm(
+        formula = outcome_formula,
+        family = family,
+        data = data
+      )
+
+    y0_pred <-
+      stats::predict(
+        object = outcome_model,
+        newdata =
+          within(
+            data = data,
+            assign(
+              x = treatment_column,
+              value = 0
+            )
+          ),
+        type = "response"
+      )
+
+    y1_pred <-
+      stats::predict(
+        object = outcome_model,
+        newdata =
+          within(
+            data = data,
+            assign(
+              x = treatment_column,
+              value = 1
+            )
+          ),
+        type = "response"
+      )
+
+    # Estimate treatment effect
+    if(estimand == "difference"){
+      estimate = mean(y1_pred) - mean(y0_pred)
+    } else if(estimand == "ratio"){
+      estimate = mean(y1_pred)/mean(y0_pred)
+
+    } else if(estimand == "oddsratio"){
+      estimate <-
+        (mean(y1_pred)/(1 - mean(y1_pred))) /
+        (mean(y0_pred)/(1 - mean(y0_pred)))
+    }
+
+    out <-
+      list(
+        estimate = estimate,
+        y1_pred = y1_pred,
+        y0_pred = y0_pred,
+        estimand = estimand
+      )
+
+    class(out) <- "estimator"
+    return(out)
+  }
+
+
+
+
+#' @rdname standardization
+#' @export
+standardization_tx_stratified <-
+  function(
+    data,
+    y0_formula,
+    y1_formula,
+    treatment_column,
+    outcome_indicator_column,
+    estimand,
+    family
+  ){
     # Fit working models under control and treatment
     y0_mod <-
       stats::glm(
         formula = y0_formula,
         family = family,
-        data = data_assessed[which(data_assessed[, treatment_column] == 0),]
+        data = data[which(data[, treatment_column] == 0),]
       )
 
     y1_mod <-
       stats::glm(
         formula = y1_formula,
         family = family,
-        data = data_assessed[which(data_assessed[, treatment_column] == 1),]
+        data = data[which(data[, treatment_column] == 1),]
       )
 
 
@@ -121,20 +287,24 @@ standardization <-
       estimate = mean(y1_pred)/mean(y0_pred)
 
     } else if(estimand == "oddsratio"){
-      estimate = (mean(y1_pred)/(1-mean(y1_pred)))/
-        (mean(y0_pred)/(1-mean(y0_pred)))
+      estimate <-
+        (mean(y1_pred)/(1 - mean(y1_pred))) /
+        (mean(y0_pred)/(1 - mean(y0_pred)))
     }
 
     out <-
       list(
         estimate = estimate,
         y1_pred = y1_pred,
-        y0_pred = y0_pred
+        y0_pred = y0_pred,
+        estimand = estimand
       )
 
-    class(out) <- "standardization"
+    class(out) <- "estimator"
     return(out)
   }
+
+
 
 
 #' @rdname standardization
@@ -142,18 +312,57 @@ standardization <-
 standardization_correction <-
   function(
     data,
-    y0_formula,
-    y1_formula,
+    outcome_formula = NULL,
+    y0_formula = NULL,
+    y1_formula = NULL,
     treatment_column,
     outcome_indicator_column
   ){
+
+    if(
+      !xor(
+        x = is.null(outcome_formula),
+        y = (is.null(y0_formula) & is.null(y1_formula))
+      )
+    ) {
+      stop(
+        "Either `outcome_formula` should be specified or both `y0_formula` ",
+        "and `y1_formula` should be specified, not both."
+      )
+    }
+
+    stratified <- is.null(outcome_formula)
+
     control_rows <- which(data[, treatment_column] == 0)
     treatment_rows <- which(data[, treatment_column] == 1)
 
     n_0 <- sum(data[control_rows, outcome_indicator_column], na.rm = TRUE)
     n_1 <- sum(data[treatment_rows, outcome_indicator_column], na.rm = TRUE)
 
-    p_0 <- ncol(stats::model.matrix(y0_formula, data))
-    p_1 <- ncol(stats::model.matrix(y1_formula, data))
-    return((1/(n_1 - p_1) + 1/(n_0 - p_0))/(1/(n_1 - 1) + 1/(n_0 - 1)))
+    if(stratified){
+      p_0 <-
+        stats::model.matrix(
+          object = y0_formula,
+          data = data
+        ) |>
+        ncol()
+
+      p_1 <-
+        stats::model.matrix(
+          object = y1_formula,
+          data = data
+        ) |>
+        ncol()
+
+      return((1/(n_1 - p_1) + 1/(n_0 - p_0))/(1/(n_1 - 1) + 1/(n_0 - 1)))
+    } else {
+      p <-
+        stats::model.matrix(
+          object = outcome_formula,
+          data = data
+        ) |>
+        ncol()
+
+      return((n_0 + n_1 - 1)/(n_0 + n_1 - p))
+    }
   }

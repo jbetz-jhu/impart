@@ -107,6 +107,10 @@ asymptotic_information_difference_proportions <-
       stop("All elements of `pi_0` and `pi_1` must be positive.")
     }
 
+    if(any(pi_0 >= 1) | any(pi_1 >= 1)){
+      stop("All elements of `pi_0` and `pi_1` must be less than 1.")
+    }
+
     param_grid <-
       expand.grid(
         n_0 = n_0,

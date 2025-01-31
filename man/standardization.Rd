@@ -2,23 +2,36 @@
 % Please edit documentation in R/standardization.R
 \name{standardization}
 \alias{standardization}
+\alias{standardization_tx_stratified}
 \alias{standardization_correction}
-\title{Compute stanadardization (i.e. G-Computation) estimator}
+\title{Compute standardization (i.e. G-Computation) estimator}
 \usage{
 standardization(
   data,
+  outcome_formula = NULL,
+  y0_formula = NULL,
+  y1_formula = NULL,
+  family,
   estimand = "difference",
+  outcome_indicator_column = NULL,
+  treatment_column = NULL
+)
+
+standardization_tx_stratified(
+  data,
   y0_formula,
   y1_formula,
-  family,
-  treatment_column = NULL,
-  outcome_indicator_column = NULL
+  treatment_column,
+  outcome_indicator_column,
+  estimand,
+  family
 )
 
 standardization_correction(
   data,
-  y0_formula,
-  y1_formula,
+  outcome_formula = NULL,
+  y0_formula = NULL,
+  y1_formula = NULL,
   treatment_column,
   outcome_indicator_column
 )
@@ -31,23 +44,33 @@ indicators (e.g. \code{.r_1}, \code{.r_2}, ...). The outcome indicators indicate
 whether an outcome has been observed (\code{1}), is missing (\code{0}), or not yet
 obtained (\code{NA}).}
 
+\item{outcome_formula}{A \link[stats:formula]{stats::formula} specifying the relationship between
+the outcome and covariates in the combined sample (treatment and control).
+\strong{Note:} if \code{outcome_formula} is specified, both \code{y0_formula}
+and \code{y1_formula} must be \code{NULL}.}
+
+\item{y0_formula}{A \link[stats:formula]{stats::formula} specifying the relationship between the
+outcome and covariates in the control arm using treatment-stratified outcome
+models. \strong{Note:} if \code{y0_formula} is specified, \code{y1_formula}
+must be specified and \code{outcome_formula} must be \code{NULL}.}
+
+\item{y1_formula}{A \link[stats:formula]{stats::formula} specifying the relationship between the
+outcome and covariates in the treatment arm using treatment-stratified
+outcome models. \strong{Note:} if \code{y1_formula} is specified,
+\code{y0_formula} must be specified and \code{outcome_formula} must be
+\code{NULL}.}
+
+\item{family}{The \link[stats:family]{stats::family} for the outcome regression model}
+
 \item{estimand}{A \code{character} scalar: "difference" (for a difference in
 means or risk difference), "ratio" (for a ratio of means or relative risk),
 or "oddsratio" (for an odds ratio for a binary outcome).}
 
-\item{y0_formula}{A \link[stats:formula]{stats::formula} specifying the relationship between the
-outcome and covariates in the control arm.}
-
-\item{y1_formula}{A \link[stats:formula]{stats::formula} specifying the relationship between the
-outcome and covariates in the treatment arm.}
-
-\item{family}{The \link[stats:family]{stats::family} for the outcome regression model}
+\item{outcome_indicator_column}{A \code{character} scalar indicating the column
+containing the outcome indicator corresponding to \code{treatment_column}.}
 
 \item{treatment_column}{A \code{character} scalar indicating the column
 containing the treatment indicator.}
-
-\item{outcome_indicator_column}{A \code{character} scalar indicating the column
-containing the outcome indicator corresponding to \code{treatment_column}.}
 }
 \value{
 A \code{list} containing the marginal means and their contrast:

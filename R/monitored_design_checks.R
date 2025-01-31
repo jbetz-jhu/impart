@@ -28,8 +28,13 @@ monitored_design_checks <-
     correction_function = NULL
   ) {
 
+    if(!identical(x = class(data), y = "data.frame")){
+      stop("`data` must be a `data.frame`: ",
+           "if `data` is a tibble (has class \"tbl_df\"), use as.data.frame(data)")
+    }
+
     if(!(".id" %in% names(data))){
-      stop("Data must contain a column `.id` identifying all rows belonging ",
+      stop("`data` must contain a column `.id` identifying all rows belonging ",
            "to each individual.")
     }
 

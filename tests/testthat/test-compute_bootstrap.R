@@ -28,6 +28,17 @@ bootstrap_result <-
       )
   )
 
+bootstrap_results_parallel <-
+  compute_bootstrap_parallel(
+    data = test_data,
+    ids = cbind(rep(1, 100), rep(2, 100), rep(3, 100)),
+    estimation_function = get_lm_intercept,
+    estimation_arguments =
+      list(
+        formula = y ~ 1
+      )
+  )
+
 test_that(
   desc = "Bootstrap Works",
   code = {
@@ -43,6 +54,22 @@ test_that(
 
     expect_equal(
       object = bootstrap_result[3],
+      expected = test_data$y[3]
+    )
+
+
+    expect_equal(
+      object = bootstrap_results_parallel[1],
+      expected = test_data$y[1]
+    )
+
+    expect_equal(
+      object = bootstrap_results_parallel[2],
+      expected = test_data$y[2]
+    )
+
+    expect_equal(
+      object = bootstrap_results_parallel[3],
       expected = test_data$y[3]
     )
   }
