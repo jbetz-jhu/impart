@@ -83,14 +83,57 @@
 
     
     
-<p><code>impart</code> has built-in methods for covariate adjustment
-that allow for continuous and binary outcomes, but is designed to be
-able to use methods from other R packages. This vignette demonstrates
-how to use new methods with <code>impart</code>, allowing new software
-to be used in information monitoring and group sequential designs.</p>
+<p><code>impart</code> has several built-in methods for covariate
+adjustment, but is designed to work with methods from other R packages.
+This vignette will demonstrate how to integrate other software by
+writing a <a href="https://en.wikipedia.org/wiki/Wrapper_function" class="external-link">wrapper
+function</a>, and test the resulting function to make sure it works with
+<code>impart</code>.</p>
+<div class="section level2">
+<h2 id="notes-for-developers">Notes for Developers<a class="anchor" aria-label="anchor" href="#notes-for-developers"></a>
+</h2>
+<p><code>impart</code> was written to minimize dependencies to avoid the
+potential problems that may arise when dependencies are deprecated or
+updated. This includes dependence on common, relatively mature packages
+such as the <a href="https://www.tidyverse.org/" class="external-link">tidyverse</a>
+ecosystem.</p>
+<p>While some code works identically for <code>tibble</code>s and base R
+<code>data.frame</code>s, these objects behave differently under <a href="https://r4ds.had.co.nz/tibbles.html" class="external-link">vector subsetting</a> -
+<code>my_tbl_df[, 1]</code> or <code>my_tbl_df[, 1:2]</code> return a
+<code>tbl_df</code> whereas <code>my_df[, 1]</code> returns a vector and
+<code>my_df[, 1:2]</code> returns a <code>data.frame</code>. Results of
+<code>dim</code>, <code>length</code>, <code>nrow</code>,
+<code>ncol</code>, and other functions may differ between a
+<code>tbl_df</code> and a <code>data.frame</code>: if this is not
+handled appropriately, this can result in explicit errors (resulting in
+a <code>stop</code>) or silently returning erroneous results. The
+connection between error messages and the cause of the error is often
+unclear without looking at source code.</p>
+<p>For this reason, <code><a href="../reference/monitored_analysis.html">impart::monitored_analysis</a></code> checks to
+ensure that data are passed as a <code>data.frame</code>: a
+<code>tbl_df</code> can be easily coerced to a <code>data.frame</code>
+using <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code>. If some function depends on having a
+<code>tbl_df</code> and is unable to accept a <code>data.frame</code>,
+the wrapper should include a step to coerce the input back to a
+<code>tbl_df</code> before being passed to the function for
+analysis.</p>
+</div>
+<div class="section level2">
+<h2 id="implementing-speff2trialspeffsurv-in-impart">Implementing <code>speff2trial::speffSurv()</code> in
+<code>impart</code><a class="anchor" aria-label="anchor" href="#implementing-speff2trialspeffsurv-in-impart"></a>
+</h2>
+<p>The <code><a href="https://rdrr.io/pkg/speff2trial/man/speffSurv.html" class="external-link">speff2trial::speffSurv()</a></code> in the <a href="https://cran.r-project.org/web/packages/speff2trial/index.html" class="external-link"><code>speff2trial</code>
+package on CRAN</a> computes a covariate-adjusted marginal <a href="https://covariateadjustment.github.io/estimands.html#survival_estimands" class="external-link">hazard
+ratio</a>. The <a href="https://github.com/mjuraska/speff2trial" class="external-link">repo
+for this package is hosted on Github</a>. This vignette shows how to
+create a wrapper for this function, which is already integrated in the
+package as <code><a href="../reference/speffsurv_impart.html">impart::speffsurv_impart()</a></code>.</p>
+<p>The <code><a href="../reference/colon_cancer.html">impart::colon_cancer</a></code> dataset will be used to test
+the wrapper, using the outcome of <code>years_to_death</code>: a
+time-to-event outcome that is subject to censoring.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mjuraska/speff2trial" class="external-link">speff2trial</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in library(speff2trial): there is no package called 'speff2trial'</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jbetz-jhu.github.io/impart/">impart</a></span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># Extract two treatment arms: Lev+5FU (Chemotherapy) and Obs (Observation)</span></span>
 <span><span class="va">colon_cancer_5fu_vs_obs</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span></span>
@@ -98,19 +141,46 @@ to be used in information monitoring and group sequential designs.</p>
 <span>    <span class="va">arm</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lev+5FU"</span>, <span class="st">"Obs"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error: object 'colon_cancer' not found</span></span>
-<span>  </span>
 <span></span>
-<span><span class="va">sp_unadjusted</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span></span>
-<span>    formula <span class="op">=</span></span>
-<span>      <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span>time <span class="op">=</span> <span class="va">years_to_death</span>, event <span class="op">=</span> <span class="va">event_death</span><span class="op">)</span> <span class="op">~</span> <span class="va">arm</span>,</span>
-<span>    data <span class="op">=</span> <span class="va">colon_cancer_5fu_vs_obs</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Error: object 'colon_cancer_5fu_vs_obs' not found</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">colon_cancer_5fu_vs_obs</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   .id     arm age       sex obstruction perforation organ_adherence</span></span>
+<span><span class="co">#&gt; 1   1 Lev+5FU  43   1. Male       0. No       0. No           0. No</span></span>
+<span><span class="co">#&gt; 2   2 Lev+5FU  63   1. Male       0. No       0. No           0. No</span></span>
+<span><span class="co">#&gt; 3   3     Obs  71 0. Female       0. No       0. No          1. Yes</span></span>
+<span><span class="co">#&gt; 4   4 Lev+5FU  66 0. Female      1. Yes       0. No           0. No</span></span>
+<span><span class="co">#&gt; 5   5     Obs  69   1. Male       0. No       0. No           0. No</span></span>
+<span><span class="co">#&gt; 6   6 Lev+5FU  57 0. Female       0. No       0. No           0. No</span></span>
+<span><span class="co">#&gt;   positive_nodes differentiation local_spread time_surgery_registration</span></span>
+<span><span class="co">#&gt; 1              5     2. Moderate    3. Serosa                  0. Short</span></span>
+<span><span class="co">#&gt; 2              1     2. Moderate    3. Serosa                  0. Short</span></span>
+<span><span class="co">#&gt; 3              7     2. Moderate    2. Muscle                  0. Short</span></span>
+<span><span class="co">#&gt; 4              6     2. Moderate    3. Serosa                   1. Long</span></span>
+<span><span class="co">#&gt; 5             22     2. Moderate    3. Serosa                   1. Long</span></span>
+<span><span class="co">#&gt; 6              9     2. Moderate    3. Serosa                  0. Short</span></span>
+<span><span class="co">#&gt;   event_death event_recurrence years_to_death years_to_recurrence</span></span>
+<span><span class="co">#&gt; 1           1                1      4.1642710           2.6502396</span></span>
+<span><span class="co">#&gt; 2           0                0      8.4517454           8.4517454</span></span>
+<span><span class="co">#&gt; 3           1                1      2.6365503           1.4839151</span></span>
+<span><span class="co">#&gt; 4           1                1      0.8021903           0.6707734</span></span>
+<span><span class="co">#&gt; 5           1                1      1.8042437           1.4318960</span></span>
+<span><span class="co">#&gt; 6           1                1      4.8377823           2.4750171</span></span></code></pre></div>
+<p>The wrapper function should take in all of the necessary arguments to
+address missing data, compute the estimate, and return the result. The
+result should either be a <code>numeric</code> vector named
+<code>estimate</code>, or a <code>list</code> containing a numeric
+vector named <code>estimate</code>. The value of <code>estimate</code>
+is extracted by <code><a href="../reference/calculate_estimate.html">impart::calculate_estimate()</a></code> to obtain
+estimates and bootstrap confidence intervals.</p>
+<p>First, run the function that requires implementation: see the
+documentation of the function
+(e.g. <code><a href="https://rdrr.io/pkg/speff2trial/man/speffSurv.html" class="external-link">?speff2trial::speffSurv</a></code>) for details:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mjuraska/speff2trial" class="external-link">speff2trial</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: leaps</span></span>
+<span><span class="co">#&gt; Loading required package: survival</span></span>
 <span></span>
-<span><span class="va">sp_full</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">speff2trial</span><span class="fu">::</span><span class="fu">speffSurv</span><span class="op">(</span></span>
+<span><span class="va">speffsurv_example</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">speff2trial</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/speff2trial/man/speffSurv.html" class="external-link">speffSurv</a></span><span class="op">(</span></span>
 <span>    formula <span class="op">=</span></span>
 <span>      <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span>time <span class="op">=</span> <span class="va">years_to_death</span>, event <span class="op">=</span> <span class="va">event_death</span><span class="op">)</span> <span class="op">~</span></span>
 <span>      <span class="va">age</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">obstruction</span> <span class="op">+</span> <span class="va">perforation</span> <span class="op">+</span> <span class="va">organ_adherence</span> <span class="op">+</span> <span class="va">positive_nodes</span> <span class="op">+</span></span>
@@ -118,9 +188,380 @@ to be used in information monitoring and group sequential designs.</p>
 <span>    data <span class="op">=</span> <span class="va">colon_cancer_5fu_vs_obs</span>,</span>
 <span>    trt.id <span class="op">=</span> <span class="st">"arm"</span>,</span>
 <span>    fixed <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Error in loadNamespace(x): there is no package called 'speff2trial'</span></span></code></pre></div>
-  </main>
+<span>  <span class="op">)</span></span></code></pre></div>
+<p>The <code>summary</code> or <code>print</code> methods can be helpful
+in identifying the appropriate value to extract:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">speffsurv_example</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Treatment effect</span></span>
+<span><span class="co">#&gt;             Log HR       SE   LowerCI   UpperCI          p</span></span>
+<span><span class="co">#&gt; Prop Haz  -0.37281  0.11879  -0.60563  -0.13999  0.0016986</span></span>
+<span><span class="co">#&gt; Speff     -0.34457  0.10997  -0.56011  -0.12904  0.0017282</span></span></code></pre></div>
+<p>Next, inspect the output:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">speffsurv_example</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "beta"       "varbeta"    "fixed"      "conf.level" "method"    </span></span>
+<span><span class="co">#&gt; [6] "n"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">speffsurv_example</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 6</span></span>
+<span><span class="co">#&gt;  $ beta      : Named num [1:2] -0.373 -0.345</span></span>
+<span><span class="co">#&gt;   ..- attr(*, "names")= chr [1:2] "Prop Haz" "Speff"</span></span>
+<span><span class="co">#&gt;  $ varbeta   : Named num [1:2] 0.0141 0.0121</span></span>
+<span><span class="co">#&gt;   ..- attr(*, "names")= chr [1:2] "Prop Haz" "Speff"</span></span>
+<span><span class="co">#&gt;  $ fixed     : logi TRUE</span></span>
+<span><span class="co">#&gt;  $ conf.level: num 0.95</span></span>
+<span><span class="co">#&gt;  $ method    : chr "exhaustive"</span></span>
+<span><span class="co">#&gt;  $ n         : 'table' int [1:2(1d)] 315 304</span></span>
+<span><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 1</span></span>
+<span><span class="co">#&gt;   .. ..$ : chr [1:2] "Obs" "Lev+5FU"</span></span>
+<span><span class="co">#&gt;  - attr(*, "class")= chr "speffSurv"</span></span></code></pre></div>
+<p>This function returns a <code>list</code>, and the marginal hazard
+ratio estimates are in a named numeric vector called
+<code>beta</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="an-example-wrapper">An Example Wrapper<a class="anchor" aria-label="anchor" href="#an-example-wrapper"></a>
+</h2>
+<p>A wrapper is needed to take in the appropriate arguments, compute the
+estimate, and then return a vector named <code>estimate</code> or a list
+containing that vector.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">speffsurv_impart_demo</span> <span class="op">&lt;-</span></span>
+<span>  <span class="kw">function</span><span class="op">(</span></span>
+<span>    <span class="va">data</span>,</span>
+<span>    <span class="va">estimand</span> <span class="op">=</span> <span class="st">"log_hazard_ratio"</span>,</span>
+<span>    <span class="va">formula</span>,</span>
+<span>    <span class="va">treatment_column</span> <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    <span class="va">alpha</span> <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>    <span class="va">ci</span> <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="va">estimand</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"log_hazard_ratio"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"`estimand` must be \"log_hazard_ratio\"."</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="va">treatment_column</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"`treatment_column` ("</span>, <span class="va">treatment_column</span>, <span class="st">") must be in `data`."</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span></span>
+<span>    <span class="co"># Check for event indicators that are missing times, vice versa</span></span>
+<span>    <span class="va">outcome_cols</span> <span class="op">&lt;-</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/allnames.html" class="external-link">all.vars</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/update.html" class="external-link">update</a></span><span class="op">(</span>old <span class="op">=</span> <span class="va">formula</span>, new <span class="op">=</span> <span class="va">.</span> <span class="op">~</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">outcome_cols</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>      <span class="va">miss_rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="va">outcome_cols</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>      <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">miss_rows</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span><span class="op">{</span></span>
+<span>        <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"Indicators missing an event time or event times missing an"</span>,</span>
+<span>             <span class="st">"outcome indicator: rows "</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">miss_rows</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="op">}</span></span>
+<span>    <span class="op">}</span></span>
+<span>    </span>
+<span>    <span class="co"># Get baseline covariates from formula</span></span>
+<span>    <span class="va">baseline_covariates</span> <span class="op">&lt;-</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/allnames.html" class="external-link">all.vars</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/update.html" class="external-link">update</a></span><span class="op">(</span>old <span class="op">=</span> <span class="va">formula</span>, new <span class="op">=</span> <span class="fl">0</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="co"># Impute any missing values using mean/mode imputation</span></span>
+<span>    <span class="va">data</span> <span class="op">&lt;-</span></span>
+<span>      <span class="fu"><a href="../reference/impute_covariates_mean_mode.html">impute_covariates_mean_mode</a></span><span class="op">(</span></span>
+<span>        data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>        baseline_covariates <span class="op">=</span> <span class="va">baseline_covariates</span></span>
+<span>      <span class="op">)</span></span>
+<span></span>
+<span>    <span class="co"># Subset to individuals whose outcomes have been assessed:</span></span>
+<span>    <span class="va">speffsurv_result</span> <span class="op">&lt;-</span></span>
+<span>      <span class="fu">speff2trial</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/speff2trial/man/speffSurv.html" class="external-link">speffSurv</a></span><span class="op">(</span></span>
+<span>        formula <span class="op">=</span> <span class="va">formula</span>,</span>
+<span>        data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>        trt.id <span class="op">=</span> <span class="va">treatment_column</span>,</span>
+<span>        conf.level <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">alpha</span>,</span>
+<span>        fixed <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>      <span class="op">)</span></span>
+<span></span>
+<span>    <span class="co"># Return CI if specified</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="va">ci</span><span class="op">)</span><span class="op">{</span></span>
+<span>      <span class="va">speffsurv_summary</span> <span class="op">&lt;-</span></span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">speffsurv_result</span><span class="op">)</span><span class="op">$</span><span class="va">tab</span><span class="op">)</span></span>
+<span>      <span class="va">lcl</span> <span class="op">&lt;-</span> <span class="va">speffsurv_summary</span><span class="op">[</span><span class="st">"Speff"</span>, <span class="st">"LowerCI"</span><span class="op">]</span></span>
+<span>      <span class="va">ucl</span> <span class="op">&lt;-</span> <span class="va">speffsurv_summary</span><span class="op">[</span><span class="st">"Speff"</span>, <span class="st">"UpperCI"</span><span class="op">]</span></span>
+<span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>      <span class="va">lcl</span> <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>      <span class="va">ucl</span> <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>    <span class="op">}</span></span>
+<span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>        estimate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">speffsurv_result</span><span class="op">$</span><span class="va">beta</span><span class="op">[</span><span class="st">"Speff"</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>        se <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">speffsurv_result</span><span class="op">$</span><span class="va">varbeta</span><span class="op">[</span><span class="st">"Speff"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>        lcl <span class="op">=</span> <span class="va">lcl</span>,</span>
+<span>        ucl <span class="op">=</span> <span class="va">ucl</span>,</span>
+<span>        alpha <span class="op">=</span> <span class="va">alpha</span>,</span>
+<span>        estimand <span class="op">=</span> <span class="va">estimand</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">}</span></span></code></pre></div>
+<p>Compare the results of the wrapper to the summary:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">speffsurv_example</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Treatment effect</span></span>
+<span><span class="co">#&gt;             Log HR       SE   LowerCI   UpperCI          p</span></span>
+<span><span class="co">#&gt; Prop Haz  -0.37281  0.11879  -0.60563  -0.13999  0.0016986</span></span>
+<span><span class="co">#&gt; Speff     -0.34457  0.10997  -0.56011  -0.12904  0.0017282</span></span>
+<span></span>
+<span><span class="fu">speffsurv_impart_demo</span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">colon_cancer_5fu_vs_obs</span>,</span>
+<span>  estimand <span class="op">=</span> <span class="st">"log_hazard_ratio"</span>,</span>
+<span>  formula <span class="op">=</span> </span>
+<span>    <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span>time <span class="op">=</span> <span class="va">years_to_death</span>, event <span class="op">=</span> <span class="va">event_death</span><span class="op">)</span> <span class="op">~</span></span>
+<span>    <span class="va">age</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">obstruction</span> <span class="op">+</span> <span class="va">perforation</span> <span class="op">+</span> <span class="va">organ_adherence</span> <span class="op">+</span> <span class="va">positive_nodes</span> <span class="op">+</span></span>
+<span>    <span class="va">differentiation</span> <span class="op">+</span> <span class="va">local_spread</span>,</span>
+<span>  treatment_column <span class="op">=</span> <span class="st">"arm"</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  ci <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; $estimate</span></span>
+<span><span class="co">#&gt; [1] -0.3445742</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $se</span></span>
+<span><span class="co">#&gt; [1] 0.1099697</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $lcl</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ucl</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $alpha</span></span>
+<span><span class="co">#&gt; [1] 0.05</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $estimand</span></span>
+<span><span class="co">#&gt; [1] "log_hazard_ratio"</span></span>
+<span></span>
+<span><span class="fu">speffsurv_impart_demo</span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">colon_cancer_5fu_vs_obs</span>,</span>
+<span>  estimand <span class="op">=</span> <span class="st">"log_hazard_ratio"</span>,</span>
+<span>  formula <span class="op">=</span> </span>
+<span>    <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span>time <span class="op">=</span> <span class="va">years_to_death</span>, event <span class="op">=</span> <span class="va">event_death</span><span class="op">)</span> <span class="op">~</span></span>
+<span>    <span class="va">age</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">obstruction</span> <span class="op">+</span> <span class="va">perforation</span> <span class="op">+</span> <span class="va">organ_adherence</span> <span class="op">+</span> <span class="va">positive_nodes</span> <span class="op">+</span></span>
+<span>    <span class="va">differentiation</span> <span class="op">+</span> <span class="va">local_spread</span>,</span>
+<span>  treatment_column <span class="op">=</span> <span class="st">"arm"</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  ci <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; $estimate</span></span>
+<span><span class="co">#&gt; [1] -0.3445742</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $se</span></span>
+<span><span class="co">#&gt; [1] 0.1099697</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $lcl</span></span>
+<span><span class="co">#&gt; [1] -0.5601109</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ucl</span></span>
+<span><span class="co">#&gt; [1] -0.1290376</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $alpha</span></span>
+<span><span class="co">#&gt; [1] 0.05</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $estimand</span></span>
+<span><span class="co">#&gt; [1] "log_hazard_ratio"</span></span></code></pre></div>
+<p>The wrapper should also be tested on missing data, making sure they
+are addressed successfully:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">colon_cancer_5fu_vs_obs_mcar</span> <span class="op">&lt;-</span> <span class="va">colon_cancer_5fu_vs_obs</span></span>
+<span></span>
+<span><span class="co"># Set some categorical/continuous variables to NA</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span>seed <span class="op">=</span> <span class="fl">12345</span><span class="op">)</span></span>
+<span><span class="va">miss_rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">colon_cancer_5fu_vs_obs</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">colon_cancer_5fu_vs_obs_mcar</span><span class="op">$</span><span class="va">age</span><span class="op">[</span><span class="va">miss_rows</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span><span class="va">colon_cancer_5fu_vs_obs_mcar</span><span class="op">$</span><span class="va">sex</span><span class="op">[</span><span class="va">miss_rows</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span><span class="va">colon_cancer_5fu_vs_obs_mcar</span><span class="op">$</span><span class="va">positive_nodes</span><span class="op">[</span><span class="va">miss_rows</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span></span>
+<span><span class="fu">speffsurv_impart_demo</span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">colon_cancer_5fu_vs_obs_mcar</span>,</span>
+<span>  estimand <span class="op">=</span> <span class="st">"log_hazard_ratio"</span>,</span>
+<span>  formula <span class="op">=</span> </span>
+<span>    <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span>time <span class="op">=</span> <span class="va">years_to_death</span>, event <span class="op">=</span> <span class="va">event_death</span><span class="op">)</span> <span class="op">~</span></span>
+<span>    <span class="va">age</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">obstruction</span> <span class="op">+</span> <span class="va">perforation</span> <span class="op">+</span> <span class="va">organ_adherence</span> <span class="op">+</span> <span class="va">positive_nodes</span> <span class="op">+</span></span>
+<span>    <span class="va">differentiation</span> <span class="op">+</span> <span class="va">local_spread</span>,</span>
+<span>  treatment_column <span class="op">=</span> <span class="st">"arm"</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  ci <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; $estimate</span></span>
+<span><span class="co">#&gt; [1] -0.3425506</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $se</span></span>
+<span><span class="co">#&gt; [1] 0.1103383</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $lcl</span></span>
+<span><span class="co">#&gt; [1] -0.5588097</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ucl</span></span>
+<span><span class="co">#&gt; [1] -0.1262915</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $alpha</span></span>
+<span><span class="co">#&gt; [1] 0.05</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $estimand</span></span>
+<span><span class="co">#&gt; [1] "log_hazard_ratio"</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="testing-the-wrapper">Testing the Wrapper<a class="anchor" aria-label="anchor" href="#testing-the-wrapper"></a>
+</h2>
+<p>All wrappers should be appropriately tested: the <a href="https://testthat.r-lib.org/" class="external-link">testthat package</a> provides a suite
+of functions that simplify specifying and executing a testing
+workflow.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://testthat.r-lib.org" class="external-link">testthat</a></span><span class="op">)</span></span></code></pre></div>
+<p>A suggested test workflow includes, but is not limited to:</p>
+<ul>
+<li>Testing for missing covariate data</li>
+<li>Testing for missing outcome data
+<ul>
+<li>For time-to-event, checking both event indicators and event
+times</li>
+</ul>
+</li>
+<li>Checking for compatibility with input that contains:
+<ul>
+<li>
+<code>numeric</code>, <code>integer</code>, <code>logical</code>,
+<code>factor</code>, <code>string</code>
+</li>
+</ul>
+</li>
+<li>Checking for <a href="https://haven.tidyverse.org/index.html" class="external-link"><code>labelled</code> data
+from <code>haven</code></a>
+</li>
+</ul>
+<div class="section level3">
+<h3 id="complete-data">1. Complete Data<a class="anchor" aria-label="anchor" href="#complete-data"></a>
+</h3>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html" class="external-link">test_that</a></span><span class="op">(</span></span>
+<span>  desc <span class="op">=</span> <span class="st">"Complete Data"</span>,</span>
+<span>  code <span class="op">=</span></span>
+<span>    <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_no_error.html" class="external-link">expect_no_condition</a></span><span class="op">(</span></span>
+<span>        object <span class="op">=</span></span>
+<span>          <span class="fu">speffsurv_impart_demo</span><span class="op">(</span></span>
+<span>            data <span class="op">=</span> <span class="va">colon_cancer_5fu_vs_obs</span>,</span>
+<span>            estimand <span class="op">=</span> <span class="st">"log_hazard_ratio"</span>,</span>
+<span>            formula <span class="op">=</span> </span>
+<span>              <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span>time <span class="op">=</span> <span class="va">years_to_death</span>, event <span class="op">=</span> <span class="va">event_death</span><span class="op">)</span> <span class="op">~</span></span>
+<span>              <span class="va">age</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">obstruction</span> <span class="op">+</span> <span class="va">perforation</span> <span class="op">+</span> <span class="va">organ_adherence</span> <span class="op">+</span> <span class="va">positive_nodes</span> <span class="op">+</span></span>
+<span>              <span class="va">differentiation</span> <span class="op">+</span> <span class="va">local_spread</span>,</span>
+<span>            treatment_column <span class="op">=</span> <span class="st">"arm"</span>,</span>
+<span>            alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>            ci <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>          <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">Test passed</span> 🎊</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="missing-covariates">2. Missing Covariates<a class="anchor" aria-label="anchor" href="#missing-covariates"></a>
+</h3>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html" class="external-link">test_that</a></span><span class="op">(</span></span>
+<span>  desc <span class="op">=</span> <span class="st">"Missing Covariates"</span>,</span>
+<span>  code <span class="op">=</span></span>
+<span>    <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span>seed <span class="op">=</span> <span class="fl">12345</span><span class="op">)</span></span>
+<span>      <span class="va">colon_cancer_5fu_vs_obs_mcar</span> <span class="op">&lt;-</span> <span class="va">colon_cancer_5fu_vs_obs</span></span>
+<span>      <span class="va">miss_rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">colon_cancer_5fu_vs_obs</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>      <span class="va">colon_cancer_5fu_vs_obs_mcar</span><span class="op">$</span><span class="va">age</span><span class="op">[</span><span class="va">miss_rows</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span>      <span class="va">colon_cancer_5fu_vs_obs_mcar</span><span class="op">$</span><span class="va">sex</span><span class="op">[</span><span class="va">miss_rows</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span>      <span class="va">colon_cancer_5fu_vs_obs_mcar</span><span class="op">$</span><span class="va">positive_nodes</span><span class="op">[</span><span class="va">miss_rows</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span>      </span>
+<span>      <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_no_error.html" class="external-link">expect_no_condition</a></span><span class="op">(</span></span>
+<span>        object <span class="op">=</span></span>
+<span>          <span class="fu">speffsurv_impart_demo</span><span class="op">(</span></span>
+<span>            data <span class="op">=</span> <span class="va">colon_cancer_5fu_vs_obs_mcar</span>,</span>
+<span>            estimand <span class="op">=</span> <span class="st">"log_hazard_ratio"</span>,</span>
+<span>            formula <span class="op">=</span> </span>
+<span>              <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span>time <span class="op">=</span> <span class="va">years_to_death</span>, event <span class="op">=</span> <span class="va">event_death</span><span class="op">)</span> <span class="op">~</span></span>
+<span>              <span class="va">age</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">obstruction</span> <span class="op">+</span> <span class="va">perforation</span> <span class="op">+</span> <span class="va">organ_adherence</span> <span class="op">+</span> <span class="va">positive_nodes</span> <span class="op">+</span></span>
+<span>              <span class="va">differentiation</span> <span class="op">+</span> <span class="va">local_spread</span>,</span>
+<span>            treatment_column <span class="op">=</span> <span class="st">"arm"</span>,</span>
+<span>            alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>            ci <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>          <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">Test passed</span> 🎊</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="missing-outcome-indicator">3. Missing Outcome Indicator<a class="anchor" aria-label="anchor" href="#missing-outcome-indicator"></a>
+</h3>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html" class="external-link">test_that</a></span><span class="op">(</span></span>
+<span>  desc <span class="op">=</span> <span class="st">"Missing Outcome Indicator"</span>,</span>
+<span>  code <span class="op">=</span></span>
+<span>    <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span>seed <span class="op">=</span> <span class="fl">23456</span><span class="op">)</span></span>
+<span>      <span class="va">colon_cancer_5fu_vs_obs_mcar</span> <span class="op">&lt;-</span> <span class="va">colon_cancer_5fu_vs_obs</span></span>
+<span>      <span class="va">miss_rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">colon_cancer_5fu_vs_obs</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>      <span class="va">colon_cancer_5fu_vs_obs_mcar</span><span class="op">$</span><span class="va">event_death</span><span class="op">[</span><span class="va">miss_rows</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span></span>
+<span>      <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span></span>
+<span>        object <span class="op">=</span></span>
+<span>          <span class="fu">speffsurv_impart_demo</span><span class="op">(</span></span>
+<span>            data <span class="op">=</span> <span class="va">colon_cancer_5fu_vs_obs_mcar</span>,</span>
+<span>            estimand <span class="op">=</span> <span class="st">"log_hazard_ratio"</span>,</span>
+<span>            formula <span class="op">=</span> </span>
+<span>              <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span>time <span class="op">=</span> <span class="va">years_to_death</span>, event <span class="op">=</span> <span class="va">event_death</span><span class="op">)</span> <span class="op">~</span></span>
+<span>              <span class="va">age</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">obstruction</span> <span class="op">+</span> <span class="va">perforation</span> <span class="op">+</span> <span class="va">organ_adherence</span> <span class="op">+</span> <span class="va">positive_nodes</span> <span class="op">+</span></span>
+<span>              <span class="va">differentiation</span> <span class="op">+</span> <span class="va">local_spread</span>,</span>
+<span>            treatment_column <span class="op">=</span> <span class="st">"arm"</span>,</span>
+<span>            alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>            ci <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>          <span class="op">)</span>,</span>
+<span>        regexp <span class="op">=</span> <span class="st">"Indicators missing an event time"</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">Test passed</span> 🥇</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="missing-outcome-times">4. Missing Outcome Times<a class="anchor" aria-label="anchor" href="#missing-outcome-times"></a>
+</h3>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html" class="external-link">test_that</a></span><span class="op">(</span></span>
+<span>  desc <span class="op">=</span> <span class="st">"Missing Outcome Times"</span>,</span>
+<span>  code <span class="op">=</span></span>
+<span>    <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span>seed <span class="op">=</span> <span class="fl">23456</span><span class="op">)</span></span>
+<span>      <span class="va">colon_cancer_5fu_vs_obs_mcar</span> <span class="op">&lt;-</span> <span class="va">colon_cancer_5fu_vs_obs</span></span>
+<span>      <span class="va">miss_rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">colon_cancer_5fu_vs_obs</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>      <span class="va">colon_cancer_5fu_vs_obs_mcar</span><span class="op">$</span><span class="va">years_to_death</span><span class="op">[</span><span class="va">miss_rows</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span></span>
+<span>      <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span></span>
+<span>        object <span class="op">=</span></span>
+<span>          <span class="fu">speffsurv_impart_demo</span><span class="op">(</span></span>
+<span>            data <span class="op">=</span> <span class="va">colon_cancer_5fu_vs_obs_mcar</span>,</span>
+<span>            estimand <span class="op">=</span> <span class="st">"log_hazard_ratio"</span>,</span>
+<span>            formula <span class="op">=</span> </span>
+<span>              <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span>time <span class="op">=</span> <span class="va">years_to_death</span>, event <span class="op">=</span> <span class="va">event_death</span><span class="op">)</span> <span class="op">~</span></span>
+<span>              <span class="va">age</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">obstruction</span> <span class="op">+</span> <span class="va">perforation</span> <span class="op">+</span> <span class="va">organ_adherence</span> <span class="op">+</span> <span class="va">positive_nodes</span> <span class="op">+</span></span>
+<span>              <span class="va">differentiation</span> <span class="op">+</span> <span class="va">local_spread</span>,</span>
+<span>            treatment_column <span class="op">=</span> <span class="st">"arm"</span>,</span>
+<span>            alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>            ci <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>          <span class="op">)</span>,</span>
+<span>        regexp <span class="op">=</span> <span class="st">"Indicators missing an event time"</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">Test passed</span> 🥇</span></span></code></pre></div>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

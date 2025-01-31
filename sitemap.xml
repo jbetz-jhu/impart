@@ -37,6 +37,7 @@
 <url><loc>https://jbetz-jhu.github.io/impart/reference/example_1_ia_1.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/example_1_ia_2.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/impart-package.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/impute_covariates_mean_mode.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/index.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/information_to_n.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/information_trajectory.html</loc></url>
@@ -51,6 +52,7 @@
 <url><loc>https://jbetz-jhu.github.io/impart/reference/relabel_by_id.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/required_info.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/required_information_sequential.html</loc></url>
+<url><loc>https://jbetz-jhu.github.io/impart/reference/speffsurv_impart.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/standardization.html</loc></url>
 <url><loc>https://jbetz-jhu.github.io/impart/reference/test_data.html</loc></url>
 </urlset>
