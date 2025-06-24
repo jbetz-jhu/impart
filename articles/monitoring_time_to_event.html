@@ -24,7 +24,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">impart</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,8 +57,13 @@
     <li><h6 class="dropdown-header" data-toc-skip>Additional Vignettes</h6></li>
     <li><a class="dropdown-item" href="../articles/analyses_group_sequential.html">Covariate Adjustment in Group Sequential Designs</a></li>
     <li><a class="dropdown-item" href="../articles/new_methods_in_impart.html">Implementing New Methods in `impart`</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Plans &amp; Specifications</h6></li>
+    <li><a class="dropdown-item" href="../articles/plan_requirements.html">Software Requirements Specification</a></li>
+    <li><a class="dropdown-item" href="../articles/plan_quality.html">Software Quality &amp; Management Plan</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -106,58 +111,40 @@ impart, use the <code>vignettes</code> command:</p>
 <div class="section level2">
 <h2 id="monitoring-ongoing-studies">Monitoring Ongoing Studies<a class="anchor" aria-label="anchor" href="#monitoring-ongoing-studies"></a>
 </h2>
-<p>In a fixed sample size design, the timing of the final analysis is
-based on the last participant’s last visit. Group sequential analyses
-are based when pre-specified fractions of the maximum sample size have
-their final outcome observed. Timing analyses in such studies only
-depends on counting the number of final outcomes observed during the
-study.</p>
-<p>In information-monitored designs, the times at which analyses are
-performed and recruitment is stopped depend on when the information
-reaches pre-specified thresholds. The amount of information contained in
-the data depends on the number of observations, the completeness of the
-data, the analytic methods used, and the interrelationships among the
-observed data. Depending on the analysis methods used, an individual
-could contribute baseline covariates and treatment assignment
-information, post-randomization outcomes, and even post-randomization
-auxiliary variables.</p>
+<p>In a fixed sample size design with a binary or continuous outcome,
+the timing of the final analysis is based on the last participant’s last
+visit. Group sequential analyses of such outcomes are based when
+pre-specified fractions of the maximum sample size have their final
+outcome observed. Timing analyses in such studies only depends on
+counting the number of final outcomes observed during the study.</p>
+<p>In a time-to-event analysis, precision and power are determined by
+the number of observed events pooled across study arms <span class="citation">[@Schoenfeld1983]</span>. A target number of events are
+calculated based on Type I error and power criteria: enrollment and
+follow-up are adjusted to observe the target number of events, after
+which the analysis is conducted: this is known as an event driven
+trial.</p>
+<p>With continuous, ordinal, or binary outcomes obtained at fixed points
+during the study, enrollment can still be adjusted to meet desired power
+and Type I error constraints. In information-monitored designs, the
+times at which analyses are performed and recruitment is stopped depend
+on when the information reaches pre-specified thresholds. The amount of
+information contained in the data depends on the number of observations,
+the completeness of the data, the analytic methods used, and the
+interrelationships among the observed data. Depending on the analysis
+methods used, an individual could contribute baseline covariates and
+treatment assignment information, post-randomization outcomes, and even
+post-randomization auxiliary variables.</p>
 <div class="section level3">
 <h3 id="challenges-in-information-monitoring">Challenges in Information Monitoring<a class="anchor" aria-label="anchor" href="#challenges-in-information-monitoring"></a>
 </h3>
-<p>A new challenge in analyzing data in an ongoing trial is how to
-appropriately treat missing data. Suppose the following are
-observed:</p>
-<ul>
-<li>A participant is newly enrolled, has their baseline covariates
-measured, is randomized, is still on study, and has not yet entered any
-follow-up windows</li>
-<li>A participant is randomized, but did not attend any follow-up
-visits</li>
-</ul>
-<p>In both of these cases, the covariates, and treatment assignment are
-observed, but the outcomes are missing. In the first case, outcomes are
-not yet observed: while they are missing, they could still be observed
-when the participant enters the study window. In the latter case, they
-are known to be missing: the study window is closed without the outcome
-being observed.</p>
-<p>A convention can be used to differentiate outcomes that are not yet
-observed from those known to be missing:</p>
-<ul>
-<li>Completed assessments have both an observed outcome and an observed
-assessment time.</li>
-<li>Missed assessments have a missing outcome, but an observed
-assessment time:
-<ul>
-<li>If an assessment occurred, but no valid outcome was obtained, the
-time of the assessment is used.</li>
-<li>If an assessment was missed, the end of the study window is used,
-indicating the last time an outcome could have been observed per
-protocol.</li>
-</ul>
-</li>
-<li>Not-yet-observed assessments are missing both an outcome and an
-assessment time.</li>
-</ul>
+<p>When analyzing data as it accrues with a continuous, binary, or
+ordinal outcome, one has to be careful in differentiating between data
+that is not-yet-collected (i.e. participants who are on-study but have
+not yet entered the study window for the outcome) versus data known to
+be missing (i.e. participants whose study window has closed but whose
+outcomes were not obtained).</p>
+<p>With a time-to-event outcome, this issue is handled through
+censoring</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -167,11 +154,11 @@ assessment time.</li>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://kellyvanlancker.com/" class="external-link">Kelly Van Lancker</a>, <a href="https://publichealth.jhu.edu/faculty/2679/joshua-betz" class="external-link">Josh Betz</a>, <a href="https://mrosenblumbiostat.wordpress.com/" class="external-link">Michael Rosenblum</a>.</p>
+  <p>Developed by <a href="https://publichealth.jhu.edu/faculty/2679/joshua-betz" class="external-link">Josh Betz</a>, <a href="https://kellyvanlancker.com/" class="external-link">Kelly Van Lancker</a>, <a href="https://mrosenblumbiostat.wordpress.com/" class="external-link">Michael Rosenblum</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>

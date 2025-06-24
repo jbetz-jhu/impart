@@ -24,7 +24,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">impart</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,8 +57,13 @@
     <li><h6 class="dropdown-header" data-toc-skip>Additional Vignettes</h6></li>
     <li><a class="dropdown-item" href="../articles/analyses_group_sequential.html">Covariate Adjustment in Group Sequential Designs</a></li>
     <li><a class="dropdown-item" href="../articles/new_methods_in_impart.html">Implementing New Methods in `impart`</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Plans &amp; Specifications</h6></li>
+    <li><a class="dropdown-item" href="../articles/plan_requirements.html">Software Requirements Specification</a></li>
+    <li><a class="dropdown-item" href="../articles/plan_quality.html">Software Quality &amp; Management Plan</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -102,8 +107,13 @@ of interest. Once the estimand is chosen, decisions must be made about
 what constitutes a meaningful effect size on the scale of the estimand
 (e.g. a difference in means of 5 or a ratio of means of 1.25). Finally,
 the characteristics of the testing procedure must be specified,
-including the desired Type I Error Rate, statistical power, and
-direction of alternatives of interest:</p>
+including the desired Type I Error Rate
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>),
+statistical power
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">1 - \beta</annotation></semantics></math>),
+and the direction of alternatives of interest (an
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>-sided
+test: 1- or 2-sided):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Universal Study Design Parameters</span></span>
 <span><span class="va">minimum_difference</span> <span class="op">&lt;-</span> <span class="fl">5</span> <span class="co"># Effect Size: Difference in Means of 5 or greater</span></span>
@@ -497,11 +507,11 @@ analyses.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://kellyvanlancker.com/" class="external-link">Kelly Van Lancker</a>, <a href="https://publichealth.jhu.edu/faculty/2679/joshua-betz" class="external-link">Josh Betz</a>, <a href="https://mrosenblumbiostat.wordpress.com/" class="external-link">Michael Rosenblum</a>.</p>
+  <p>Developed by <a href="https://publichealth.jhu.edu/faculty/2679/joshua-betz" class="external-link">Josh Betz</a>, <a href="https://kellyvanlancker.com/" class="external-link">Kelly Van Lancker</a>, <a href="https://mrosenblumbiostat.wordpress.com/" class="external-link">Michael Rosenblum</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>

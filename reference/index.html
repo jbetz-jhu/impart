@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">impart</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,12 @@
     <li><h6 class="dropdown-header" data-toc-skip>Additional Vignettes</h6></li>
     <li><a class="dropdown-item" href="../articles/analyses_group_sequential.html">Covariate Adjustment in Group Sequential Designs</a></li>
     <li><a class="dropdown-item" href="../articles/new_methods_in_impart.html">Implementing New Methods in `impart`</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Plans &amp; Specifications</h6></li>
+    <li><a class="dropdown-item" href="../articles/plan_requirements.html">Software Requirements Specification</a></li>
+    <li><a class="dropdown-item" href="../articles/plan_quality.html">Software Quality &amp; Management Plan</a></li>
   </ul></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/jbetz-jhu/impart/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -72,16 +77,28 @@
         <dd>Apply group sequential stopping rules to test statistics</dd>
       </dl><dl><dt>
 
-          <code><a href="asymptotic_info.html">asymptotic_information_difference_means()</a></code> <code><a href="asymptotic_info.html">asymptotic_information_difference_proportions()</a></code>
+          <code><a href="asymptotic_info.html">asymptotic_information_difference_means()</a></code> <code><a href="asymptotic_info.html">asymptotic_information_difference_proportions()</a></code> <code><a href="asymptotic_info.html">asymptotic_information_risk_difference()</a></code> <code><a href="asymptotic_info.html">asymptotic_information_relative_risk()</a></code>
 
         </dt>
         <dd>Approximate information from a random samples of a given size for continuous and binary outcomes</dd>
+      </dl><dl><dt>
+
+          <code><a href="asymptotic_information_logrank.html">asymptotic_information_logrank()</a></code>
+
+        </dt>
+        <dd>Approximate information from a random samples of a given size for log hazard ratio</dd>
       </dl><dl><dt>
 
           <code><a href="asymptotic_information_mann_whitney_fm.html">asymptotic_information_mann_whitney_fm()</a></code>
 
         </dt>
         <dd>Approximate information from a random samples of a given size for ordinal outcomes</dd>
+      </dl><dl><dt>
+
+          <code><a href="boot_control.html">boot_control()</a></code> <code><a href="boot_control.html">boot_control_testing()</a></code>
+
+        </dt>
+        <dd>Parameters for using boot::boot() in Non-Sequential Analyses</dd>
       </dl><dl><dt>
 
           <code><a href="calculate_covariance.html">calculate_covariance()</a></code>
@@ -94,18 +111,6 @@
 
         </dt>
         <dd>Compute an estimate from a wrapper function</dd>
-      </dl><dl><dt>
-
-          <code><a href="colon_cancer.html">colon_cancer</a></code>
-
-        </dt>
-        <dd>colon_cancer: Processed Moerton Colon Cancer Data</dd>
-      </dl><dl><dt>
-
-          <code><a href="colon_cancer_active.html">colon_cancer_active</a></code>
-
-        </dt>
-        <dd>colon_cancer: Processed Moerton Colon Cancer Data</dd>
       </dl><dl><dt>
 
           <code><a href="compute_bootstrap.html">compute_bootstrap_serial()</a></code> <code><a href="compute_bootstrap.html">compute_bootstrap_parallel()</a></code>
@@ -138,6 +143,12 @@
         <dd>Reconstruct data available at an earlier point in a study</dd>
       </dl><dl><dt>
 
+          <code><a href="dr_joffe.html">dr_joffe()</a></code> <code><a href="dr_joffe.html">dr_joffe_fit()</a></code>
+
+        </dt>
+        <dd>Doubly Robust Estimation Using Joffe's Doubly Robust Weighted Least Squares (DR-WLS) Estimator</dd>
+      </dl><dl><dt>
+
           <code><a href="estimate_information.html">estimate_information()</a></code>
 
         </dt>
@@ -168,13 +179,19 @@
         <dd>Example 1: Simulated Trial with a Single, Continuous Outcome - Interim Analysis 2</dd>
       </dl><dl><dt>
 
+          <code><a href="hr_design.html">hr_events()</a></code> <code><a href="hr_design.html">hr_power()</a></code> <code><a href="hr_design.html">hr_alpha()</a></code> <code><a href="hr_design.html">hr_minimal()</a></code> <code><a href="hr_design.html">hr_design()</a></code>
+
+        </dt>
+        <dd>Calculate minimum hazard ratio, number of required events, power, or Type I error</dd>
+      </dl><dl><dt>
+
           <code><a href="impute_covariates_mean_mode.html">impute_covariates_mean_mode()</a></code>
 
         </dt>
         <dd>Impute missing baseline covariates using mean/mode imputation</dd>
       </dl><dl><dt>
 
-          <code><a href="information_to_n.html">information_to_n_continuous_1_to_1()</a></code> <code><a href="information_to_n.html">information_to_n_binary_1_to_1()</a></code>
+          <code><a href="information_to_n.html">information_to_n_continuous_1_to_1()</a></code> <code><a href="information_to_n.html">information_to_n_binary_1_to_1()</a></code> <code><a href="information_to_n.html">information_to_events_log_hr()</a></code>
 
         </dt>
         <dd>Convert information level into an approximate sample size requirement for a one-stage design</dd>
@@ -252,13 +269,25 @@
         <dd>Adjust Information for Interim Monitoring</dd>
       </dl><dl><dt>
 
+          <code><a href="rr_design.html">rr_n_per_arm()</a></code> <code><a href="rr_design.html">rr_power()</a></code> <code><a href="rr_design.html">rr_alpha()</a></code> <code><a href="rr_design.html">rr_minimal()</a></code> <code><a href="rr_design.html">rr_design()</a></code>
+
+        </dt>
+        <dd>Calculate relative risk, sample size, power, or Type I error</dd>
+      </dl><dl><dt>
+
+          <code><a href="sim_colon_cancer.html">sim_colon_cancer</a></code>
+
+        </dt>
+        <dd>sim_colon_cancer: Processed Moerton Colon Cancer Data</dd>
+      </dl><dl><dt>
+
           <code><a href="speffsurv_impart.html">speffsurv_impart()</a></code>
 
         </dt>
         <dd>Wrapper for speff2trial::speffsurv: See <a href="https://rdrr.io/pkg/speff2trial/man/speffSurv.html" class="external-link">speff2trial::speffSurv</a></dd>
       </dl><dl><dt>
 
-          <code><a href="standardization.html">standardization()</a></code> <code><a href="standardization.html">standardization_tx_stratified()</a></code> <code><a href="standardization.html">standardization_correction()</a></code>
+          <code><a href="standardization.html">standardization()</a></code> <code><a href="standardization.html">standardization_tx_formula()</a></code> <code><a href="standardization.html">standardization_tx_stratified()</a></code> <code><a href="standardization.html">standardization_correction()</a></code>
 
         </dt>
         <dd>Compute standardization (i.e. G-Computation) estimator</dd>
@@ -273,11 +302,11 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://kellyvanlancker.com/" class="external-link">Kelly Van Lancker</a>, <a href="https://publichealth.jhu.edu/faculty/2679/joshua-betz" class="external-link">Josh Betz</a>, <a href="https://mrosenblumbiostat.wordpress.com/" class="external-link">Michael Rosenblum</a>.</p>
+  <p>Developed by <a href="https://publichealth.jhu.edu/faculty/2679/joshua-betz" class="external-link">Josh Betz</a>, <a href="https://kellyvanlancker.com/" class="external-link">Kelly Van Lancker</a>, <a href="https://mrosenblumbiostat.wordpress.com/" class="external-link">Michael Rosenblum</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

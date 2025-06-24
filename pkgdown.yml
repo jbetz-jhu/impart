@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.1.1
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   analyses_binary: analyses_binary.html
@@ -14,7 +14,9 @@ articles:
   monitoring_continuous: monitoring_continuous.html
   monitoring_time_to_event: monitoring_time_to_event.html
   new_methods_in_impart: new_methods_in_impart.html
-last_built: 2025-01-31T23:16Z
+  plan_quality: plan_quality.html
+  plan_requirements: plan_requirements.html
+last_built: 2025-06-24T14:03Z
 urls:
   reference: https://jbetz-jhu.github.io/impart/reference
   article: https://jbetz-jhu.github.io/impart/articles
