@@ -13,7 +13,7 @@ prepare_monitored_study_data(
   treatment_variable,
   outcome_variables,
   outcome_time_variables,
-  observe_missing_times,
+  observe_missing_times = NULL,
   outcomes_sequential = TRUE,
   time_to_event = FALSE
 )
@@ -45,7 +45,9 @@ names of the outcomes observed after randomization.}
 \item{outcome_time_variables}{A \code{character} vector containing the column
 names of the observation times of outcomes observed after randomization.}
 
-\item{observe_missing_times}{A \code{numeric} vector containing the}
+\item{observe_missing_times}{A \code{numeric} a vector containing the time
+from randomization to the closing of each study window when
+\code{time_to_event == FALSE}.}
 
 \item{outcomes_sequential}{A \code{logical} scalar: are outcomes sequential
 in nature (e.g. a sequence of study visits) or not (e.g. times from

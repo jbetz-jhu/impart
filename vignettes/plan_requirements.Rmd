@@ -1,0 +1,139 @@
+---
+title: "Software Requirements Specification"
+description: >
+  Specification of Software Requirements for `impart`
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Software Requirements Specification}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography:
+  - "../inst/covariate_adjustment.bib"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+
+
+## Purpose of `impart`
+
+The `impart` package allows users to design, monitor, and analyze randomized trials that can utilize baseline information on participants to provide greater power and precision for a given sample size (covariate adjustment), or adapt their sample size in a pre-planned way to ensure adequate power (information monitoring).
+
+
+
+
+## Intended Use and User Base
+
+This package is designed to be used by a statistician or trialist with a postgraduate education in statistics or epidemiology that is familiar with the design and analysis of randomized trials. While this package is written in R, the package documentation is meant to make the software as accessible and broadly useful as possible. The [R environment for Statistical Computing](https://cran.r-project.org/) is a free, open source statistical package that can be downloaded from the [Comprehensive R Archival Network (CRAN)](https://cran.r-project.org/). The [`Get started`](https://jbetz-jhu.github.io/impart/articles/impart.html) page points users to resources for improving their R proficiency.
+
+
+
+
+## Package Scope
+
+The intended scope of the software involves the design, monitoring, and analysis of randomized trials which either involve the use of information monitoring or the combination of a group sequential study design and a covariate-adjusted analysis. 
+
+### Estimands
+
+This software covers the estimation of marginal treatment effects: comparing a summary measure of a distribution of outcomes between all eligible individuals assigned to treatment versus all eligible individuals assigned to the control condition. Common estimands of interest are listed below:
+
+  - Continuous/Binary Outcomes: Average Treatment Effect (ATE, also known as a Difference in Means or Risk Difference), Ratio of Means or Relative Risk (RR), Odds Ratio (OR)
+  - Ordinal Outcomes: Mann-Whitney (MW) Estimand, Difference in Mean Utility, Log Odds Ratio (LOR)
+  - Time-to-Event Outcomes: Survival Probability (SP), Restricted Mean Survival Time (RMST), Hazard Ratio (HR)
+
+The software will cover both unadjusted and covariate adjusted estimates of these estimands, where available.
+
+### Study Designs
+
+This software will cover:
+
+  - Single Stage Designs:
+    - Fixed Sample Size
+    - Information Monitoring (including Event-Driven Trials)
+  - Multiple Stage Designs:
+    - Group Sequential Designs with Fixed Maximum Sample Size
+    - Information Monitored Design with Group Sequential Analyses
+
+### Planning Studies
+
+`impart` currently features the ability to plan studies with continuous, binary, ordinal, and time-to-event outcomes.
+
+  - Continuous Outcomes: Difference in Means
+  - Binary Outcomes: Risk Difference, Risk Ratio
+  - Ordinal Outcomes: Mann-Whitney Estimand
+  - Time-to-Event Outcomes: Marginal Hazard Ratio
+  
+Additional estimands, such as the RMST or survival probability for time-to-event outcomes may be added at a future date.
+
+
+
+
+### Monitoring and Analyzing Studies
+
+`impart` currently features functions to help monitor the accrual of data, including the number of outcome visits completed, and the number of binary/time-to-events events observed.
+
+  - Currently Implemented:
+    - Standardization/G-computation (ATE)
+    - Doubly Robust Weighted Least Squares (ATE)
+  - Under Active Development:
+    - Semiparametric Marginal Hazard Ratio (HR)
+  - Future Development:
+    - Doubly Robust Ordinal Analyses (MW) using [drord](https://cran.r-project.org/web/packages/drord/)
+    - Targeted Maximum Likelihood (ATE)
+    - Restricted Mean Survival Time (RMST) using [survRM2](https://cran.r-project.org/web/packages/survRM2/index.html)
+
+The package also facilitates user-supplied functions, and includes a vignette illustrating how to implement new functions in `impart`.
+
+
+
+
+### Example Datasets
+
+`impart` currently features example datasets, both for illustrating how to use the software in practice and testing the software to ensure it is working as intended. Example datasets and testing data currently include continuous, binary, ordinal, and time-to-event outcomes.
+
+  - Colon Cancer
+  - Hemorrhagic Stroke
+  - Substance Use Disorder
+
+
+## Quality Factors
+
+The design of `impart` involved considerations of maintainability, extensibility, transparency, reproducibility, usability, and accuracy.
+
+
+
+
+### Maintainability & Extensibility
+
+This package was designed with maintainability and extensibility in mind. The package is developed in a version-controlled repository. The software is developed using continuous integration, with a suite of tests developed using the [testthat](https://testthat.r-lib.org/) package for R. Each function is documented to explain its use, as well as inputs and outputs, with the goal of facilitating maintenance and extension of functionality. Code attempts to follow the [Tidyverse style guide](https://style.tidyverse.org/), whenever possible.
+
+Testing workflow includes datasets meant to cover the scope of the package. R CMD Checks are performed in Windows, Linux and macOS environments. Badges on the package website display the current status of R CMD Checks as well as the amount of code covered by tests.
+
+Dependencies have been intentionally minimized to avoid potential conflicts: all dependencies are listed in the package documentation.
+
+
+
+
+### Transparency & Reproducibility
+
+Functions and data structures were designed to make results transparent and reproducible. Earlier analyses are encapsulated in the results of later analyses, allowing the entire analysis history to be inspected. Seeds for random number generation must be pre-specified in the design. Indices of each bootstrap replicate are preserved, allowing each analysis to be replicated from the final result.
+
+
+
+
+### Usability & Accuracy
+
+In addition to documentation of functions, vignettes and datasets have been created to illustrate how to use and extend `impart`. Testing is performed to make sure that functions work as intended, and provide useful feedback when errors are encountered. Known issues and suggestions for improvements in the software or documentation are handled by [issues in GitHub](https://github.com/jbetz-jhu/impart/issues).
+
+Functions have been designed to extensively test inputs to identify potential inconsistencies that may result in undesirable behavior, and provide specific, helpful error messages.
+
+
+
+
+## References

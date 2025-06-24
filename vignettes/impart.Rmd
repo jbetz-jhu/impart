@@ -55,3 +55,21 @@ If you are using `impart` in practice, please cite our work. This helps us ident
 citation(package = "impart")
 ```
 
+
+
+
+## Resources on Learning R
+
+While `impart` is written in R, the vignettes are designed to attempt to make the package as accessible as possible to users. For those 
+
+Resources for learning R at various levels are listed below:
+
+  - [Rstudio Education: resources on learning R](https://education.rstudio.com/)
+  - [Posit recipes: Examples of R code](https://posit.cloud/learn/recipes)
+  - [Posit Cheatsheets](https://posit.co/resources/cheatsheets/)
+  - [swirl: an R package for learning R interactively](https://swirlstats.com/)
+  - [R Cookbook, 2nd Edition by J.D. Long](https://rc2e.com/)
+  - [R for Data Science by Hadley Wickham & Garrett Grolemund](https://r4ds.had.co.nz/)
+  - [Hands-On Programming with R by Garrett Grolemund](https://rstudio-education.github.io/hopr/)
+  - [R Programming for Data Science](https://leanpub.com/rprogramming)
+  - [Advanced R, 2nd Edition by Hadley Wickham](https://adv-r.hadley.nz/)

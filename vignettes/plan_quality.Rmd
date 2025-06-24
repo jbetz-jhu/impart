@@ -1,0 +1,55 @@
+---
+title: "Software Quality & Management Plan"
+description: >
+  An outline of software quality planning and how `impart` is managed
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Software Quality & Management Plan}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+## Software Development & Deployment
+
+The developer is responsible for developing, documenting, testing, and deploying code. Code attempts to follow the [Tidyverse style guide](https://style.tidyverse.org/), whenever possible, and developed in accordance with the [software requirements specification](plan_requirements.html). This software was purposefully designed to limit dependencies whenever possible.
+
+All versions of software will be included in the GitHub software repository. Prior to deployment, all modifications will be checked using a testing workflow and R CMD checks. Testing will be performed on Windows, Linux, and MacOS environments. Testing workflows will include continuous, binary, and time-to-event data. Test coverage will be reviewed to ensure that testing covers the entire scope of the package.
+
+The current R CMD Check status and code coverage are displayed on GitHub. Following the initial release, each subsequent release will be accompanied by a structured summary of changes in the [release notes](https://jbetz-jhu.github.io/impart/NEWS). 
+
+
+
+
+### Testing
+
+Functions will be designed to test input arguments to identify potential inconsistencies and avoid undesirable behavior (e.g. accidental listwise deletion of missing data). Error messages will be designed to provide specific, helpful feedback to allow users to correct issues with input. Functions will be tested to ensure that errors are appropriately triggered, and that valid input will run appropriately.
+
+Where possible, code will be compared against other methods and implementations (e.g. existing power/sample size software like `stats::power.prop.test()` or `pwr::pwr.2p.test()`). When functions have related output (e.g. functions relating power, Type I error, sample size, and nuisance parameters), outputs will be compared across related functions to ensure they exhibit expected relationships. Rules may be tested using a battery of test cases (e.g. testing decision boundaries using a range of values above, within, and below thresholds).
+
+When analytic results are not possible, simulation may be used to ensure that software performs as expected from specified inputs.
+
+
+
+
+### Maintenance
+
+When issues in the software or documentation are identified by the developers or users, [an issue will be opened on Github](https://github.com/jbetz-jhu/impart/issues).
+
+Software issues should include [a minimal reproducible example](https://stackoverflow.com/help/minimal-reproducible-example) of the issue at hand. Once an issue can be reproduced, the root cause can be identified, and both functional code and testing workflows can be updated and documented in release notes.
+
+
+
+
+### Retirement
+
+This software is currently being actively developed and maintained: the GitHub repository has an icon that indicates its current status.
+
+Prior to changing the active status of the repository, an update to the software will indicate the change in status via the `message()` function, and the change in status will be indicated in the release notes. When the software is no longer being actively maintained and updated, the documentation will be updated to reflect the change in status, and the messages presented to the user upon loading the package will also indicate this status.

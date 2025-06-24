@@ -63,8 +63,8 @@ plot_outcome_counts <-
 
     if(plot_events){
       if(!("count_events" %in% names(outcome_counts))){
-        stop("`type` contains 'e' (event counts), which is for time-to-event and ",
-             "binary outcomes, but `count_outcomes()` did not detect a ",
+        stop("`type` contains 'e' (event counts), which is for time-to-event ",
+             "and binary outcomes, but `count_outcomes()` did not detect a ",
              "time-to-event or binary outcome.")
       }
     }
@@ -79,14 +79,26 @@ plot_outcome_counts <-
       color_palette <- 1:length(events)
     }
 
-    y_max <-
-      if(plot_total){
-        max(outcome_counts$count_total, na.rm = TRUE)
-      } else if(plot_complete){
-        max(outcome_counts$count_complete, na.rm = TRUE)
-      } else if(plot_events){
-        max(outcome_counts$count_events, na.rm = TRUE)
+
+    if(plot_total){
+      if(time_to_event){
+        y_max <- max(outcome_counts$count_randomized, na.rm = TRUE)
+      } else {
+        y_max <- max(outcome_counts$count_total, na.rm = TRUE)
       }
+    } else if(plot_complete){
+      y_max <- max(outcome_counts$count_complete, na.rm = TRUE)
+    } else if(plot_events){
+      if(time_to_event){
+        y_max <-
+          with(
+            data = outcome_counts,
+            expr = max(c(count_events, count_censored), na.rm = TRUE)
+          )
+      } else {
+        y_max <- max(outcome_counts$count_events, na.rm = TRUE)
+      }
+    }
 
     graphics::par(mar = c(5, 4, 4, 4) + 0.25)
 
@@ -110,6 +122,8 @@ plot_outcome_counts <-
       col = grDevices::gray(level = 0, alpha = 0.125)
     )
 
+
+
     for(i in 1:length(events)){
       plot_i_data <-
         outcome_counts[which(outcome_counts$event == events[i]),]
@@ -119,6 +133,13 @@ plot_outcome_counts <-
           graphics::lines(
             count_total ~ time,
             data = plot_i_data[order(plot_i_data$count_total),],
+            col = i,
+            type = "S"
+          )
+        } else {
+          graphics::lines(
+            count_randomized ~ time,
+            data = plot_i_data[order(plot_i_data$count_randomized),],
             col = i,
             type = "S"
           )
@@ -143,6 +164,17 @@ plot_outcome_counts <-
           lty = 3,
           type = "S"
         )
+
+        if(time_to_event){
+          graphics::lines(
+            count_censored ~ time,
+            data = plot_i_data[order(plot_i_data$count_censored),],
+            col = i,
+            lty = 4,
+            type = "S"
+          )
+        }
+
       }
     }
 
@@ -150,18 +182,27 @@ plot_outcome_counts <-
 
     legend_text <- legend_lty <- NULL
 
+
+    if(plot_total) {
+      if(time_to_event){
+        legend_text <- c(legend_text, "Randomized")
+      } else{
+        legend_text <- c(legend_text, "Total")
+      }
+      legend_lty <- c(legend_lty, 1)
+    }
     if(plot_complete) {
       legend_text <- c(legend_text, "Complete")
       legend_lty <- c(legend_lty, 2)
     }
-    if(plot_total) {
-      legend_text <-
-        c(legend_text, "Total")
-      legend_lty <- c(legend_lty, 1)
-    }
     if(plot_events) {
       legend_text <- c(legend_text, "Events")
       legend_lty <- c(legend_lty, 3)
+
+      if(time_to_event){
+        legend_text <- c(legend_text, "Censored")
+        legend_lty <- c(legend_lty, 4)
+      }
     }
 
     graphics::legend(
@@ -174,7 +215,9 @@ plot_outcome_counts <-
       bty = "n"
     )
 
-    events[1] <- "RND"
+    if(!time_to_event){
+      events[1] <- "RND"
+    }
 
     graphics::legend(
       x = legend_placement,
@@ -183,5 +226,4 @@ plot_outcome_counts <-
       lty = 1,
       lwd = 1.75
     )
-
   }

@@ -57,43 +57,17 @@ knitr::kable(impart_vignettes$results[, c("Title", "Item")])
 
 # Monitoring Ongoing Studies
 
-In a fixed sample size design, the timing of the final analysis is based on the 
-last participant's last visit. Group sequential analyses are based when
-pre-specified fractions of the maximum sample size have their final outcome
-observed. Timing analyses in such studies only depends on counting the number of
-final outcomes observed during the study.
+In a fixed sample size design with a binary or continuous outcome, the timing of the final analysis is based on the  last participant's last visit. Group sequential analyses of such outcomes are based when pre-specified fractions of the maximum sample size have their final outcome observed. Timing analyses in such studies only depends on counting the number of final outcomes observed during the study.
 
-In information-monitored designs, the times at which analyses are performed and
-recruitment is stopped depend on when the information reaches pre-specified
-thresholds. The amount of information contained in the data depends on the
-number of observations, the completeness of the data, the analytic methods used,
-and the interrelationships among the observed data. Depending on the analysis
-methods used, an individual could contribute baseline covariates and treatment
-assignment information, post-randomization outcomes, and even post-randomization
-auxiliary variables.
+In a time-to-event analysis, precision and power are determined by the number of observed events pooled across study arms [@Schoenfeld1983]. A target number of events are calculated based on Type I error and power criteria: enrollment and follow-up are adjusted to observe the target number of events, after which the analysis is conducted: this is known as an event driven trial.
+
+With continuous, ordinal, or binary outcomes obtained at fixed points during the study, enrollment can still be adjusted to meet desired power and Type I error constraints. In information-monitored designs, the times at which analyses are performed and recruitment is stopped depend on when the information reaches pre-specified thresholds. The amount of information contained in the data depends on the number of observations, the completeness of the data, the analytic methods used, and the interrelationships among the observed data. Depending on the analysis methods used, an individual could contribute baseline covariates and treatment assignment information, post-randomization outcomes, and even post-randomization auxiliary variables.
 
 
 
 
 ## Challenges in Information Monitoring
 
-A new challenge in analyzing data in an ongoing trial is how to appropriately
-treat missing data. Suppose the following are observed:
+When analyzing data as it accrues with a continuous, binary, or ordinal outcome, one has to be careful in differentiating between data that is not-yet-collected (i.e. participants who are on-study but have not yet entered the study window for the outcome) versus data known to be missing (i.e. participants whose study window has closed but whose outcomes were not obtained).
 
-  - A participant is newly enrolled, has their baseline covariates measured, is randomized, is still on study, and has not yet entered any follow-up windows
-  - A participant is randomized, but did not attend any follow-up visits
-
-In both of these cases, the covariates, and treatment assignment are observed,
-but the outcomes are missing. In the first case, outcomes are not yet observed:
-while they are missing, they could still be observed when the participant enters
-the study window. In the latter case, they are known to be missing: the study
-window is closed without the outcome being observed.
-
-A convention can be used to differentiate outcomes that are not yet observed
-from those known to be missing:
-
-  - Completed assessments have both an observed outcome and an observed assessment time.
-  - Missed assessments have a missing outcome, but an observed assessment time: 
-    - If an assessment occurred, but no valid outcome was obtained, the time of the assessment is used.
-    - If an assessment was missed, the end of the study window is used, indicating the last time an outcome could have been observed per protocol.
-  - Not-yet-observed assessments are missing both an outcome and an assessment time.
+With a time-to-event outcome, this issue is handled through censoring

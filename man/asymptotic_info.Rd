@@ -4,11 +4,17 @@
 \alias{asymptotic_info}
 \alias{asymptotic_information_difference_means}
 \alias{asymptotic_information_difference_proportions}
+\alias{asymptotic_information_risk_difference}
+\alias{asymptotic_information_relative_risk}
 \title{Approximate information from a random samples of a given size for continuous and binary outcomes}
 \usage{
 asymptotic_information_difference_means(n_0, sigma_0, n_1, sigma_1)
 
 asymptotic_information_difference_proportions(n_0, pi_0, n_1, pi_1)
+
+asymptotic_information_risk_difference(...)
+
+asymptotic_information_relative_risk(n_0, pi_0, n_1, pi_1)
 }
 \arguments{
 \item{n_0}{Numeric vector containing the sample size in the control arm}
@@ -26,6 +32,8 @@ receiving the control intervention}
 
 \item{pi_1}{Probability of event in the population of individuals
 receiving the control intervention}
+
+\item{...}{Arguments passed to \link{asymptotic_information_difference_proportions}}
 }
 \value{
 When all parameters are scalars, the result is a scalar, indicating

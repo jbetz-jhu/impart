@@ -34,23 +34,14 @@ and confidence interval (if requested).
 Wrapper for speff2trial::speffsurv: See \link[speff2trial:speffSurv]{speff2trial::speffSurv}
 }
 \examples{
-
-# Extract two treatment arms: Lev+5FU (Chemotherapy) and Obs (Observation)
-colon_cancer_5fu_vs_obs <-
-  subset(
-    x = colon_cancer,
-    arm \%in\% c("Lev+5FU", "Obs")
-  ) |>
-  droplevels()
-
 speffsurv_impart(
-  data = colon_cancer_5fu_vs_obs,
+  data = sim_colon_cancer,
   estimand = "log_hazard_ratio",
   formula =
     survival::Surv(time = years_to_death, event = event_death) ~
     age + sex + obstruction + perforation + organ_adherence + positive_nodes +
     differentiation + local_spread,
-  treatment_column = "arm",
+  treatment_column = "tx",
   alpha = 0.05,
   ci = FALSE
 )

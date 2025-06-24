@@ -28,6 +28,7 @@
 
 #' @rdname monitored_analysis_control
 #' @export
+
 monitored_analysis_control <-
   function(
     orthogonal_and_oblique = FALSE,
@@ -52,6 +53,7 @@ monitored_analysis_control <-
 
 #' @rdname monitored_analysis_control
 #' @export
+
 monitored_analysis_control_testing <-
   function(
     orthogonal_and_oblique = FALSE,

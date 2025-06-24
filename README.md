@@ -74,19 +74,7 @@ vignette(package = "impart")
 ```
 
 | Title | Item |
-|:---|:---|
-| Covariate Adjustment in Group Sequential Designs (source, html) | analyses_group_sequential |
-| Designing Information Monitored Trials for Binary Outcomes (source, html) | design_binary |
-| Designing Information Monitored Trials for Continuous Outcomes (source, html) | design_continuous |
-| Designing Information Monitored Trials for Time-to-Event Outcomes (source, html) | design_time_to_event |
-| Getting Started with `impart` (source, html) | impart |
-| Implementing New Methods in `impart` (source, html) | new_methods_in_impart |
-| Monitored Analyses for a Binary Outcome (source, html) | analyses_binary |
-| Monitored Analyses for a Continuous Outcome (source, html) | analyses_continuous |
-| Monitored Analyses for a Time-to-Event Outcome (source, html) | analyses_time_to_event |
-| Monitoring Information for a Binary Outcome (source, html) | monitoring_binary |
-| Monitoring Information for a Continuous Outcome (source, html) | monitoring_continuous |
-| Monitoring Information for a Time-to-Event Outcome (source, html) | monitoring_time_to_event |
+|:------|:-----|
 
 **NOTE:** `impart` is tested using the [`testthat`
 package](https://testthat.r-lib.org/) with a continuous integration

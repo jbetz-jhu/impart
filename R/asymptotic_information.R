@@ -133,3 +133,60 @@ asymptotic_information_difference_proportions <-
       return(param_grid$information_asymptotic)
     }
   }
+
+
+#' @rdname asymptotic_info
+#' @param ... Arguments passed to [asymptotic_information_difference_proportions]
+
+asymptotic_information_risk_difference <-
+  function(...){
+    asymptotic_information_difference_proportions(...)
+  }
+
+#' @rdname asymptotic_info
+#' @param pi_0 Probability of event in the population of individuals
+#' receiving the control intervention
+#' @param pi_1 Probability of event in the population of individuals
+#' receiving the control intervention
+asymptotic_information_relative_risk <-
+  function(
+    n_0,
+    pi_0,
+    n_1,
+    pi_1
+  ){
+    if(any(n_0 < 1) | any(n_1 < 1)){
+      stop("All elements of `n_0` and `n_1` must be greater than 1.")
+    }
+
+    if(any(pi_0 <= 0) | any(pi_1 <= 0)){
+      stop("All elements of `pi_0` and `pi_1` must be positive.")
+    }
+
+    if(any(pi_0 >= 1) | any(pi_1 >= 1)){
+      stop("All elements of `pi_0` and `pi_1` must be less than 1.")
+    }
+
+    param_grid <-
+      expand.grid(
+        n_0 = n_0,
+        pi_0 = pi_0,
+        n_1 = n_1,
+        pi_1 = pi_1
+      )
+
+    param_grid <- param_grid[which(!duplicated(param_grid)),]
+
+    param_grid$information_asymptotic <-
+      with(
+        data = param_grid,
+        expr = 1/(1/(n_0*pi_0) - 1/(n_0) + 1/(n_1*pi_1) - 1/(n_1))
+      )
+
+    if(nrow(param_grid) > 1){
+      return(param_grid)
+    } else{
+      return(param_grid$information_asymptotic)
+    }
+  }
+

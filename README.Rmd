@@ -1,7 +1,7 @@
 ---
 output: github_document
 bibliography:
-  - "covariate_adjustment.bib"
+  - "inst/covariate_adjustment.bib"
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -81,22 +81,41 @@ knitr::kable(impart_vignettes$results[, c("Title", "Item")])
 
 --------------------------------------------------------------------------------
 
+
+
+
 ## Background for Group Sequential Designs Under Violation of Independent Increments Property
 
 Group sequential designs (GSD) are a commonly used type of clinical trial design that involves pre-planned interim analyses where the trial can be stopped early for efficacy or futility. These designs are prevalent in confirmatory clinical trials for ethical and efficiency reasons as they potentially save time and resources by allowing early termination of the trial.
 
+
+
+
 ------------------------------------------------------------------------
 
+
+
+
 ### Incompatibility
+
 Many covariate adjusted estimators are incompatible withcommonly used stopping boundaries in GSDs, when models used to construct the estimators are misspecified. 
 Specifically, to apply GSDs, the sequential test statistics need to have the independent increments covariance structure in order to control Type I error [@scharfstein1997semiparametric, @jennison1997group]. However, this general theory of @scharfstein1997semiparametric and @jennison1997group is not guaranteed to hold for covariate adjusted estimators under model misspecification, which is likely to be the case in practice. 
 In particular, under model misspecification, covariate adjusted estimators can fail to have this independent increments property when using data (e.g., baseline covariates, short-term endpoints) of pipeline patients (i.e., patients enrolled but not in the study long enough to have their primary outcomes measured at the (interim) analysis). This lack of independent increments can generally  occur  when estimators use working models; see e.g., @rosenblum2015 for augmented inverse probability weighted estimators and @shoben2014violations for estimators based on generalized estimating equations. A long list of further examples is provided by @jennison1997group and @kim2020independent.
 
+
+
+
 ------------------------------------------------------------------------
+
+
+
 
 ### Solution: Orthogonalization
 We implement the general method of @VanLancker2022 that extends the highly useful and fundamental theory of information-monitoring in GSDs  [@scharfstein1997semiparametric,@jennison1997group]
  so that it can be used with  any regular, asymptotically linear estimator. This covers many estimators in RCTs. The method uses orthogonalization to produce modified estimators that (1) have the independent increments property needed to apply GSDs, and (2) simultaneously improve (or leave unchanged) the variance at each analysis. 
+
+
+
 
 --------------------------------------------------------------------------------
 

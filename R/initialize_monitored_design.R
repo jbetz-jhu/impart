@@ -57,8 +57,11 @@ initialize_monitored_design <-
       stop("Null value of estimand must be specified.")
     } else if(!all(is.finite(trial_design$informationRates))){
       stop("`trial_design$informationRates` must be specified.")
-    } else if(!trial_design$typeOfDesign %in% c("asP", "asOF", "asKD", "asHSD")){
-      stop("`trial_design$informationRates` must be one of the following: ",
+    } else if(
+      length(trial_design$informationRates) > 1 &
+      (!trial_design$typeOfDesign %in% c("asP", "asOF", "asKD", "asHSD"))
+    ){
+      stop("`trial_design$typeOfDesign` must be one of the following: ",
            "\"asP\", \"asOF\", \"asKD\", or \"asHSD\"")
     } else if(!trial_design$typeBetaSpending %in%
               c("none", "bsP", "bsOF", "bsKD", "bsHSD")){
@@ -70,10 +73,12 @@ initialize_monitored_design <-
       !all(is.finite(maximum_sample_size), is.finite(information_target),
            is.finite(rng_seed_analysis))
     ){
-      stop("The following parameters must be finite numeric values:",
+      stop("The following parameters must be finite numeric values: ",
            "`maximum_sample_size`, `information_target`, `rng_seed_analysis`")
-    } else if(!orthogonalize %in% c(FALSE, TRUE)){
-      stop("Orthogonalized must be either `FALSE` or `TRUE`.")
+    } else if(!inherits(x = orthogonalize, what = "logical")){
+      stop("`orthogonalize` must be either `TRUE` or `FALSE`")
+    } else if(!is.finite(orthogonalize) & length(orthogonalize) == 1){
+      stop("`orthogonalize` must be either `TRUE` or `FALSE`")
     }
 
 

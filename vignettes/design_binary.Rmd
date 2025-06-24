@@ -81,7 +81,7 @@ library(pwr) # Only required for examples, not for `impart`
 
 # Planning The Study
 
-Planning an information-monitored study is similar in many respects to planning a study with a fixed sample size. Investigators must decide on [the target of statistical inference, also known as an estimand](https://covariateadjustment.github.io/estimands.html): for a binary outcome, the risk difference is usually of interest, although investigators may also be interested in a risk ratio (relative risk), or odds ratio. Once the estimand is chosen, decisions must be made about what constitutes a meaningful effect size on the scale of the estimand (e.g. a 10% absolute reduction in risk or a relative risk of 0.75). Finally, the characteristics of the testing procedure must be specified, including the desired Type I Error Rate, statistical power, and direction of alternatives of interest:
+Planning an information-monitored study is similar in many respects to planning a study with a fixed sample size. Investigators must decide on [the target of statistical inference, also known as an estimand](https://covariateadjustment.github.io/estimands.html): for a binary outcome, the risk difference is usually of interest, although investigators may also be interested in a risk ratio (relative risk), or odds ratio. Once the estimand is chosen, decisions must be made about what constitutes a meaningful effect size on the scale of the estimand (e.g. a 10% absolute reduction in risk or a relative risk of 0.75). Finally, the characteristics of the testing procedure must be specified, including the desired Type I Error Rate ($\alpha$), statistical power ($1 - \beta$), and the direction of alternatives of interest (an $s$-sided test: 1- or 2-sided):
 
 ```{r Universal-Study-Design-Parameters}
 # Universal Study Design Parameters
@@ -91,7 +91,7 @@ power <- 0.9 # Statistical Power
 test_sides <- 2 # Direction of Alternatives
 ```
 
-The amount of data that must be collected depends on the amount of the information in the accruing data, with the information depending on the patterns of associations among variables, variability in the outcomes of interest, and degree of missingness. Such information is not always available when studies are being planned in practice.
+The amount of data that must be collected depends on the amount of the information in the accruing data, with the information depending on the patterns of associations among variables, the risk of the outcome in the control arm, and degree of missingness. Such information is not always available when studies are being planned in practice.
 
 Fixed sample size designs require investigators make assumptions about the factors affecting precision: when such assumptions are incorrect, studies can be over- or under-powered. Rather than planning data collection until a pre-specified sample size is reached, an information-monitored study continues data collection until the data collected provide enough precision to identify a meaningful difference with appropriate power and control of Type I Error.
 

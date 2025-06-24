@@ -180,3 +180,56 @@ information_to_n_binary_1_to_1 <-
     }
   }
 
+
+
+
+
+
+#' @rdname information_to_n
+#' @param allocation_ratio The allocation ratio of participants receiving
+#' treatment to those receiving control
+#' @export
+information_to_events_log_hr <-
+  function(
+    information,
+    allocation_ratio = 1,
+    round_up = TRUE
+  ) {
+
+    if(any(information <= 0)){
+      stop("All elements of `information` must be positive.")
+    }
+
+    if(any(!is.finite(allocation_ratio))){
+      stop("All elements of `allocation_ratio` must be numeric and greater than 0.")
+    } else if(any(allocation_ratio <= 0)){
+      stop("All elements of `allocation_ratio` must be greater than 0.")
+    }
+
+    param_grid <-
+      expand.grid(
+        information = information,
+        allocation_ratio = allocation_ratio
+      )
+
+    param_grid <- param_grid[which(!duplicated(param_grid)),]
+
+    param_grid$total_events <-
+      with(
+        data = param_grid,
+        expr =
+          (information*(1 + allocation_ratio)^2)/allocation_ratio
+      )
+
+    if(round_up) {
+      param_grid$total_events <- ceiling(param_grid$total_events)
+    }
+
+    if(nrow(param_grid) > 1){
+      return(param_grid)
+    } else{
+      return(
+        param_grid$total_events
+      )
+    }
+  }

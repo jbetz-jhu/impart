@@ -218,7 +218,7 @@ test_that(
           treatment_variable = c("tx"),
           outcome_variables = c("event_1", "event_2"),
           outcome_time_variables = c("tte_1", "tte_2"),
-          observe_missing_times = c(0, 0),
+          observe_missing_times = NULL,
           outcomes_sequential = FALSE,
           time_to_event = TRUE
         ),
@@ -240,7 +240,7 @@ test_that(
           treatment_variable = c("tx"),
           outcome_variables = c("event_1", "event_2"),
           outcome_time_variables = c("tte_1", "tte_2"),
-          observe_missing_times = c(0, 0),
+          observe_missing_times = NULL,
           outcomes_sequential = FALSE,
           time_to_event = TRUE
         ),
@@ -262,11 +262,29 @@ test_that(
           treatment_variable = c("tx"),
           outcome_variables = c("event_1", "event_2"),
           outcome_time_variables = c("tte_1", "tte_2"),
-          observe_missing_times = c(0, 0),
+          observe_missing_times = NULL,
           outcomes_sequential = FALSE,
           time_to_event = TRUE
         ),
       regexp = "All variables in `outcome_variables`"
+    )
+
+    expect_error(
+      object =
+        prepare_monitored_study_data(
+          data = test_data,
+          study_time = 20,
+          id_variable = ".id",
+          covariates_variables = c("x_1"),
+          enrollment_time_variable = "enrollment",
+          treatment_variable = c("tx"),
+          outcome_variables = c("event_1", "event_2"),
+          outcome_time_variables = c("tte_1", "tte_2"),
+          observe_missing_times = 0,
+          outcomes_sequential = FALSE,
+          time_to_event = TRUE
+        ),
+      regexp = "If `time_to_event` is TRUE, then `observe_missing_times`"
     )
   }
 )
@@ -304,7 +322,7 @@ test_that(
           treatment_variable = c("tx"),
           outcome_variables = c("event_1", "event_2"),
           outcome_time_variables = c("tte_1", "tte_2"),
-          observe_missing_times = c(0, 0),
+          observe_missing_times = NULL,
           outcomes_sequential = FALSE,
           time_to_event = TRUE
         )

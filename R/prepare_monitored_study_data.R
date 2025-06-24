@@ -18,7 +18,9 @@
 #' names of the outcomes observed after randomization.
 #' @param outcome_time_variables A \code{character} vector containing the column
 #' names of the observation times of outcomes observed after randomization.
-#' @param observe_missing_times A \code{numeric} vector containing the
+#' @param observe_missing_times A \code{numeric} a vector containing the time
+#' from randomization to the closing of each study window when
+#' \code{time_to_event == FALSE}.
 #' @param outcomes_sequential A \code{logical} scalar: are outcomes sequential
 #' in nature (e.g. a sequence of study visits) or not (e.g. times from
 #' randomization to different events)?
@@ -43,11 +45,11 @@ prepare_monitored_study_data <-
     treatment_variable,
     outcome_variables,
     outcome_time_variables,
-    observe_missing_times,
+    observe_missing_times = NULL,
     outcomes_sequential = TRUE,
     time_to_event = FALSE
   ){
-    if(!is.finite(study_time)){
+    if(any(!is.finite(study_time), !is.numeric(study_time))){
       stop("`study_time` must be numeric and not missing.")
     }
 
@@ -75,18 +77,30 @@ prepare_monitored_study_data <-
     n_outcomes <- length(outcome_variables)
     n_outcome_times <- length(outcome_time_variables)
 
-    all_ids <- unique(data[, id_variable])
-
-    if(!identical(x = n_outcomes, y = n_outcome_times)){
+    if(n_outcomes != n_outcome_times){
       stop("Number of outcomes (", n_outcomes, ") must be equal to the number ",
            "of outcome measurement times (", n_outcome_times, ").")
     }
 
-    if(!identical(x = n_outcomes, y = length(observe_missing_times))){
-      stop("Number of outcomes (", n_outcomes, ") must be equal to the length ",
-           "of the times at which missingness is observed (",
-           length(observe_missing_times), ").")
+    if(!time_to_event){
+      if(is.null(observe_missing_times)){
+        stop("If `time_to_event` is FALSE, then `observe_missing_times` must ",
+             "be specified.")
+      } else {
+        if(length(observe_missing_times) != n_outcomes){
+          stop("Number of outcomes (", n_outcomes, ") must be equal to the ",
+               "length of the times at which missingness is observed (",
+               length(observe_missing_times), ").")
+        }
+      }
+    } else {
+      if(!is.null(observe_missing_times)){
+        stop("If `time_to_event` is TRUE, then `observe_missing_times` must ",
+             "be `NULL`.")
+      }
     }
+
+    all_ids <- unique(data[, id_variable])
 
     # Check data for potential errors: Missing or Duplicated IDs
     if(any(is.na(data[, id_variable]))){
@@ -121,7 +135,7 @@ prepare_monitored_study_data <-
       }
     }
 
-    if(outcomes_sequential){
+    if(outcomes_sequential & n_outcomes > 1){
       # Check for inconsistencies in Outcome Timing
       outcome_time_differences <-
         data[, utils::tail(x = outcome_time_variables, -1)] -
@@ -173,36 +187,45 @@ prepare_monitored_study_data <-
       observed_time_i <- data[, outcome_time_variables[i]]
       outcome_i <- data[, outcome_variables[i]]
 
-      missing_outcome_times_i <-
-        which(is.na(observed_time_i) &
-                enrollment_to_study_time > observe_missing_times[i])
+      if(time_to_event){
+        outcome_indicator <-
+          1*(!(is.na(observed_time_i) | is.na(observed_time_i)))
+        if(any(is.na(observed_time_i)) | any(is.na(outcome_i))){
+          stop("Event times and indicators should not contain missing values.")
+        }
+      } else {
+        missing_outcome_times_i <-
+          which(is.na(observed_time_i) &
+                  enrollment_to_study_time > observe_missing_times[i])
 
-      observed_time_i[missing_outcome_times_i] <-
-        enrollment_time[missing_outcome_times_i] + observe_missing_times[i]
+        observed_time_i[missing_outcome_times_i] <-
+          enrollment_time[missing_outcome_times_i] + observe_missing_times[i]
 
-      enrollment_to_outcome <- observed_time_i - enrollment_time
+        enrollment_to_outcome <- observed_time_i - enrollment_time
 
-      outcome_indicator <- rep(NA, length(outcome_i))
-      outcome_indicator[which(!is.na(outcome_i))] <- TRUE
-      outcome_indicator[
-        which(is.na(outcome_i) & !is.na(observed_time_i))
-      ] <- FALSE
-      outcome_indicator[
-        which(enrollment_to_outcome > observe_missing_times[i] &
-                is.na(outcome_i))
-      ] <- FALSE
+        outcome_indicator <- rep(NA, length(outcome_i))
+        outcome_indicator[which(!is.na(outcome_i))] <- TRUE
+        outcome_indicator[
+          which(is.na(outcome_i) & !is.na(observed_time_i))
+        ] <- FALSE
+        outcome_indicator[
+          which(enrollment_to_outcome > observe_missing_times[i] &
+                  is.na(outcome_i))
+        ] <- FALSE
 
-      observed_time_i[
-        which(
-          is.na(observed_time_i) &
-            study_time - enrollment_time > observe_missing_times[i]
-        )
-      ]
+        observed_time_i[
+          which(
+            is.na(observed_time_i) &
+              study_time - enrollment_time > observe_missing_times[i]
+          )
+        ]
+      }
 
       wide_data[[outcome_variables[i]]] <- data[, outcome_variables[i]]
       wide_data[[paste0(".t_", i)]] <- observed_time_i
       wide_data[[paste0(".r_", i)]] <- 1*outcome_indicator
     }
+
 
     prepared_data <-
       list(

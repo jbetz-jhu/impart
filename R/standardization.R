@@ -166,6 +166,8 @@ standardization <-
 
 
 
+#' @rdname standardization
+#' @export
 standardization_tx_formula <-
   function(
     data,
@@ -175,6 +177,7 @@ standardization_tx_formula <-
     estimand,
     family
   ){
+    # Fit a single working model under control and treatment
     outcome_model <-
       stats::glm(
         formula = outcome_formula,
@@ -265,7 +268,7 @@ standardization_tx_stratified <-
       )
 
 
-    # Make predictions under control and treatment for all patients in the dataset
+    # Make predictions under control for all participants in the dataset
     y0_pred <-
       stats::predict(
         object = y0_mod,
@@ -273,6 +276,7 @@ standardization_tx_stratified <-
         type = "response"
       )
 
+    # Make predictions under treatment for all participants in the dataset
     y1_pred <-
       stats::predict(
         object = y1_mod,

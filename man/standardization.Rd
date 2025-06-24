@@ -2,6 +2,7 @@
 % Please edit documentation in R/standardization.R
 \name{standardization}
 \alias{standardization}
+\alias{standardization_tx_formula}
 \alias{standardization_tx_stratified}
 \alias{standardization_correction}
 \title{Compute standardization (i.e. G-Computation) estimator}
@@ -15,6 +16,15 @@ standardization(
   estimand = "difference",
   outcome_indicator_column = NULL,
   treatment_column = NULL
+)
+
+standardization_tx_formula(
+  data,
+  outcome_formula,
+  treatment_column,
+  outcome_indicator_column,
+  estimand,
+  family
 )
 
 standardization_tx_stratified(

@@ -13,7 +13,7 @@ test_that(
           treatment_variable = c("tx"),
           outcome_variables = c("event_1", "event_2"),
           outcome_time_variables = c("tte_1", "tte_2"),
-          observe_missing_times = c(0, 0),
+          observe_missing_times = NULL,
           outcomes_sequential = FALSE,
           time_to_event = TRUE
         )

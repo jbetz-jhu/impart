@@ -38,3 +38,10 @@ articles:
   contents:
     - analyses_group_sequential
     - new_methods_in_impart
+
+- title: Plans & Specifications
+  navbar: Plans & Specifications
+  contents:
+    - plan_requirements
+    - plan_quality
+

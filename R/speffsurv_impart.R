@@ -13,23 +13,14 @@
 #' @export
 #'
 #' @examples
-#'
-#' # Extract two treatment arms: Lev+5FU (Chemotherapy) and Obs (Observation)
-#' colon_cancer_5fu_vs_obs <-
-#'   subset(
-#'     x = colon_cancer,
-#'     arm %in% c("Lev+5FU", "Obs")
-#'   ) |>
-#'   droplevels()
-#'
 #' speffsurv_impart(
-#'   data = colon_cancer_5fu_vs_obs,
+#'   data = sim_colon_cancer,
 #'   estimand = "log_hazard_ratio",
 #'   formula =
 #'     survival::Surv(time = years_to_death, event = event_death) ~
 #'     age + sex + obstruction + perforation + organ_adherence + positive_nodes +
 #'     differentiation + local_spread,
-#'   treatment_column = "arm",
+#'   treatment_column = "tx",
 #'   alpha = 0.05,
 #'   ci = FALSE
 #' )
@@ -58,7 +49,7 @@ speffsurv_impart <-
     if(length(outcome_cols == 2)){
       miss_rows <- which(rowSums(is.na(data[, outcome_cols])) == 1)
       if(length(miss_rows) > 0){
-        stop("Indicators missing an event time or event times missing an",
+        stop("Indicators missing an event time or event times missing an ",
              "outcome indicator: rows ", paste0(miss_rows, collapse = ", "))
       }
     }
@@ -99,6 +90,7 @@ speffsurv_impart <-
       list(
         estimate = as.numeric(speffsurv_result$beta["Speff"]),
         se = sqrt(as.numeric(speffsurv_result$varbeta["Speff"])),
+        var = as.numeric(speffsurv_result$varbeta["Speff"]),
         lcl = lcl,
         ucl = ucl,
         alpha = alpha,

@@ -4,6 +4,7 @@
 \alias{information_to_n}
 \alias{information_to_n_continuous_1_to_1}
 \alias{information_to_n_binary_1_to_1}
+\alias{information_to_events_log_hr}
 \title{Convert information level into an approximate sample size requirement for a
 one-stage design}
 \usage{
@@ -19,6 +20,12 @@ information_to_n_binary_1_to_1(
   pi_0 = NULL,
   pi_1 = NULL,
   delta = NULL,
+  round_up = TRUE
+)
+
+information_to_events_log_hr(
+  information,
+  allocation_ratio = 1,
   round_up = TRUE
 )
 }
@@ -41,6 +48,9 @@ receiving the control intervention}
 receiving the control intervention}
 
 \item{delta}{The risk difference (i.e. \code{pi_1 - pi_0})}
+
+\item{allocation_ratio}{The allocation ratio of participants receiving
+treatment to those receiving control}
 }
 \value{
 When all parameters are scalars, the result is a scalar, indicating

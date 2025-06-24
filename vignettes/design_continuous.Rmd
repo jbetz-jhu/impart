@@ -81,7 +81,7 @@ library(pwr) # Only required for examples, not for `impart`
 
 # Planning The Study
 
-Planning an information-monitored study is similar in many respects to planning a study with a fixed sample size. Investigators must decide on [the target of statistical inference, also known as an estimand](https://covariateadjustment.github.io/estimands.html): for a continuous outcome, the difference in means or a ratio of means may be of interest. Once the estimand is chosen, decisions must be made about what constitutes a meaningful effect size on the scale of the estimand (e.g. a difference in means of 5 or a ratio of means of 1.25). Finally, the characteristics of the testing procedure must be specified, including the desired Type I Error Rate, statistical power, and direction of alternatives of interest:
+Planning an information-monitored study is similar in many respects to planning a study with a fixed sample size. Investigators must decide on [the target of statistical inference, also known as an estimand](https://covariateadjustment.github.io/estimands.html): for a continuous outcome, the difference in means or a ratio of means may be of interest. Once the estimand is chosen, decisions must be made about what constitutes a meaningful effect size on the scale of the estimand (e.g. a difference in means of 5 or a ratio of means of 1.25). Finally, the characteristics of the testing procedure must be specified, including the desired Type I Error Rate ($\alpha$), statistical power ($1 - \beta$), and the direction of alternatives of interest (an $s$-sided test: 1- or 2-sided):
 
 ```{r Universal-Study-Design-Parameters}
 # Universal Study Design Parameters

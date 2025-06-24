@@ -106,71 +106,58 @@ colon_cancer <-
 # Save the original dataset prior to imputation
 colon_cancer_original <- colon_cancer
 
+# Determine Columns with Missingness
+# which(colSums(is.na(colon_cancer)) > 0)
+
+# Fit Cox Model
+cox_death_adjusted <-
+  survival::coxph(
+    formula =
+      survival::Surv(time = years_to_death, event = event_death) ~
+      arm + age + sex + obstruction + perforation + organ_adherence +
+      local_spread + time_surgery_registration,
+    data = colon_cancer
+  )
+
+colon_cancer$cox_expected <-
+  predict(
+    object = cox_death_adjusted,
+    newdata =
+      within(
+        data = colon_cancer,
+        expr = {arm = "Obs"}
+      ),
+    type = "expected"
+  )
 
 ### Impute Missing Covariates ##################################################
-# NOTE: In an attempt to preserve covariate-outcome relationships,
-# a (year of event x event indicator) interaction is included as a categorical
-# variable in imputation. One issue is that of the 929 participants in the
-# trial, very few (929 - 915 = 14) are censored prior to the 5th year of
-# follow-up, and sparsity also occurs after 7 years of follow-up. When imputing,
-# those N=14 censored before year 5 are dropped, and time-to-event is top-coded
-# at 7 years.
-
+# Imputation of covariates involves model-based prediction of expected survival
+# under observation given covariates without missingness
 colon_cancer_impute <-
   colon_cancer %>%
-  dplyr::filter(
-    years_to_death >= 5 | event_death == 1
-  ) %>%
-  dplyr::mutate(
-    # Coarsen time scale to years:
-    years_to_death_ceiling = ceiling(years_to_death),
-    years_to_recurrence_ceiling = ceiling(years_to_recurrence),
-    years_to_death_topcode =
-      case_when(
-        years_to_death < 7 ~ years_to_death_ceiling,
-        years_to_death >= 7 ~ 7
-      )
-  ) %>%
   dplyr::select(
     dplyr::all_of(
-      x = c(".id", "arm", "age", "sex", "obstruction", "perforation",
+      x = c("age", "sex", "obstruction", "perforation",
             "organ_adherence", "differentiation", "local_spread",
-            "time_surgery_registration", "positive_nodes",
-            "years_to_death_topcode", "event_death")
+            "time_surgery_registration", "positive_nodes", "cox_expected")
     )
-  ) %>%
-  dplyr::mutate(
-    `.id` = as.character(`.id`),
-    death_time =
-      factor(
-        x = paste0(event_death, ":", years_to_death_topcode),
-      ),
-    event_death = NULL,
-    years_to_death_topcode = NULL
   )
 
-# Massive Imputation
-colon_cancer_predictor_matrix <-
-  matrix(
-    data = 1,
-    nrow = ncol(colon_cancer_impute),
-    ncol = ncol(colon_cancer_impute),
+colon_cancer_impute_0 <-
+  mice::mice(
+    data = colon_cancer_impute,
+    m = 1,
+    maxit = 0
   )
 
-diag(colon_cancer_predictor_matrix) <- 0
-
-# Do not use "id" as predictor
-colon_cancer_predictor_matrix[
-  , which(names(colon_cancer_impute) %in% c(".id"))
-] <- 0
-
+predictor_matrix <- colon_cancer_impute_0$predictorMatrix
+predictor_matrix[, "local_spread"] <- 0
 
 ### Perform MICE ###############################################################
 colon_cancer_mice <-
   mice::mice(
     data = colon_cancer_impute,
-    predictorMatrix = colon_cancer_predictor_matrix,
-    exclude = ".id",
+    predictorMatrix = predictor_matrix,
     # Single Imputation
     m = 1,
     # 20 Iterations of MICE Algorithm
@@ -180,54 +167,38 @@ colon_cancer_mice <-
     printFlag = FALSE
   )
 
-plot(colon_cancer_mice)
+# plot(colon_cancer_mice)
 
 
-# Get completed data for the N=915
+# Get completed data
 colon_cancer_mice <-
   complete(colon_cancer_mice) %>%
-  dplyr::mutate(
-    `.id` = as.numeric(`.id`)
-  ) %>%
   dplyr::select(
-    `.id`, differentiation, positive_nodes
+    differentiation, positive_nodes
   )
 
 
 ### Assemble Completed Dataset #################################################
-colon_cancer_original <- colon_cancer
-
-colon_cancer <-
-  dplyr::full_join(
-    x =
-      colon_cancer %>%
+colon_cancer_imputed <-
+  dplyr::bind_cols(
+    colon_cancer %>%
       dplyr::select(
-        -all_of(x = c('differentiation', "positive_nodes"))
+        -dplyr::all_of(x = names(colon_cancer_mice))
       ),
-    y =
-      dplyr::bind_rows(
-        colon_cancer_mice,
-        colon_cancer %>%
-          dplyr::filter(
-            years_to_death < 5 & event_death == 0
-          ) %>%
-          dplyr::select(
-            `.id`, differentiation, positive_nodes
-          )
-      ),
-    by = ".id"
+    colon_cancer_mice
   ) %>%
+  as.data.frame() %>%
   dplyr::select(
-    dplyr::all_of(x = names(colon_cancer))
-  ) %>%
-  as.data.frame()
+    dplyr::any_of(
+      x = names(colon_cancer_original)
+    )
+  )
 
-usethis::use_data(colon_cancer, overwrite = TRUE)
 
 # Subset colon cancer data to active treatment arms: Lev, Lev+5FU
 colon_cancer_active <-
   subset(
-    x = colon_cancer,
+    x = colon_cancer_imputed,
     subset = arm %in% c("Lev+5FU", "Lev")
   )
 
@@ -238,7 +209,67 @@ colon_cancer_active$tx <-
   )
 
 
+power <- 0.90
+alpha <- 0.05
+test_sides <- 2
+# O'Brien-Fleming Alpha Spending
+efficacy_bounds <- "asOF"
 
+# 90% Power to detect HR of 1.35: One-Sided Test
+events_single_stage <-
+  impart::hr_design(
+    events = NULL,
+    hazard_ratio = 1.35,
+    power = power,
+    alpha = alpha,
+    test_sides = test_sides
+  )
+
+events_1s <- ceiling(events_single_stage)
+
+info_fractions_75_100 <- c(.75, 1)
+
+design_2s_of_75_100 <-
+  rpact::getDesignGroupSequential(
+    alpha = alpha,
+    sided = test_sides,
+    informationRates = info_fractions_75_100,
+    typeOfDesign = efficacy_bounds
+  )
+
+if_2s_of_75_100 <-
+  rpact::getDesignCharacteristics(
+    design = design_2s_of_75_100
+  )$inflationFactor
+
+events_2s_of_75_100 <-
+  (events_single_stage*info_fractions_75_100*if_2s_of_75_100) |>
+  ceiling()
+
+# Get number of participants to yield target events
+n_participants <-
+  with(
+    data = colon_cancer_active,
+    expr = length(event_death)*max(events_2s_of_75_100)/sum(event_death)
+  ) |>
+  ceiling()
+
+n_resample <- n_participants - nrow(colon_cancer_active)
+
+additional_participants <-
+  colon_cancer_active[
+    sample(x = 1:nrow(colon_cancer_active), size = n_resample),
+  ]
+
+additional_participants$.id <-
+  additional_participants$.id + 1000
+
+
+colon_cancer_active <-
+  rbind(
+    colon_cancer_active,
+    additional_participants
+  )
 
 # Add simulated recruitment time: March 1984 to October 1987
 enrollment_duration <-
@@ -257,4 +288,70 @@ colon_cancer_active$enroll_time <-
   ) |>
   sort()
 
-usethis::use_data(colon_cancer_active, overwrite = TRUE)
+trial_end <-
+  with(
+    data = colon_cancer_active,
+    expr = {
+      c(max(enroll_time + years_to_death),
+        max(enroll_time + years_to_recurrence)) |>
+        max() |>
+        ceiling()
+    }
+  )
+
+sim_colon_cancer <- colon_cancer_active
+
+usethis::use_data(sim_colon_cancer, overwrite = TRUE)
+
+data = sim_colon_cancer
+study_time = 18
+id_variable = ".id"
+covariates_variables =
+  c("age", "sex", "obstruction", "perforation", "organ_adherence",
+    "positive_nodes", "differentiation", "local_spread",
+    "time_surgery_registration")
+enrollment_time_variable = "enroll_time"
+treatment_variable = "arm"
+outcome_variables = "event_death"
+outcome_time_variables = "years_to_death"
+observe_missing_times = NULL
+outcomes_sequential = FALSE
+time_to_event = TRUE
+
+
+colon_cancer_prepared <-
+  prepared_data <-
+  impart::prepare_monitored_study_data(
+    data = sim_colon_cancer,
+    study_time = 18,
+    id_variable = ".id",
+    covariates_variables =
+      c("age", "sex", "obstruction", "perforation", "organ_adherence",
+        "positive_nodes", "differentiation", "local_spread",
+        "time_surgery_registration"),
+    enrollment_time_variable = "enroll_time",
+    treatment_variable = "arm",
+    outcome_variables = "event_death",
+    outcome_time_variables = "years_to_death",
+    time_to_event = TRUE
+  )
+
+colon_cancer_count_by_time <-
+  impart::count_outcomes(
+    prepared_data = colon_cancer_prepared,
+    study_time = 18
+  )
+
+colon_cancer_count_by_time %>%
+  dplyr::filter(
+    event == "event_death"
+  )
+
+sim_colon_cancer %>%
+  dplyr::count(event_death == 1)
+
+#
+
+
+
+

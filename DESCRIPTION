@@ -1,12 +1,12 @@
 Type: Package
 Package: impart
 Title: Information Monitoring for Precision Adaptive Randomized Trials
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
-    person("Kelly", "Van Lancker", , "kelly.vanlancker@ugent.be", role = c("aut"),
-           comment = c(ORCID = "0000-0003-3458-3788")),
     person("Josh", "Betz", , "jbetz@jhu.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-4488-9799")),
+    person("Kelly", "Van Lancker", , "kelly.vanlancker@ugent.be", role = c("aut"),
+           comment = c(ORCID = "0000-0003-3458-3788")),
     person("Michael", "Rosenblum", , "mrosen@jhu.edu", role = "aut",
            comment = c(ORCID = "0000-0001-7411-4172"))
   )
@@ -24,8 +24,10 @@ Description: Software for designing, monitoring, and analyzing experiments
 License: GPL (>= 3)
 URL: https://jbetz-jhu.github.io/impart/, https://github.com/jbetz-jhu/impart
 Depends: 
-    R (>= 3.5)
+    R (>= 4.1)
 Imports: 
+    base,
+    boot,
     methods,
     parallel,
     rpact,
