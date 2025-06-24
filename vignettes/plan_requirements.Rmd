@@ -7,8 +7,6 @@ vignette: >
   %\VignetteIndexEntry{Software Requirements Specification}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-bibliography:
-  - "../inst/covariate_adjustment.bib"
 ---
 
 ```{r, include = FALSE}
