@@ -8,6 +8,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{deming}
+  %\VignetteDepends{rpact}
 ---
 
 ```{r RMD-Setup, include = FALSE}

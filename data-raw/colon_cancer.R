@@ -303,55 +303,6 @@ sim_colon_cancer <- colon_cancer_active
 
 usethis::use_data(sim_colon_cancer, overwrite = TRUE)
 
-data = sim_colon_cancer
-study_time = 18
-id_variable = ".id"
-covariates_variables =
-  c("age", "sex", "obstruction", "perforation", "organ_adherence",
-    "positive_nodes", "differentiation", "local_spread",
-    "time_surgery_registration")
-enrollment_time_variable = "enroll_time"
-treatment_variable = "arm"
-outcome_variables = "event_death"
-outcome_time_variables = "years_to_death"
-observe_missing_times = NULL
-outcomes_sequential = FALSE
-time_to_event = TRUE
+impart::prepare_monitored_study_data(
 
-
-colon_cancer_prepared <-
-  prepared_data <-
-  impart::prepare_monitored_study_data(
-    data = sim_colon_cancer,
-    study_time = 18,
-    id_variable = ".id",
-    covariates_variables =
-      c("age", "sex", "obstruction", "perforation", "organ_adherence",
-        "positive_nodes", "differentiation", "local_spread",
-        "time_surgery_registration"),
-    enrollment_time_variable = "enroll_time",
-    treatment_variable = "arm",
-    outcome_variables = "event_death",
-    outcome_time_variables = "years_to_death",
-    time_to_event = TRUE
-  )
-
-colon_cancer_count_by_time <-
-  impart::count_outcomes(
-    prepared_data = colon_cancer_prepared,
-    study_time = 18
-  )
-
-colon_cancer_count_by_time %>%
-  dplyr::filter(
-    event == "event_death"
-  )
-
-sim_colon_cancer %>%
-  dplyr::count(event_death == 1)
-
-#
-
-
-
-
+)

@@ -10,6 +10,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{pwr}
+  %\VignetteDepends{rpact}
 ---
 
 ```{r RMD-Setup, include = FALSE}
@@ -87,7 +88,7 @@ Once the estimand is chosen, decisions must be made about what constitutes a mea
 
 ```{r Universal-Study-Design-Parameters}
 # Universal Study Design Parameters
-minimum_difference_hr <- 0.70 # Effect Size: Hazard Ratio
+minimum_difference_hr <- 0.74 # Effect Size: Hazard Ratio
 minimum_difference_log_hr <- log(minimum_difference_hr) 
 minimum_difference_sp <- 0.15 # Effect Size: Difference in Survival Probability
 minimum_difference_rmst <- 1 # Effect Size: Difference in RMST

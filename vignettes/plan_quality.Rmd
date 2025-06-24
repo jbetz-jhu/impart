@@ -23,7 +23,7 @@ The developer is responsible for developing, documenting, testing, and deploying
 
 All versions of software will be included in the GitHub software repository. Prior to deployment, all modifications will be checked using a testing workflow and R CMD checks. Testing will be performed on Windows, Linux, and MacOS environments. Testing workflows will include continuous, binary, and time-to-event data. Test coverage will be reviewed to ensure that testing covers the entire scope of the package.
 
-The current R CMD Check status and code coverage are displayed on GitHub. Following the initial release, each subsequent release will be accompanied by a structured summary of changes in the [release notes](https://jbetz-jhu.github.io/impart/NEWS). 
+The current R CMD Check status and code coverage are displayed on GitHub. Following the initial release, each subsequent release will be accompanied by a structured summary of changes in the [release notes](https://jbetz-jhu.github.io/impart/news/index.html). 
 
 
 

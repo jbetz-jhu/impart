@@ -12,6 +12,10 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![codecov](https://codecov.io/gh/jbetz-jhu/impart/graph/badge.svg?token=75LYU8AN1H)](https://codecov.io/gh/jbetz-jhu/impart)  
 <!-- badges: end -->
 
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
 Investigators are faced with many challenges in designing efficient,
 ethical randomized trials due to competing demands: a trial must collect
 enough information to identify meaningful benefits or harms with a
@@ -74,7 +78,21 @@ vignette(package = "impart")
 ```
 
 | Title | Item |
-|:------|:-----|
+|:---|:---|
+| Covariate Adjustment in Group Sequential Designs (source, html) | analyses_group_sequential |
+| Designing Information Monitored Trials for Binary Outcomes (source, html) | design_binary |
+| Designing Information Monitored Trials for Continuous Outcomes (source, html) | design_continuous |
+| Designing Information Monitored Trials for Time-to-Event Outcomes (source, html) | design_time_to_event |
+| Getting Started with `impart` (source, html) | impart |
+| Implementing New Methods in `impart` (source, html) | new_methods_in_impart |
+| Monitored Analyses for a Binary Outcome (source, html) | analyses_binary |
+| Monitored Analyses for a Continuous Outcome (source, html) | analyses_continuous |
+| Monitored Analyses for a Time-to-Event Outcome (source, html) | analyses_time_to_event |
+| Monitoring Information for a Binary Outcome (source, html) | monitoring_binary |
+| Monitoring Information for a Continuous Outcome (source, html) | monitoring_continuous |
+| Monitoring Information for a Time-to-Event Outcome (source, html) | monitoring_time_to_event |
+| Software Quality & Management Plan (source, html) | plan_quality |
+| Software Requirements Specification (source, html) | plan_requirements |
 
 **NOTE:** `impart` is tested using the [`testthat`
 package](https://testthat.r-lib.org/) with a continuous integration
@@ -100,7 +118,7 @@ termination of the trial.
 
 ### Incompatibility
 
-Many covariate adjusted estimators are incompatible withcommonly used
+Many covariate adjusted estimators are incompatible with commonly used
 stopping boundaries in GSDs, when models used to construct the
 estimators are misspecified. Specifically, to apply GSDs, the sequential
 test statistics need to have the independent increments covariance
@@ -177,7 +195,7 @@ in category $k$ under treatment $A$. The Mann-Whitney estimand $\phi$ is
 the probability of having an outcome as good or better under the
 treatment arm relative to control with an adjustment for ties:
 
-$$\phi = Pr\{Y^{(T)} > Y^{(C)}\} + \frac{1}{2} Pr\{Y^{(T)} = Y^{(C)}\}$$
+$$\phi = Pr\left(Y^{(T)} > Y^{(C)}\right) + \frac{1}{2} \left(Pr Y^{(T)} = Y^{(C)} \right)$$
 
 This is also known as the competing probability. The
 precision/information depends on $\phi$ (Fay and Malinovsky 2018):
