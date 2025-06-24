@@ -81,7 +81,8 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>Investigators are faced with many challenges in designing efficient, ethical randomized trials due to competing demands: a trial must collect enough information to identify meaningful benefits or harms with a desired probability while also minimizing potential harm and suboptimal treatment of participants. Satisfying these competing demands is further complicated by the limited and imprecise information available during the design of a study.</p>
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script><p>Investigators are faced with many challenges in designing efficient, ethical randomized trials due to competing demands: a trial must collect enough information to identify meaningful benefits or harms with a desired probability while also minimizing potential harm and suboptimal treatment of participants. Satisfying these competing demands is further complicated by the limited and imprecise information available during the design of a study.</p>
 <p>Studies designed around a fixed sample size are inflexible, requiring investigators to wait until the end of data collection to perform statistical analyses. Group sequential designs are more flexible, allowing studies to be stopped for efficacy or futility according to a pre-planned analyses, which occur when the number of obtained primary outcomes reach pre-specified fractions of the final sample size.</p>
 <p>Covariate adjustment allows investigators to potentially gain additional precision by utilizing information collected from individuals prior to randomization in the statistical analysis. This potential increase in precision can be used to provide additional power in a fixed sample size design or a group sequential design. Not all methods of covariate adjustment are directly compatible with group sequential designs, but a broad class of methods can be made compatible by performing an orthogonalization of the resulting estimates and their variance-covariance matrix (Van Lancker, Betz, and Rosenblum 2022). This package enables implementing this orthogonalization.</p>
 <p>Another disadvantage of covariate adjustment is that the amount of precision gained from covariate adjustment is not known precisely at the outset of a study. This complicates the ability to use covariate adjustment to reduce the required sample size instead of providing additional power. Rather than planning analyses based on a specific number of participants, investigators can pre-specify when analyses reach pre-specified levels of precision: this is known as information monitoring (Mehta and Tsiatis 2001). This allows investigators to adapt their study to the precision in the accruing data, reducing the risk of under- or overpowered trials. This also allows investigators to use covariate adjustment to shorten the trial duration, rather than just providing additional power and precision.</p>
@@ -97,11 +98,72 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"impart"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">Title</th>
 <th align="left">Item</th>
 </tr></thead>
-<tbody></tbody>
+<tbody>
+<tr class="odd">
+<td align="left">Covariate Adjustment in Group Sequential Designs (source, html)</td>
+<td align="left">analyses_group_sequential</td>
+</tr>
+<tr class="even">
+<td align="left">Designing Information Monitored Trials for Binary Outcomes (source, html)</td>
+<td align="left">design_binary</td>
+</tr>
+<tr class="odd">
+<td align="left">Designing Information Monitored Trials for Continuous Outcomes (source, html)</td>
+<td align="left">design_continuous</td>
+</tr>
+<tr class="even">
+<td align="left">Designing Information Monitored Trials for Time-to-Event Outcomes (source, html)</td>
+<td align="left">design_time_to_event</td>
+</tr>
+<tr class="odd">
+<td align="left">Getting Started with <code>impart</code> (source, html)</td>
+<td align="left">impart</td>
+</tr>
+<tr class="even">
+<td align="left">Implementing New Methods in <code>impart</code> (source, html)</td>
+<td align="left">new_methods_in_impart</td>
+</tr>
+<tr class="odd">
+<td align="left">Monitored Analyses for a Binary Outcome (source, html)</td>
+<td align="left">analyses_binary</td>
+</tr>
+<tr class="even">
+<td align="left">Monitored Analyses for a Continuous Outcome (source, html)</td>
+<td align="left">analyses_continuous</td>
+</tr>
+<tr class="odd">
+<td align="left">Monitored Analyses for a Time-to-Event Outcome (source, html)</td>
+<td align="left">analyses_time_to_event</td>
+</tr>
+<tr class="even">
+<td align="left">Monitoring Information for a Binary Outcome (source, html)</td>
+<td align="left">monitoring_binary</td>
+</tr>
+<tr class="odd">
+<td align="left">Monitoring Information for a Continuous Outcome (source, html)</td>
+<td align="left">monitoring_continuous</td>
+</tr>
+<tr class="even">
+<td align="left">Monitoring Information for a Time-to-Event Outcome (source, html)</td>
+<td align="left">monitoring_time_to_event</td>
+</tr>
+<tr class="odd">
+<td align="left">Software Quality &amp; Management Plan (source, html)</td>
+<td align="left">plan_quality</td>
+</tr>
+<tr class="even">
+<td align="left">Software Requirements Specification (source, html)</td>
+<td align="left">plan_requirements</td>
+</tr>
+</tbody>
 </table>
 <p><strong>NOTE:</strong> <code>impart</code> is tested using the <a href="https://testthat.r-lib.org/" class="external-link"><code>testthat</code> package</a> with a continuous integration workflow, and test coverage assessed using <a href="https://codecov.io/gh/jbetz-jhu/impart" class="external-link">codecov</a>. Vignettes currently cover the complete workflow for trials with a continuous outcome. Other vignettes on binary, ordinal, and time-to-event outcomes are under active development. Please check back to see if there have been updates to the <code>impart</code> software or documentation.</p>
 <hr>
@@ -114,7 +176,7 @@
 <div class="section level3">
 <h3 id="incompatibility">Incompatibility<a class="anchor" aria-label="anchor" href="#incompatibility"></a>
 </h3>
-<p>Many covariate adjusted estimators are incompatible withcommonly used stopping boundaries in GSDs, when models used to construct the estimators are misspecified. Specifically, to apply GSDs, the sequential test statistics need to have the independent increments covariance structure in order to control Type I error Jennison and Turnbull (1997). However, this general theory of Scharfstein, Tsiatis, and Robins (1997) and Jennison and Turnbull (1997) is not guaranteed to hold for covariate adjusted estimators under model misspecification, which is likely to be the case in practice. In particular, under model misspecification, covariate adjusted estimators can fail to have this independent increments property when using data (e.g., baseline covariates, short-term endpoints) of pipeline patients (i.e., patients enrolled but not in the study long enough to have their primary outcomes measured at the (interim) analysis). This lack of independent increments can generally occur when estimators use working models; see e.g., Rosenblum et al. (2015) for augmented inverse probability weighted estimators and Shoben and Emerson (2014) for estimators based on generalized estimating equations. A long list of further examples is provided by Jennison and Turnbull (1997) and Kim and Tsiatis (2020).</p>
+<p>Many covariate adjusted estimators are incompatible with commonly used stopping boundaries in GSDs, when models used to construct the estimators are misspecified. Specifically, to apply GSDs, the sequential test statistics need to have the independent increments covariance structure in order to control Type I error Jennison and Turnbull (1997). However, this general theory of Scharfstein, Tsiatis, and Robins (1997) and Jennison and Turnbull (1997) is not guaranteed to hold for covariate adjusted estimators under model misspecification, which is likely to be the case in practice. In particular, under model misspecification, covariate adjusted estimators can fail to have this independent increments property when using data (e.g., baseline covariates, short-term endpoints) of pipeline patients (i.e., patients enrolled but not in the study long enough to have their primary outcomes measured at the (interim) analysis). This lack of independent increments can generally occur when estimators use working models; see e.g., Rosenblum et al. (2015) for augmented inverse probability weighted estimators and Shoben and Emerson (2014) for estimators based on generalized estimating equations. A long list of further examples is provided by Jennison and Turnbull (1997) and Kim and Tsiatis (2020).</p>
 <hr>
 </div>
 <div class="section level3">
@@ -140,7 +202,7 @@
 <p>For a binary outcome, the required information to estimate the risk difference <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>δ</mi><mrow><mi>R</mi><mi>D</mi></mrow></msub><mo>=</mo><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><msup><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo stretchy="true" form="postfix">]</mo></mrow><mo>−</mo><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><msup><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\delta_{RD} = E[Y^{(1)}] - E[Y^{(0)}]</annotation></semantics></math> depends on the response rate in the control arm <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>π</mi><mi>C</mi></msub><mo>=</mo><msub><mi>π</mi><mi>T</mi></msub><mo>−</mo><mi>δ</mi><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\pi_{C} = \pi_{T} - \delta)</annotation></semantics></math>:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>δ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msqrt><mrow><mfrac><mrow><msub><mi>π</mi><mi>T</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>π</mi><mi>T</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><msub><mi>n</mi><mi>T</mi></msub></mfrac><mo>+</mo><mfrac><mrow><msub><mi>π</mi><mi>C</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>π</mi><mi>C</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><msub><mi>n</mi><mi>C</mi></msub></mfrac></mrow></msqrt></mrow><annotation encoding="application/x-tex">SE(\delta) = \sqrt{\frac{\pi_{T}(1 - \pi_{T})}{n_{T}} + \frac{\pi_{C}(1 - \pi_{C})}{n_{C}}}</annotation></semantics></math></p>
 <p>For an ordinal outcome with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> categories, let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>π</mi><mi>A</mi><mi>K</mi></msubsup><mo>=</mo><mi>P</mi><mi>r</mi><mo stretchy="false" form="prefix">{</mo><msup><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo>=</mo><mi>k</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\pi_{A}^{K} = Pr\{Y^{(A)} = k\}</annotation></semantics></math> denote the probability of an outcome in category <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math> under treatment <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>. The Mann-Whitney estimand <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math> is the probability of having an outcome as good or better under the treatment arm relative to control with an adjustment for ties:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>=</mo><mi>P</mi><mi>r</mi><mo stretchy="false" form="prefix">{</mo><msup><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>T</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo>&gt;</mo><msup><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>C</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo stretchy="false" form="postfix">}</mo><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>P</mi><mi>r</mi><mo stretchy="false" form="prefix">{</mo><msup><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>T</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo>=</mo><msup><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>C</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\phi = Pr\{Y^{(T)} &gt; Y^{(C)}\} + \frac{1}{2} Pr\{Y^{(T)} = Y^{(C)}\}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>=</mo><mi>P</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>T</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo>&gt;</mo><msup><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>C</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>P</mi><mi>r</mi><msup><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>T</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo>=</mo><msup><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>C</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\phi = Pr\left(Y^{(T)} &gt; Y^{(C)}\right) + \frac{1}{2} \left(Pr Y^{(T)} = Y^{(C)} \right)</annotation></semantics></math></p>
 <p>This is also known as the competing probability. The precision/information depends on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math> (Fay and Malinovsky 2018):</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>δ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>≈</mo><msqrt><mrow><mfrac><mrow><mi>ϕ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>ϕ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><msub><mi>n</mi><mi>T</mi></msub><msub><mi>n</mi><mi>C</mi></msub></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><msub><mi>n</mi><mi>T</mi></msub><mo>+</mo><msub><mi>n</mi><mi>C</mi></msub><mo>−</mo><mn>2</mn></mrow><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>ϕ</mi><mrow><mn>1</mn><mo>+</mo><mi>ϕ</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn><mo>−</mo><mi>ϕ</mi></mrow><mrow><mn>2</mn><mo>−</mo><mi>ϕ</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msqrt></mrow><annotation encoding="application/x-tex">SE(\delta) \approx \sqrt{\frac{\phi(1 - \phi)}{n_{T}n_{C}}\left(1 + \left(\frac{n_{T} + n_{C} - 2}{2}\right)\left(\frac{\phi}{1 + \phi} + \frac{1 - \phi}{2 - \phi} \right)\right)}</annotation></semantics></math></p>
 <p>Alternatively, the precision/information can be obtained from the distribution of outcomes under each treatment arm (Zhao, Rahardja, and Qu 2008). Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><msub><mi>n</mi><mi>T</mi></msub><mo>+</mo><msub><mi>n</mi><mi>C</mi></msub></mrow><annotation encoding="application/x-tex">N = n_{T} + n_{C}</annotation></semantics></math>:</p>
