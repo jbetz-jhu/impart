@@ -3,10 +3,8 @@ title: "Designing Information Monitored Trials for Time-to-Event Outcomes"
 description: >
   How to design an information monitored randomized trial for time-to-event outcomes
 output: rmarkdown::html_vignette
-resource_files:
-  - inst/covariate_adjustment.bib
 bibliography:
-  - "../inst/covariate_adjustment.bib"
+  - "covariate_adjustment.bib"
 vignette: >
   %\VignetteIndexEntry{Designing Information Monitored Trials for Time-to-Event Outcomes}
   %\VignetteEngine{knitr::rmarkdown}

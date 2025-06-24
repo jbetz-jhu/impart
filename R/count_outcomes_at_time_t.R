@@ -23,39 +23,53 @@ count_outcomes_at_time_t <-
     study_times
   ){
 
+    if(any(study_times > prepared_data$study_time)){
+      stop("`study_times` (", paste(study_times, collapse = ", "), ") should ",
+           "all be less than current study time (i.e. ",
+           "`prepared_data$study_time` = ", prepared_data$study_time, ")")
+    }
     data <- prepared_data$data
     outcome_time_variables <- prepared_data$variables$renamed_outcome_times
     outcome_variables <- prepared_data$variables$outcome_variables
 
-    event_names <- c("randomization", prepared_data$variables$outcome_variables)
-    count_total <-
-      data.frame(
-        times = study_times
-      )
-    count_total[, event_names] <- NA
-    count_complete <- count_total
+    time_to_event <- prepared_data$time_to_event
 
-    for(i in 1:length(study_times)){
-      for(j in 1:length(event_names)){
-        if(j == 1){
-          count_total[i, event_names[j]] <-
-            count_complete[i, event_names[j]] <-
-            sum(data$`.e` <= study_times[i], na.rm = TRUE)
-        } else {
-          count_total[i, event_names[j]] <-
-            sum(data[, outcome_time_variables[j - 1]] <=
-                  study_times[i], na.rm = TRUE)
-          count_complete[i, event_names[j]] <-
-            sum(data[, outcome_time_variables[j - 1]] <= study_times[i] &
-                  !is.na(data[, outcome_variables[j - 1]]), na.rm = TRUE)
-        }
-      }
+    if(time_to_event){
+      event_names <- prepared_data$variables$outcome_variables
+    } else {
+      event_names <- c("randomization", prepared_data$variables$outcome_variables)
     }
 
-    return(
-      list(
-        count_total = count_total,
-        count_complete = count_complete
+    outcomes_at_time_t <-
+      count_outcomes(
+        prepared_data = prepared_data,
+        study_time = max(study_times)
       )
+
+    outcome_counts <- list()
+
+    for(i in 1:length(study_times)){
+      study_time_i <- study_times[i]
+      event_times_i <-
+        aggregate(
+          time ~ event,
+          FUN = function(x, t_i = study_time_i) x[max(which(x < t_i))],
+          data = outcomes_at_time_t
+        )
+
+      outcome_counts[[i]] <-
+        merge(
+          x = outcomes_at_time_t,
+          y = event_times_i
+        )
+
+      outcome_counts[[i]]$time <- study_time_i
+    }
+
+    outcome_counts <-
+      do.call(what = rbind, args = outcome_counts)
+
+    return(
+      outcome_counts[with(data = outcome_counts, expr = {order(time, event)}),]
     )
   }
