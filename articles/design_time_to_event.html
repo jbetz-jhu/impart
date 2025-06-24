@@ -118,7 +118,7 @@ and the direction of alternatives of interest (an
 test: 1- or 2-sided):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Universal Study Design Parameters</span></span>
-<span><span class="va">minimum_difference_hr</span> <span class="op">&lt;-</span> <span class="fl">0.70</span> <span class="co"># Effect Size: Hazard Ratio</span></span>
+<span><span class="va">minimum_difference_hr</span> <span class="op">&lt;-</span> <span class="fl">0.74</span> <span class="co"># Effect Size: Hazard Ratio</span></span>
 <span><span class="va">minimum_difference_log_hr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">minimum_difference_hr</span><span class="op">)</span> </span>
 <span><span class="va">minimum_difference_sp</span> <span class="op">&lt;-</span> <span class="fl">0.15</span> <span class="co"># Effect Size: Difference in Survival Probability</span></span>
 <span><span class="va">minimum_difference_rmst</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># Effect Size: Difference in RMST</span></span>
@@ -135,8 +135,8 @@ known as the time horizon
 <span><span class="va">time_horizon</span> <span class="op">&lt;-</span> <span class="fl">5</span></span></code></pre></div>
 <p>For example:</p>
 <ul>
-<li>A 30% reduction in the hazard (a hazard ratio of 0.7, or a log
-hazard ratio of -0.357)</li>
+<li>A 26% reduction in the hazard (a hazard ratio of 0.74, or a log
+hazard ratio of -0.301)</li>
 <li>A 15% absolute difference in survival probability at
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math>
 = 5 years</li>
@@ -200,9 +200,9 @@ duration adjusted to reach the specified level of precision.</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">required_events</span></span>
-<span><span class="co">#&gt; [1] 330.3779</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 463.575</span></span></code></pre></div>
 <p>Investigators would need to adjust the duration of follow-up, total
-sample size, and recruitment rate in order to observe a total of 331
+sample size, and recruitment rate in order to observe a total of 464
 during the study period. Similarly, one can determine the power attained
 after a certain number of events are observed.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -220,7 +220,7 @@ after a certain number of events are observed.</p>
 <span>  alpha <span class="op">=</span> <span class="va">alpha</span>,</span>
 <span>  test_sides <span class="op">=</span> <span class="va">test_sides</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.5271065</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.4669334</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="determining-the-target-information-level">Determining the Target Information Level<a class="anchor" aria-label="anchor" href="#determining-the-target-information-level"></a>
 </h3>
@@ -255,7 +255,7 @@ time scale:</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">information_single_stage_log_hr</span></span>
-<span><span class="co">#&gt; [1] 82.59448</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 115.8938</span></span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="information-survival-probability">Information: Survival Probability<a class="anchor" aria-label="anchor" href="#information-survival-probability"></a>
@@ -290,9 +290,9 @@ time scale:</p>
 <p>For example, 90% power and a Type I Error rate of 0.05 using a
 2-sided test would require information exceeding:</p>
 <ul>
-<li>82.59 to detect a difference in the log hazard ratio of
+<li>115.89 to detect a difference in the log hazard ratio of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>δ</mi><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>H</mi><mi>R</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msub><annotation encoding="application/x-tex">\delta_{log(HR)}</annotation></semantics></math>
-= -0.36 (i.e. a hazard ratio of 0.7)</li>
+= -0.3 (i.e. a hazard ratio of 0.74)</li>
 <li>467 to detect a difference in survival probability of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>δ</mi><mrow><mi>S</mi><mi>P</mi></mrow></msub><annotation encoding="application/x-tex">\delta_{SP}</annotation></semantics></math>
 = 0.15 at
@@ -392,9 +392,9 @@ the target level of information must be adjusted:</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">information_adaptive_log_hr</span></span>
-<span><span class="co">#&gt; [1] 85.0312</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 119.3129</span></span></code></pre></div>
 <p>The information required under the specified design for the log
-hazard ratio is 85.0312006, which is scaled up by the inflation factor
+hazard ratio is 119.3128754, which is scaled up by the inflation factor
 mentioned in the summary of the design (1.0295022). This can be
 retrieved using
 <code>rpact::getDesignCharacteristics(trial_design)</code>.</p>
@@ -430,11 +430,11 @@ randomized trial:</p>
 <span>      ratio <span class="op">=</span> <span class="fl">1</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 82.59448</span></span>
+<span><span class="co">#&gt; [1] 115.8938</span></span>
 <span></span>
 <span><span class="co"># Information target based on delta, alpha, power for single stage design</span></span>
 <span><span class="va">information_single_stage_log_hr</span></span>
-<span><span class="co">#&gt; [1] 82.59448</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 115.8938</span></span></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">relative_efficiency</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1.1</span>, <span class="fl">1.2</span><span class="op">)</span></span>
 <span></span>
@@ -453,13 +453,13 @@ randomized trial:</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;   relative_efficiency information_adjusted information_unadjusted</span></span>
-<span><span class="co">#&gt; 1                 1.0             82.59448               82.59448</span></span>
-<span><span class="co">#&gt; 2                 1.1             82.59448               75.08589</span></span>
-<span><span class="co">#&gt; 3                 1.2             82.59448               68.82873</span></span>
+<span><span class="co">#&gt; 1                 1.0             115.8938              115.89375</span></span>
+<span><span class="co">#&gt; 2                 1.1             115.8938              105.35795</span></span>
+<span><span class="co">#&gt; 3                 1.2             115.8938               96.57813</span></span>
 <span><span class="co">#&gt;   allocation_ratio total_events</span></span>
-<span><span class="co">#&gt; 1                1          331</span></span>
-<span><span class="co">#&gt; 2                1          301</span></span>
-<span><span class="co">#&gt; 3                1          276</span></span></code></pre></div>
+<span><span class="co">#&gt; 1                1          464</span></span>
+<span><span class="co">#&gt; 2                1          422</span></span>
+<span><span class="co">#&gt; 3                1          387</span></span></code></pre></div>
 <p>This pre-trial planning can help investigators determine when
 information thresholds may be reached under different potential gains
 from covariate adjustment when inferring about the marginal hazard
