@@ -552,54 +552,13 @@ projecting when pre-specified information levels may be met:</p>
 <span>    <span class="co"># This does more bootstrap replicates by default</span></span>
 <span>    control <span class="op">=</span> <span class="fu"><a href="../reference/monitored_analysis_control.html">monitored_analysis_control_testing</a></span><span class="op">(</span><span class="op">)</span> </span>
 <span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in glm.fit(x = structure(numeric(0), dim = c(0L, 5L), dimnames = list(:</span></span>
+<span><span class="co">#&gt; no observations informative at iteration 1</span></span>
+<span><span class="co">#&gt; Warning: glm.fit: algorithm did not converge</span></span>
+<span><span class="co">#&gt; Error in glm.fit(x = structure(numeric(0), dim = c(0L, 5L), dimnames = list(: object 'fit' not found</span></span>
 <span></span>
 <span><span class="va">data_n_70_trajectory</span></span>
-<span><span class="co">#&gt;       times randomization y_1 y_2 y_3 y_4 information information_lag_1</span></span>
-<span><span class="co">#&gt; 1  491.3059            79  59  49  43  40  0.02354317                NA</span></span>
-<span><span class="co">#&gt; 2  506.9791            83  64  52  46  42  0.06373427        0.02354317</span></span>
-<span><span class="co">#&gt; 3  508.6034            83  64  52  46  42  0.06373427        0.06373427</span></span>
-<span><span class="co">#&gt; 4  518.1410            84  64  54  47  44  0.06273970        0.06373427</span></span>
-<span><span class="co">#&gt; 5  527.2583            85  65  54  50  44  0.06569907        0.06273970</span></span>
-<span><span class="co">#&gt; 6  527.6485            85  65  54  50  46  0.06672800        0.06569907</span></span>
-<span><span class="co">#&gt; 7  538.5259            86  68  56  52  48  0.11713994        0.06672800</span></span>
-<span><span class="co">#&gt; 8  540.6071            87  68  57  52  48  0.09814035        0.11713994</span></span>
-<span><span class="co">#&gt; 9  551.8682            90  69  57  53  50  0.12625125        0.09814035</span></span>
-<span><span class="co">#&gt; 10 555.9573            92  70  60  54  50  0.12003936        0.12625125</span></span>
-<span><span class="co">#&gt; 11 578.2366            95  73  61  56  52  0.14664434        0.12003936</span></span>
-<span><span class="co">#&gt; 12 579.6637            95  73  61  57  52  0.14664434        0.14664434</span></span>
-<span><span class="co">#&gt; 13 582.8345            95  73  63  57  52  0.14664434        0.14664434</span></span>
-<span><span class="co">#&gt; 14 597.3935            96  77  63  58  54  0.15105217        0.14664434</span></span>
-<span><span class="co">#&gt; 15 630.7461           100  79  70  64  56  0.14185643        0.15105217</span></span>
-<span><span class="co">#&gt; 16 633.0925           100  79  70  64  58  0.15632099        0.14185643</span></span>
-<span><span class="co">#&gt; 17 635.4027           100  79  70  64  60  0.16605940        0.15632099</span></span>
-<span><span class="co">#&gt; 18 658.6659           109  82  72  69  62  0.18410677        0.16605940</span></span>
-<span><span class="co">#&gt; 19 662.5691           110  82  72  69  64  0.17192467        0.18410677</span></span>
-<span><span class="co">#&gt; 20 675.4510           113  87  74  70  66  0.17923912        0.17192467</span></span>
-<span><span class="co">#&gt; 21 701.1256           117  96  80  71  68  0.17267007        0.17923912</span></span>
-<span><span class="co">#&gt; 22 707.0069           117  96  81  73  70  0.18025072        0.17267007</span></span>
-<span><span class="co">#&gt;    information_change information_pct_change information_fraction</span></span>
-<span><span class="co">#&gt; 1                  NA                     NA           0.05164918</span></span>
-<span><span class="co">#&gt; 2        0.0401910997              63.060421           0.13982070</span></span>
-<span><span class="co">#&gt; 3        0.0000000000               0.000000           0.13982070</span></span>
-<span><span class="co">#&gt; 4       -0.0009945712              -1.585234           0.13763880</span></span>
-<span><span class="co">#&gt; 5        0.0029593721               4.504435           0.14413109</span></span>
-<span><span class="co">#&gt; 6        0.0010289294               1.541975           0.14638836</span></span>
-<span><span class="co">#&gt; 7        0.0504119382              43.035653           0.25698243</span></span>
-<span><span class="co">#&gt; 8       -0.0189995846             -19.359605           0.21530101</span></span>
-<span><span class="co">#&gt; 9        0.0281108949              22.265835           0.27697089</span></span>
-<span><span class="co">#&gt; 10      -0.0062118854              -5.174874           0.26334321</span></span>
-<span><span class="co">#&gt; 11       0.0266049799              18.142520           0.32170941</span></span>
-<span><span class="co">#&gt; 12       0.0000000000               0.000000           0.32170941</span></span>
-<span><span class="co">#&gt; 13       0.0000000000               0.000000           0.32170941</span></span>
-<span><span class="co">#&gt; 14       0.0044078303               2.918085           0.33137934</span></span>
-<span><span class="co">#&gt; 15      -0.0091957493              -6.482434           0.31120564</span></span>
-<span><span class="co">#&gt; 16       0.0144645633               9.253117           0.34293810</span></span>
-<span><span class="co">#&gt; 17       0.0097384163               5.864417           0.36430230</span></span>
-<span><span class="co">#&gt; 18       0.0180473670               9.802663           0.40389475</span></span>
-<span><span class="co">#&gt; 19      -0.0121821058              -7.085723           0.37716956</span></span>
-<span><span class="co">#&gt; 20       0.0073144562               4.080837           0.39321606</span></span>
-<span><span class="co">#&gt; 21      -0.0065690556              -3.804397           0.37880482</span></span>
-<span><span class="co">#&gt; 22       0.0075806509               4.205615           0.39543531</span></span></code></pre></div>
+<span><span class="co">#&gt; Error: object 'data_n_70_trajectory' not found</span></span></code></pre></div>
 <p>This trajectory can be smoothed using regression, ideally using a
 method resistant to outliers, such as <code><a href="https://rdrr.io/pkg/deming/man/theilsen.html" class="external-link">deming::theilsen</a></code>.
 Inverse regression can be used to obtain an estimated number of outcomes
@@ -610,6 +569,7 @@ necessary to achieve a given level of information:</p>
 <span>  data <span class="op">=</span> <span class="va">data_n_70_trajectory</span>,</span>
 <span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in eval(m$data, eframe): object 'data_n_70_trajectory' not found</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span>
@@ -618,6 +578,7 @@ necessary to achieve a given level of information:</p>
 <span>  <span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in eval(mf, parent.frame()): object 'data_n_70_trajectory' not found</span></span>
 <span></span>
 <span><span class="co"># Requires `deming` package</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
@@ -627,12 +588,13 @@ necessary to achieve a given level of information:</p>
 <span>  <span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in eval(temp, parent.frame()): object 'data_n_70_trajectory' not found</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
 <span>  h <span class="op">=</span> <span class="va">monitored_design</span><span class="op">$</span><span class="va">original_design</span><span class="op">$</span><span class="va">information_fractions</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/Plot-Trajectory-1.png" alt="A plot of the time series of information with linear regression fits superimposed on top." width="80%" style="display: block; margin: auto;"></p>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
