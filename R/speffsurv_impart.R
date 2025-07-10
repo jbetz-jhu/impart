@@ -90,7 +90,8 @@ speffsurv_impart <-
       list(
         estimate = as.numeric(speffsurv_result$beta["Speff"]),
         se = sqrt(as.numeric(speffsurv_result$varbeta["Speff"])),
-        var = as.numeric(speffsurv_result$varbeta["Speff"]),
+        variance = as.numeric(speffsurv_result$varbeta["Speff"]),
+        influence = NULL,
         lcl = lcl,
         ucl = ucl,
         alpha = alpha,

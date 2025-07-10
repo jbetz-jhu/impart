@@ -4,7 +4,7 @@ test_that(
 
     expect_error(
       object =
-        dr_joffe(
+        dr_wls(
           data = example_1_ia_1,
           outcome_formula = "y_4 ~ tx + x_1 + x_2 + x_3 + x_4",
           outcome_family = gaussian,
@@ -21,7 +21,7 @@ test_that(
 
     expect_error(
       object =
-        dr_joffe(
+        dr_wls(
           data = example_1_ia_1,
           outcome_formula = y_4 ~ tx + x_1 + x_2 + x_3 + x_4,
           outcome_family = gaussian,
@@ -38,7 +38,7 @@ test_that(
 
     expect_error(
       object =
-        dr_joffe(
+        dr_wls(
           data = example_1_ia_1,
           outcome_formula = y_4 ~ tx + x_1 + x_2 + x_3 + x_4,
           outcome_family = gaussian,
@@ -55,7 +55,7 @@ test_that(
 
     expect_error(
       object =
-        dr_joffe(
+        dr_wls(
           data = example_1_ia_1,
           outcome_formula = y_4 ~ tx + x_1 + x_2 + x_3 + x_4,
           outcome_family = gaussian,
@@ -72,7 +72,7 @@ test_that(
 
     expect_error(
       object =
-        dr_joffe(
+        dr_wls(
           data = example_1_ia_1,
           outcome_formula = y_4 ~ tx + x_1 + x_2 + x_3 + x_4,
           outcome_family = gaussian,
@@ -89,7 +89,7 @@ test_that(
 
     expect_error(
       object =
-        dr_joffe(
+        dr_wls(
           data = example_1_ia_1,
           outcome_formula = yy_4 ~ tx + x_1 + x_2 + x_3 + x_4,
           outcome_family = gaussian,
@@ -101,12 +101,12 @@ test_that(
           alpha = 0.05,
           verbose = FALSE
         ),
-      regexp = "`formula` contains variables not included in `data`"
+      regexp = "Formulas contain variables not included in `data`"
     )
 
     expect_error(
       object =
-        dr_joffe(
+        dr_wls(
           data = example_1_ia_1,
           outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
           outcome_family = gaussian,
@@ -123,7 +123,7 @@ test_that(
 
     expect_error(
       object =
-        dr_joffe(
+        dr_wls(
           data =
             within(
               data = example_1_ia_1,
@@ -145,7 +145,7 @@ test_that(
     # missing_formula indicates outcome observed, yet value is missing
     expect_error(
       object =
-        dr_joffe(
+        dr_wls(
           data =
             within(
               data = example_1_ia_1,
@@ -169,7 +169,7 @@ test_that(
     # missing_formula indicates outcome not observed, yet value is observed
     expect_error(
       object =
-        dr_joffe(
+        dr_wls(
           data =
             within(
               data = example_1_ia_1,
@@ -193,7 +193,7 @@ test_that(
     # Outcome indicated as not-yet-observed, but not missing
     expect_error(
       object =
-        dr_joffe(
+        dr_wls(
           data =
             within(
               data = example_1_ia_1,
@@ -223,7 +223,7 @@ test_that(
 
     expect_no_condition(
       object =
-        dr_joffe(
+        dr_wls(
           data = example_1_ia_1,
           outcome_formula = y_4 ~ tx + x_1 + x_2 + x_3 + x_4,
           outcome_family = gaussian,
@@ -239,7 +239,7 @@ test_that(
 
     expect_no_condition(
       object =
-        dr_joffe(
+        dr_wls(
           data = example_1_ia_1,
           outcome_formula = y_4 ~ tx + x_1 + x_2 + x_3 + x_4,
           outcome_family = gaussian,
@@ -255,7 +255,7 @@ test_that(
 
     expect_no_condition(
       object =
-        dr_joffe(
+        dr_wls(
           data = example_1_ia_1,
           outcome_formula = y_4 ~ tx + x_1 + x_2 + x_3 + x_4,
           outcome_family = gaussian,

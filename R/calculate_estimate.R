@@ -30,8 +30,19 @@ calculate_estimate <-
       )
 
     if("estimate" %in% names(result)){
-      return(as.numeric(result["estimate"]))
+      results_list <-
+        list(estimate = as.numeric(result[["estimate"]]))
     } else {
       stop("Result must have element named 'estimate'.")
     }
+
+    if("variance" %in% names(result)){
+      results_list$variance <- as.numeric(result[["variance"]])
+    }
+
+    if("influence" %in% names(result)){
+      results_list$influence <- result[["influence"]]
+    }
+
+    return(results_list)
   }

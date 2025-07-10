@@ -316,11 +316,10 @@ information_n_70 <-
     estimation_arguments =
       list(
         estimand = "difference",
-        y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-        y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4,
         family = gaussian,
-        treatment_column = "tx",
-        outcome_indicator_column = ".r_4"
+        treatment_column = "tx"
       ),
     orthogonalize = TRUE,
     rng_seed = 23456
@@ -413,13 +412,12 @@ data_n_70_trajectory <-
     estimation_arguments =
       list(
         estimand = "difference",
-        y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-        y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4,
         family = gaussian,
-        treatment_column = "tx",
-        outcome_indicator_column = ".r_4"
+        treatment_column = "tx"
       ),
-    correction_function = standardization_correction,
+    correction_function = standardization_df_adjust_tsiatis_2008,
     orthogonalize = TRUE,
     n_min = 40,
     n_increment = 2,

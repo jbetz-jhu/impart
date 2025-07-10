@@ -53,7 +53,7 @@ compute_bootstrap_serial <-
               estimation_function = estimation_function,
               estimation_arguments = estimation_arguments
             )
-        )
+        )[["estimate"]]
     }
 
     return(estimates)

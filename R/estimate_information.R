@@ -123,7 +123,7 @@ estimate_information <-
               estimation_arguments[
                 intersect(
                   x = names(estimation_arguments),
-                  y = methods::formalArgs(correction_function)
+                  y = names(formals(correction_function))
                 )
               ]
             )
@@ -135,7 +135,7 @@ estimate_information <-
         data = data,
         estimation_function = estimation_function,
         estimation_arguments = estimation_arguments
-      )
+      )[["estimate"]]
 
     covariance_k <-
       calculate_covariance(

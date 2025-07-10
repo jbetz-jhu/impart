@@ -10,13 +10,12 @@ test_that(
         estimation_arguments =
           list(
             estimand = "difference",
-            y0_formula = y_4 ~ 1,
-            y1_formula = y_4 ~ 1,
+            outcome_formula_control = y_4 ~ 1,
+            outcome_formula_treatment = y_4 ~ 1,
             family = gaussian,
-            treatment_column = "tx",
-            outcome_indicator_column = ".r_4"
+            treatment_column = "tx"
           ),
-        correction_function = standardization_correction,
+        correction_function = standardization_df_adjust_tsiatis_2008,
         orthogonalize = FALSE,
         rng_seed = 12345,
         control =
@@ -36,13 +35,12 @@ test_that(
           estimation_arguments =
             list(
               estimand = "difference",
-              y0_formula = y_4 ~ 1,
-              y1_formula = y_4 ~ 1,
+              outcome_formula_control = y_4 ~ 1,
+              outcome_formula_treatment = y_4 ~ 1,
               family = gaussian,
-              treatment_column = "tx",
-              outcome_indicator_column = ".r_4"
+              treatment_column = "tx"
             ),
-          correction_function = standardization_correction,
+          correction_function = standardization_df_adjust_tsiatis_2008,
           orthogonalize = FALSE,
           rng_seed = 12345,
           control = monitored_analysis_control_testing(
@@ -65,13 +63,12 @@ test_that(
           estimation_arguments =
             list(
               estimand = "difference",
-              y0_formula = y_4 ~ 1,
-              y1_formula = y_4 ~ 1,
+              outcome_formula_control = y_4 ~ 1,
+              outcome_formula_treatment = y_4 ~ 1,
               family = gaussian,
-              treatment_column = "tx",
-              outcome_indicator_column = ".r_4"
+              treatment_column = "tx"
             ),
-          correction_function = standardization_correction,
+          correction_function = standardization_df_adjust_tsiatis_2008,
           orthogonalize = FALSE,
           rng_seed = 12345,
           control = monitored_analysis_control_testing(
@@ -97,13 +94,12 @@ test_that(
           estimation_arguments =
             list(
               estimand = "difference",
-              y0_formula = y_4 ~ 1,
-              y1_formula = y_4 ~ 1,
+              outcome_formula_control = y_4 ~ 1,
+              outcome_formula_treatment = y_4 ~ 1,
               family = gaussian,
-              treatment_column = "tx",
-              outcome_indicator_column = ".r_4"
+              treatment_column = "tx"
             ),
-          correction_function = standardization_correction,
+          correction_function = standardization_df_adjust_tsiatis_2008,
           orthogonalize = FALSE,
           rng_seed = 12345,
           control = monitored_analysis_control_testing(
@@ -136,13 +132,12 @@ test_that(
           estimation_arguments =
             list(
               estimand = "difference",
-              y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-              y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+              outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4,
+              outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4,
               family = gaussian,
-              treatment_column = "tx",
-              outcome_indicator_column = ".r_4"
+              treatment_column = "tx"
             ),
-          correction_function = standardization_correction,
+          correction_function = standardization_df_adjust_tsiatis_2008,
           orthogonalize = TRUE,
           rng_seed = 12345,
           control = monitored_analysis_control_testing(
@@ -165,13 +160,12 @@ test_that(
           estimation_arguments =
             list(
               estimand = "difference",
-              y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-              y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+              outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4,
+              outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4,
               family = gaussian,
-              treatment_column = "tx",
-              outcome_indicator_column = ".r_4"
+              treatment_column = "tx"
             ),
-          correction_function = standardization_correction,
+          correction_function = standardization_df_adjust_tsiatis_2008,
           orthogonalize = TRUE,
           rng_seed = 12345,
           control = monitored_analysis_control_testing(
@@ -197,13 +191,12 @@ test_that(
           estimation_arguments =
             list(
               estimand = "difference",
-              y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-              y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+              outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4,
+              outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4,
               family = gaussian,
-              treatment_column = "tx",
-              outcome_indicator_column = ".r_4"
+              treatment_column = "tx"
             ),
-          correction_function = standardization_correction,
+          correction_function = standardization_df_adjust_tsiatis_2008,
           orthogonalize = TRUE,
           rng_seed = 12345,
           control = monitored_analysis_control_testing(

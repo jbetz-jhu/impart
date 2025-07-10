@@ -6,14 +6,13 @@ test_that(
         standardization(
           data = example_1_ia_1,
           outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
-          y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-          y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+          outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4,
+          outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4,
           family = gaussian(link = "identity"),
           estimand = "difference",
-          outcome_indicator_column = ".r_4",
           treatment_column = "tx"
         ),
-      regexp = "Either `outcome_formula` should be specified or both"
+      regexp = "Either `outcome_formula` must be a formula, or both"
     )
 
     expect_error(
@@ -23,7 +22,6 @@ test_that(
           outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
           family = gaussian(link = "identity"),
           estimand = "difference_does_not_exist",
-          outcome_indicator_column = ".r_4",
           treatment_column = "tx"
         ),
       regexp = "`estimand` must be one of the following"
@@ -36,10 +34,9 @@ test_that(
           outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
           family = gaussian(link = "identity"),
           estimand = "difference",
-          outcome_indicator_column = ".r_4",
           treatment_column = "tx_does_not_exist"
         ),
-      regexp = "`treatment_column` \\(tx_does_not_exist\\)"
+      regexp = "Formula contains variables not included in `data`"
     )
 
     expect_error(
@@ -49,438 +46,163 @@ test_that(
           outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
           family = gaussian(link = "identity"),
           estimand = "difference",
-          outcome_indicator_column = ".r_4_does_not_exist",
-          treatment_column = "tx"
+          treatment_column = "tx",
+          se_method = "influence_does_not_exist"
         ),
-      regexp = "`treatment_column` \\(tx\\) and `outcome_indicator_column`"
+      regexp = "`se_method` must be one of the following"
     )
-  }
-)
-
-
-
-test_that(
-  desc = "Complete Data - Continuous",
-  code = {
-    # Continuous - Single Model: Main Effect of Treatment
-    expect_no_condition(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1,
-            outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
-            family = gaussian(link = "identity"),
-            estimand = "difference",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-    expect_no_condition(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1,
-            outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
-            family = gaussian(link = "identity"),
-            estimand = "ratio",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-
-    # Continuous - Single Model: Main Effect of Treatment + Interaction
-    expect_no_condition(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1,
-            outcome_formula = y_4 ~ x_1:tx + x_2:tx + x_3 + x_4 + tx,
-            family = gaussian(link = "identity"),
-            estimand = "difference",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-    expect_no_condition(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1,
-            outcome_formula = y_4 ~ x_1:tx + x_2:tx + x_3 + x_4 + tx,
-            family = gaussian(link = "identity"),
-            estimand = "ratio",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-
-    # Continuous - Stratified Outcome Models
-    expect_no_condition(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1,
-            y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-            y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-            family = gaussian(link = "identity"),
-            estimand = "difference",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-    expect_no_condition(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1,
-            y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-            y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-            family = gaussian(link = "identity"),
-            estimand = "ratio",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-  }
-)
-
-
-
-
-test_that(
-  desc = "Complete Data - Binary",
-  code = {
-
-    example_1_ia_1_binary <- example_1_ia_1
-    example_1_ia_1_binary$y_4 <-
-      1*(example_1_ia_1_binary$y_4 > 0)
-
-    # Binary - Single Model: Main Effect of Treatment
-    expect_true(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1_binary,
-            outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
-            family = binomial(link = "logit"),
-            estimand = "difference",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-    expect_true(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1_binary,
-            outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
-            family = binomial(link = "logit"),
-            estimand = "ratio",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-    expect_true(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1_binary,
-            outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
-            family = binomial(link = "logit"),
-            estimand = "oddsratio",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-
-    # Binary - Single Model: Main Effect of Treatment + Interaction
-    expect_true(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1_binary,
-            outcome_formula = y_4 ~ x_1:tx + x_2:tx + x_3 + x_4 + tx,
-            family = binomial(link = "logit"),
-            estimand = "difference",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-    expect_true(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1_binary,
-            outcome_formula = y_4 ~ x_1:tx + x_2:tx + x_3 + x_4 + tx,
-            family = binomial(link = "logit"),
-            estimand = "ratio",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-    expect_true(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1_binary,
-            outcome_formula = y_4 ~ x_1:tx + x_2:tx + x_3 + x_4 + tx,
-            family = binomial(link = "logit"),
-            estimand = "oddsratio",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-
-    # Binary - Stratified Outcome Models
-    expect_true(
-      object = {
-        result <-
-        standardization(
-          data = example_1_ia_1_binary,
-          y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-          y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-          family = binomial(link = "logit"),
-          estimand = "difference",
-          outcome_indicator_column = ".r_4",
-          treatment_column = "tx"
-        )
-
-        !is.na(result$estimate)
-      }
-    )
-
-    expect_true(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1_binary,
-            y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-            y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-            family = binomial(link = "logit"),
-            estimand = "ratio",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-    expect_true(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1_binary,
-            y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-            y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-            family = binomial(link = "logit"),
-            estimand = "oddsratio",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-  }
-)
-
-
-
-
-test_that(
-  desc = "Missing Covariates",
-  code = {
-    set.seed(seed = 12345)
-    example_1_ia_1_mcar <- example_1_ia_1
-    miss_rows <- sample(x = 1:nrow(example_1_ia_1_mcar), size = 10)
-    example_1_ia_1_mcar$x_1[miss_rows] <- NA
-    example_1_ia_1_mcar$x_2[miss_rows] <- NA
-    example_1_ia_1_mcar$x_3[miss_rows] <- NA
-
-    example_1_ia_1_binary_mcar <- example_1_ia_1_mcar
-    example_1_ia_1_binary_mcar$y_4 <-
-      1*(example_1_ia_1_binary_mcar$y_4 > 0)
-
-    expect_true(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1_mcar,
-            outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
-            family = gaussian(link = "identity"),
-            estimand = "difference",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-    expect_true(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1_mcar,
-            outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
-            family = gaussian(link = "identity"),
-            estimand = "ratio",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-    expect_true(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1_binary_mcar,
-            outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
-            family = binomial(link = "logit"),
-            estimand = "difference",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-    expect_true(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1_binary_mcar,
-            outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
-            family = binomial(link = "logit"),
-            estimand = "ratio",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-
-    expect_true(
-      object = {
-        result <-
-          standardization(
-            data = example_1_ia_1_binary_mcar,
-            outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
-            family = binomial(link = "logit"),
-            estimand = "oddsratio",
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result$estimate)
-      }
-    )
-  }
-)
-
-
-
-
-test_that(
-  desc = "Test Correction Factor",
-  code = {
 
     expect_error(
-      object = {
-        result <-
-          standardization_correction(
+      object =
+        standardization(
+          data = example_1_ia_1,
+          outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx + tx*x_1,
+          family = gaussian(link = "identity"),
+          estimand = "difference",
+          treatment_column = "tx",
+          se_method = "influence"
+        ),
+      regexp = "Correction not available with treatment-covariate interactions"
+    )
+
+    expect_error(
+      object =
+        standardization(
+          data = example_1_ia_1,
+          outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx -1,
+          family = gaussian(link = "identity"),
+          estimand = "difference",
+          treatment_column = "tx",
+          se_method = "influence"
+        ),
+      regexp = "Influence function not yet implemented for models with treatment-covariate"
+    )
+
+    expect_error(
+      object =
+        standardization(
+          data = example_1_ia_1,
+          outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4,
+          outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4,
+          family = gaussian(link = "identity"),
+          estimand = "difference",
+          treatment_column = "tx",
+          se_method = "influence"
+        ),
+      regexp = "Influence function not yet implemented for treatment-stratified"
+    )
+
+    expect_error(
+      object =
+        standardization(
+          data = example_1_ia_1,
+          outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
+          family = gaussian(link = "identity"),
+          estimand = "ratio",
+          treatment_column = "tx",
+          se_method = "influence"
+        ),
+      regexp = "Correction not available for estimand"
+    )
+  }
+)
+
+
+test_that(
+  desc = "Works with valid input",
+  code = {
+
+    # No standard error ########################################################
+    expect_no_condition(
+      standardization(
+        data = example_1_ia_1,
+        outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
+        family = gaussian(link = "identity"),
+        estimand = "difference",
+        treatment_column = "tx",
+        se_method = "none"
+      )
+    )
+
+    expect_no_condition(
+      standardization(
+        data = example_1_ia_1,
+        outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        family = gaussian(link = "identity"),
+        estimand = "difference",
+        treatment_column = "tx",
+        se_method = "none"
+      )
+    )
+
+
+    # Bootstrap standard error #################################################
+    expect_no_condition(
+      standardization(
+        data = example_1_ia_1,
+        outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
+        family = gaussian(link = "identity"),
+        estimand = "difference",
+        treatment_column = "tx",
+        se_method = "bootstrap",
+        bootstrap_parameters = impart::boot_control(bootstrap_n = 250)
+      )
+    )
+
+    expect_no_error(
+      suppressWarnings(
+        # Expected warning: In norm.inter(t, adj.alpha) : extreme order statistics used as endpoints
+        expr = {
+          standardization(
             data = example_1_ia_1,
             outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
-            y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-            y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
+            family = gaussian(link = "identity"),
+            estimand = "ratio",
+            treatment_column = "tx",
+            se_method = "bootstrap",
+            variance_adjustment = NULL,
+            bootstrap_parameters = impart::boot_control(bootstrap_n = 250)
           )
-      },
-      regex = "Either `outcome_formula` should be specified"
+        }
+      )
     )
 
-    expect_true(
-      object = {
-        result <-
-          standardization_correction(
-            data = example_1_ia_1,
-            outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result)
-      }
+    expect_no_condition(
+      standardization(
+        data = example_1_ia_1,
+        outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        family = gaussian(link = "identity"),
+        estimand = "difference",
+        treatment_column = "tx",
+        se_method = "bootstrap",
+        bootstrap_parameters = impart::boot_control(bootstrap_n = 250)
+      )
     )
 
-    expect_true(
-      object = {
-        result <-
-          standardization_correction(
-            data = example_1_ia_1,
-            y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-            y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-            outcome_indicator_column = ".r_4",
-            treatment_column = "tx"
-          )
-
-        !is.na(result)
-      }
+    # Influence standard error #################################################
+    expect_no_condition(
+      standardization(
+        data = example_1_ia_1,
+        outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
+        family = gaussian(link = "identity"),
+        estimand = "difference",
+        treatment_column = "tx",
+        se_method = "influence"
+      )
     )
 
+    # Score standard error #####################################################
+    expect_no_condition(
+      standardization(
+        data = example_1_ia_1,
+        outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
+        family = gaussian(link = "identity"),
+        estimand = "difference",
+        treatment_column = "tx",
+        se_method = "score"
+      )
+    )
   }
 )

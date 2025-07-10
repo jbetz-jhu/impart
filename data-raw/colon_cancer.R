@@ -215,11 +215,11 @@ test_sides <- 2
 # O'Brien-Fleming Alpha Spending
 efficacy_bounds <- "asOF"
 
-# 90% Power to detect HR of 1.35: One-Sided Test
+# Originally designed for 90% Power to detect HR of ~1.35 with One-Sided Test
 events_single_stage <-
   impart::hr_design(
     events = NULL,
-    hazard_ratio = 1.35,
+    hazard_ratio = 0.74,
     power = power,
     alpha = alpha,
     test_sides = test_sides
@@ -245,6 +245,9 @@ if_2s_of_75_100 <-
 events_2s_of_75_100 <-
   (events_single_stage*info_fractions_75_100*if_2s_of_75_100) |>
   ceiling()
+
+# Add 10% increase in number of events
+events_2s_of_75_100 <- events_2s_of_75_100*1.10
 
 # Get number of participants to yield target events
 n_participants <-
@@ -294,15 +297,41 @@ trial_end <-
     expr = {
       c(max(enroll_time + years_to_death),
         max(enroll_time + years_to_recurrence)) |>
-        max() |>
-        ceiling()
+        max()
     }
-  )
+  ) + 1/356.25
 
 sim_colon_cancer <- colon_cancer_active
 
 usethis::use_data(sim_colon_cancer, overwrite = TRUE)
 
-impart::prepare_monitored_study_data(
+sim_colon_cancer_prepared <-
+  impart::prepare_monitored_study_data(
+    data = sim_colon_cancer,
+    study_time = trial_end,
+    id_variable = ".id",
+    covariates_variables =
+      c("age", "sex", "obstruction", "perforation", "organ_adherence",
+        "positive_nodes", "differentiation", "local_spread",
+        "time_surgery_registration"),
+    enrollment_time_variable = "enroll_time",
+    treatment_variable = "tx",
+    outcome_variables = "event_death",
+    outcome_time_variables = "years_to_death",
+    observe_missing_times =  NULL,
+    time_to_event = TRUE
+  )
 
+plot_outcome_counts(
+  prepared_data = sim_colon_cancer_prepared,
+  study_time = trial_end,
+  type = "e"
+)
+
+abline(h = events_1s)
+abline(v =  6.9)
+
+count_outcomes_at_time_t(
+  prepared_data = sim_colon_cancer_prepared,
+  study_times = 6.9
 )

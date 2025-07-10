@@ -68,12 +68,10 @@ test_that(
           estimation_function = standardization,
           estimation_arguments =
             list(
+              outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
+              family = gaussian(link = "identity"),
               estimand = "difference",
-              y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-              y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-              family = gaussian,
-              treatment_column = "tx",
-              outcome_indicator_column = ".r_4"
+              treatment_column = "tx"
             )
         )
     )

@@ -38,9 +38,9 @@
 #' # To be added
 
 
-#' @rdname dr_joffe
+#' @rdname dr_wls
 #' @export
-dr_joffe <-
+dr_wls <-
   function(
     data,
     outcome_formula,
@@ -98,8 +98,8 @@ dr_joffe <-
 
     if(!all(all_vars %in% names(data))){
       stop(
-        "`formula` contains variables not included in `data`: ",
-        setdiff(x = all.vars(expr = formula), y = names(data))
+        "Formulas contain variables not included in `data`: ",
+        setdiff(x = all_vars, y = names(data))
       )
     }
 
@@ -137,7 +137,7 @@ dr_joffe <-
 
     if(se_method == "none"){
       return(
-        dr_joffe_fit(
+        dr_wls_fit(
           data = data,
           outcome_formula = outcome_formula,
           outcome_family = outcome_family,
@@ -160,7 +160,7 @@ dr_joffe <-
                 data = data,
                 statistic =
                   function(data, indices, ...) {
-                    dr_joffe_fit(
+                    dr_wls_fit(
                       data = data[indices,],
                       ...
                     )
@@ -180,7 +180,7 @@ dr_joffe <-
         )
 
       gc_fit <-
-        dr_joffe_fit(
+        dr_wls_fit(
           data = data,
           outcome_formula = outcome_formula,
           outcome_family = outcome_family,
@@ -277,10 +277,10 @@ dr_joffe <-
 #' the outcome missingness indicator variable
 #' @param predictors A \code{character} vector containing the name of
 #' covariates in either the outcome or censoring models.
-#' @rdname dr_joffe
+#' @rdname dr_wls
 #' @export
 
-dr_joffe_fit <-
+dr_wls_fit <-
   function(
     data,
     outcome_formula,

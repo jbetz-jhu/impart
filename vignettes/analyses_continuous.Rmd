@@ -137,7 +137,7 @@ Before conducting the first interim analysis, the information level should be ab
 
 Analysts will need to specify `estimation_function`, the function used to compute the estimate, and `estimation_arguments`, a list of arguments aside from the data needed for this computation. Estimators may have a variance correction factor that can be computed from the analysis parameters: this can be specified using the `correction_function` argument.
 
-For the standardization estimator computed by `standardization()`, the corresponding small-sample variance correction is `standardization_correction()`: this adjusts the variance according to the sample size in each arm and the number of parameters in each regression model.
+For the standardization estimator computed by `standardization()`, the corresponding small-sample variance correction is `standardization_df_adjust_tsiatis_2008()`: this adjusts the variance according to the sample size in each arm and the number of parameters in each regression model.
 
 
 ```{r Compute-Information-Trajectory}
@@ -170,13 +170,12 @@ data_ia_1_trajectory <-
     estimation_arguments =
       list(
         estimand = "difference",
-        y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-        y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4,
         family = gaussian,
-        treatment_column = "tx",
-        outcome_indicator_column = ".r_4"
+        treatment_column = "tx"
       ),
-    correction_function = standardization_correction,
+    correction_function = standardization_df_adjust_tsiatis_2008,
     orthogonalize = TRUE,
     n_min = 50,
     n_increment = 3,
@@ -233,13 +232,12 @@ interim_analysis_1 <-
     estimation_arguments = 
       list(
         estimand = "difference",
-        y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-        y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4,
         family = gaussian,
-        treatment_column = "tx",
-        outcome_indicator_column = ".r_4"
+        treatment_column = "tx"
       ),
-    correction_function = standardization_correction
+    correction_function = standardization_df_adjust_tsiatis_2008
   )
 
 interim_analysis_1$interim_analysis_1$decision
@@ -268,13 +266,12 @@ interim_analysis_2 <-
     estimation_arguments = 
       list(
         estimand = "difference",
-        y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-        y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4,
         family = gaussian,
-        treatment_column = "tx",
-        outcome_indicator_column = ".r_4"
+        treatment_column = "tx"
       ),
-    correction_function = standardization_correction
+    correction_function = standardization_df_adjust_tsiatis_2008
   )
 
 interim_analysis_2$interim_analysis_2$decision
@@ -303,13 +300,12 @@ final_analysis <-
     estimation_arguments = 
       list(
         estimand = "difference",
-        y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-        y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4,
+        outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4,
         family = gaussian,
-        treatment_column = "tx",
-        outcome_indicator_column = ".r_4"
+        treatment_column = "tx"
       ),
-    correction_function = standardization_correction
+    correction_function = standardization_df_adjust_tsiatis_2008
   )
 
 final_analysis$final_analysis$decision

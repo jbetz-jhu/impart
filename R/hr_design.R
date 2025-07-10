@@ -1,11 +1,15 @@
-# Design Calculations: Hazard Ratio as Estimand
-#'
-#' Calculate minimum hazard ratio, number of required events, power, or Type I error
+#' Design Calculations for a Hazard Ratio Estimand
 #'
 #' This is a function for designing a study with a time-to-event outcome whose
 #' inferential target is the hazard ratio. \code{hr_design()} will calculate
 #' the minimum number of events, minimum hazard ratio, power, or Type I error
 #' when the other arguments are specified.
+#'
+#' The function \code{hr_design} takes in user input, and depending on the
+#' arguments supplied, calls the appropriate function depending on whether the
+#' number of pooled events observed (\code{hr_events}), power (\code{hr_power}),
+#' Type I Error (\code{hr_alpha}), or relative risk (\code{hr_minimal}) is left
+#' unspecified.
 #'
 #' @param events A \code{numeric} vector: the number of observed events
 #' @param hazard_ratio A \code{numeric} vector: the minimum hazard ratio of interest
@@ -17,6 +21,17 @@
 #'
 #' @returns a \code{numeric} vector or \code{data.frame}, depending on whether
 #' arguments are specified as scalars or vectors.
+#'
+#' @seealso [stats::power.t.test()] for design calculations for a difference in
+#' means, [stats::power.prop.test()] for design calculations for a difference in
+#' proportions, [impart::rr_design()] for design calculations for a relative
+#' risk estimand.
+#'
+#' @references {
+#' Schoenfeld, DA. 1983. “Sample-Size Formula for the Proportional-Hazards
+#' Regression Model.” Biometrics 39 (2): 499.
+#' \url{https://doi.org/10.2307/2531021}.
+#' }
 #'
 #' @examples
 #' # Number of Events

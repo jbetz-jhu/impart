@@ -1,6 +1,4 @@
-# Design Calculations: Hazard Ratio as Estimand
-#'
-#' Calculate relative risk, sample size, power, or Type I error
+#' Design Calculations for a Relative Risk Estimand
 #'
 #' This is a function for designing a study with a binary outcome whose
 #' inferential target is the relative risk. \code{rr_design()} will calculate
@@ -11,7 +9,7 @@
 #' The function \code{rr_design} takes in user input, and depending on the
 #' arguments supplied, calls the appropriate function depending on whether the
 #' sample size (\code{rr_n_per_arm}), power (\code{rr_power}), Type I Error
-#' (\code{rr_alpha}), or relative risk (\code{rr_minimal}),
+#' (\code{rr_alpha}), or relative risk (\code{rr_minimal}) is left unspecified.
 #'
 #' @param n_per_arm A \code{numeric} vector: the sample size in each arm in a
 #' 1:1 randomized study
@@ -29,7 +27,17 @@
 #' arguments supplied and quantity of interest.
 #' @export
 #'
-#' @seealso [impart::hr_design()] for hazard ratios.
+#' @seealso [stats::power.t.test()] for design calculations for a difference in
+#' means, [stats::power.prop.test()] for design calculations for a difference in
+#' proportions, [impart::hr_design()] for design calculations for a hazard ratio
+#' estimand.
+#'
+#' @references {
+#' Mehta C, Gao P, Bhatt DL, Harrington RA, Skerjanec S, and Ware JH. 2009.
+#' “Optimizing Trial Design: Sequential, Adaptive, and Enrichment Strategies.”
+#' Circulation 119 (4): 597–605.
+#' \url{https://doi.org/10.1161/circulationaha.108.809707}.
+#' }
 #'
 #' @examples
 #' # Sample Size
@@ -546,7 +554,7 @@ rr_design <-
     } else if(null_outcome_params == 1){
       if(null_design_params != 1){
         stop("If risk is specified in each arm, exactly one of `power`, ",
-        "`alpha`, or `n_per_arm` must be NULL")
+             "`alpha`, or `n_per_arm` must be NULL")
       }
     } else if(null_outcome_params == 2){
       if(is.null(pi_0)){

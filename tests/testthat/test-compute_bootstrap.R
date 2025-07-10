@@ -59,17 +59,17 @@ test_that(
 
 
     expect_equal(
-      object = bootstrap_results_parallel[1],
+      object = bootstrap_results_parallel[1]$estimate,
       expected = test_data$y[1]
     )
 
     expect_equal(
-      object = bootstrap_results_parallel[2],
+      object = bootstrap_results_parallel[2]$estimate,
       expected = test_data$y[2]
     )
 
     expect_equal(
-      object = bootstrap_results_parallel[3],
+      object = bootstrap_results_parallel[3]$estimate,
       expected = test_data$y[3]
     )
   }

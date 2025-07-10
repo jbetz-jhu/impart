@@ -1,7 +1,6 @@
 test_that(
   desc = "Error Handling Works",
   code = {
-
     ### test_sides #############################################################
     expect_error(
       object = {
@@ -495,6 +494,5 @@ test_that(
       expected = hazard_ratio,
       ignore_attr = TRUE
     )
-
   }
 )

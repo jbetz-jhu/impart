@@ -19,8 +19,9 @@
 #' \code{estimation_function}
 #' @param correction_function An optional function to adjust the variance
 #' estimate using parameters from \code{estimation_arguments}
-#' @param orthogonalize Logical scalar: Should estimates, their covariance,
-#' and the resulting test statistics be orthogonalized?
+#' @param orthogonalize A \code{logical} scalar:: Should estimates, their
+#' covariance, and the resulting test statistics be orthogonalized?
+#' @param bootstrap A \code{logical} scalar: should bootstrap be used?
 #' @param n_min A \code{numeric} scalar indicating the minimum sample size for
 #' the information trajectory
 #' @param n_increment A \code{numeric} scalar indicating the increment in sample
@@ -47,11 +48,25 @@ information_trajectory <-
     estimation_arguments,
     correction_function = NULL,
     orthogonalize,
+    bootstrap = TRUE,
     n_min = 30,
     n_increment = 5,
     rng_seed,
     control = monitored_analysis_control()
   ){
+
+    if(!all(inherits(x = c(bootstrap, orthogonalize), what = "logical"))){
+      stop("`bootstrap` and `orthogonalize` must be logical values.")
+    } else {
+      if(orthogonalize & !bootstrap){
+        if(!is.null(monitored_design)){
+          if(length(monitored_design) > 1){
+            stop("If `orthogonalize` is `TRUE`, then `bootstrap` must be `TRUE`.")
+          }
+        }
+      }
+    }
+
     outcome_counts <-
       count_outcomes(
         prepared_data =
@@ -61,8 +76,16 @@ information_trajectory <-
           )
       )
 
-    primary_outcome <-
-      utils::tail(x = prepared_data$variables$outcome_variables, n = 1)
+    time_to_event <- prepared_data$time_to_event
+
+    if(time_to_event){
+      primary_outcome <-
+        utils::head(x = prepared_data$variables$outcome_variables, n = 1)
+    } else {
+      primary_outcome <-
+        utils::tail(x = prepared_data$variables$outcome_variables, n = 1)
+    }
+
 
     # If a previous analysis has been conducted, ensure n_min isn't below the
     # number of outcomes at the previous interim analysis.
@@ -77,6 +100,14 @@ information_trajectory <-
 
       information_target <-
         monitored_design$original_design$information_target
+
+      if(orthogonalize != monitored_design$original_design$orthogonalize){
+        stop(
+          "`orthogonalize` specified (", orthogonalize, ") does not match ",
+          "value in `monitored_design` (",
+          monitored_design$original_design$orthogonalize, ")."
+        )
+      }
     } else {
       information_target <- NA
     }
@@ -84,56 +115,116 @@ information_trajectory <-
     primary_outcome_counts <-
       outcome_counts[which(outcome_counts$event == primary_outcome),]
 
-    n_current <- max(primary_outcome_counts$count_complete, na.rm = TRUE)
+    if(time_to_event){
+      n_current <- max(primary_outcome_counts$count_events, na.rm = TRUE)
+    } else {
+      n_current <- max(primary_outcome_counts$count_complete, na.rm = TRUE)
+    }
 
     if(n_min >= n_current){
       stop("`n_min` (", n_min, ") is at or below number of complete outcomes (",
            n_current, ").")
     }
 
+    n_outcomes <- seq(from = n_min, to = n_current, by = n_increment)
+
     information_times <-
       primary_outcome_counts[
-        which(
-          primary_outcome_counts$count_complete %in%
-            seq(from = n_min, to = n_current, by = n_increment)
-            ),
-        ]$time
+        which(primary_outcome_counts$count_complete %in% n_outcomes),
+      ]
+
+    # For events, find first time at which event count is reached
+    if(time_to_event){
+      information_times <-
+        with(
+          data = information_times,
+          aggregate(
+            time ~ count_complete,
+            FUN = min
+          )
+        )
+    }
 
     information <-
-      data.frame(
-        count_outcomes_at_time_t(
-          prepared_data = prepared_data,
-          study_times = information_times
-        )$count_complete,
-        information = NA
-      )
+      outcome_counts[
+        with(
+          data = outcome_counts,
+          expr = {
+            which(event == primary_outcome & time %in% information_times$time)
+          }
+        ),
+      ]
+
+    information$information <- NA
 
     for(i in 1:nrow(information)){
       data_i <-
         data_at_time_t(
           prepared_data = prepared_data,
-          study_time = information$times[i]
+          study_time = information$time[i]
         )
 
-      information_i <-
-        estimate_information(
-          data = data_i$data,
-          monitored_design = monitored_design,
-          estimation_function = estimation_function,
-          estimation_arguments = estimation_arguments,
-          correction_function = correction_function,
-          orthogonalize = orthogonalize,
-          rng_seed = rng_seed,
-          control = control,
-          return_results = FALSE
-        )
+      if(bootstrap){
+        information_i <-
+          estimate_information(
+            data = data_i$data,
+            monitored_design = monitored_design,
+            estimation_function = estimation_function,
+            estimation_arguments = estimation_arguments,
+            correction_function = correction_function,
+            orthogonalize = orthogonalize,
+            rng_seed = rng_seed,
+            control = control,
+            return_results = FALSE
+          )
 
-      information$information[i] <-
-        if(orthogonalize){
-          utils::tail(x = information_i$information_orthogonal, n = 1)
+        information$information[i] <-
+          if(orthogonalize){
+            utils::tail(x = information_i$information_orthogonal, n = 1)
+          } else {
+            utils::tail(x = information_i$information, n = 1)
+          }
+      } else {
+        estimate_i <-
+          calculate_estimate(
+            data = data_i$data,
+            estimation_function = estimation_function,
+            estimation_arguments = estimation_arguments
+          )
+
+        estimate_i_names <- names(estimate_i)
+
+        if(is.null(estimate_i_names)){
+          stop("`estimation_function` should return a named result.")
+        } else if(!"variance" %in% estimate_i_names){
+          stop("`estimation_function` should return a named result, ",
+               "including the names 'estimate' and 'var'")
         } else {
-          utils::tail(x = information_i$information, n = 1)
+          variance_i <- estimate_i$variance
         }
+
+        if(is.null(correction_function)){
+          correction_factor <- 1
+        } else {
+          correction_factor <-
+            do.call(
+              what = correction_function,
+              args =
+                c(
+                  list(data = data_i$data),
+                  estimation_arguments[
+                    intersect(
+                      x = names(estimation_arguments),
+                      y = names(formals(correction_function))
+                    )
+                  ]
+                )
+            )
+        }
+
+        information$information[i] <-
+          1/(variance_i*correction_factor)
+      }
     }
 
     information$information_lag_1 <-

@@ -2,118 +2,182 @@
 % Please edit documentation in R/standardization.R
 \name{standardization}
 \alias{standardization}
-\alias{standardization_tx_formula}
-\alias{standardization_tx_stratified}
-\alias{standardization_correction}
-\title{Compute standardization (i.e. G-Computation) estimator}
+\alias{standardization_fit}
+\alias{standardization_influence}
+\alias{standardization_df_adjust_tsiatis_2008}
+\title{Estimate Treatment Effect using Marginal Standardization (G-Computation)}
 \usage{
 standardization(
   data,
   outcome_formula = NULL,
-  y0_formula = NULL,
-  y1_formula = NULL,
+  outcome_formula_treatment = NULL,
+  outcome_formula_control = NULL,
   family,
   estimand = "difference",
-  outcome_indicator_column = NULL,
-  treatment_column = NULL
+  treatment_column = NULL,
+  se_method = c("none", "influence", "score", "bootstrap")[1],
+  alpha = 0.05,
+  bootstrap_parameters = impart::boot_control(),
+  bootstrap_ci_method = "bca",
+  variance_adjustment = standardization_df_adjust_tsiatis_2008,
+  influence_function = standardization_influence,
+  verbose = FALSE
 )
 
-standardization_tx_formula(
-  data,
-  outcome_formula,
-  treatment_column,
-  outcome_indicator_column,
-  estimand,
-  family
-)
-
-standardization_tx_stratified(
-  data,
-  y0_formula,
-  y1_formula,
-  treatment_column,
-  outcome_indicator_column,
-  estimand,
-  family
-)
-
-standardization_correction(
+standardization_fit(
   data,
   outcome_formula = NULL,
-  y0_formula = NULL,
-  y1_formula = NULL,
+  outcome_formula_treatment = NULL,
+  outcome_formula_control = NULL,
+  family,
   treatment_column,
-  outcome_indicator_column
+  predictors,
+  estimand,
+  verbose
+)
+
+standardization_influence(
+  y = NULL,
+  a = NULL,
+  y_pred = NULL,
+  y1_pred = NULL,
+  y0_pred = NULL,
+  estimand,
+  model_type,
+  has_intercept,
+  has_treatment_interaction
+)
+
+standardization_df_adjust_tsiatis_2008(
+  data,
+  outcome_formula = NULL,
+  outcome_formula_treatment = NULL,
+  outcome_formula_control = NULL,
+  estimand,
+  treatment_column
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} containing baseline covariates (e.g. \code{x1},
-\code{x2}, ...), a binary treatment indicator (e.g. \code{tx} where 1 = Treatment;
-0 = Control), outcome variables (e.g. \code{y1}, \code{y2}, ...), and outcome
-indicators (e.g. \code{.r_1}, \code{.r_2}, ...). The outcome indicators indicate
-whether an outcome has been observed (\code{1}), is missing (\code{0}), or not yet
-obtained (\code{NA}).}
+\item{data}{A \code{data.frame} containing the data to be analyzed.}
 
-\item{outcome_formula}{A \link[stats:formula]{stats::formula} specifying the relationship between
-the outcome and covariates in the combined sample (treatment and control).
-\strong{Note:} if \code{outcome_formula} is specified, both \code{y0_formula}
-and \code{y1_formula} must be \code{NULL}.}
-
-\item{y0_formula}{A \link[stats:formula]{stats::formula} specifying the relationship between the
-outcome and covariates in the control arm using treatment-stratified outcome
-models. \strong{Note:} if \code{y0_formula} is specified, \code{y1_formula}
-must be specified and \code{outcome_formula} must be \code{NULL}.}
-
-\item{y1_formula}{A \link[stats:formula]{stats::formula} specifying the relationship between the
-outcome and covariates in the treatment arm using treatment-stratified
-outcome models. \strong{Note:} if \code{y1_formula} is specified,
-\code{y0_formula} must be specified and \code{outcome_formula} must be
+\item{outcome_formula}{A \code{formula} which includes treatment as a main
+effect. To use treatment-stratified outcome models, leave this argument
 \code{NULL}.}
 
-\item{family}{The \link[stats:family]{stats::family} for the outcome regression model}
+\item{outcome_formula_treatment}{A \code{formula} for a regression model fit
+to participants in the treatment arm. If using a single model with regression
+parameters for treatment assignment, leave this argument \code{NULL}.}
 
-\item{estimand}{A \code{character} scalar: "difference" (for a difference in
-means or risk difference), "ratio" (for a ratio of means or relative risk),
-or "oddsratio" (for an odds ratio for a binary outcome).}
+\item{outcome_formula_control}{A \code{formula} for a regression model fit
+to participants in the control arm. If using a single model with regression
+parameters for treatment assignment, leave this argument \code{NULL}.}
 
-\item{outcome_indicator_column}{A \code{character} scalar indicating the column
-containing the outcome indicator corresponding to \code{treatment_column}.}
+\item{family}{The \code{family} for the regression model(s) being fit.
+See \code{?family}.}
 
-\item{treatment_column}{A \code{character} scalar indicating the column
-containing the treatment indicator.}
+\item{estimand}{A \code{character} scalar, indicating the estimand to be
+returned: \code{"difference"} for a difference in means (or risk difference);
+\code{"ratio"} for a ratio of means (or relative risk), or \code{"oddsratio"}
+for an odds ratio.}
+
+\item{treatment_column}{A \code{character} scalar indicating the column that
+contains the binary indicator of treatment assignment.}
+
+\item{se_method}{A \code{character} scalar, indicating the method for
+computing standard errors: \code{"none"} for no standard errors;}
+
+\item{alpha}{Confidence level for computing interval estimates. This is only
+used when \code{se_method != "none"}.}
+
+\item{bootstrap_parameters}{A \code{list} of parameters to be passed to
+\code{boot::boot()} when computing bootstrap standard errors and confidence
+intervals. See \code{?boot::boot()}. This is only used when
+\code{se_method == "bootstrap"}.}
+
+\item{bootstrap_ci_method}{A \code{character} scalar, specifying the type of
+interval estimates to compute. See \code{?boot::boot()}. This is only used
+when \code{se_method == "bootstrap"}.}
+
+\item{variance_adjustment}{A \code{function} for computing a finite-sample
+variance adjustment for degrees of freedom in model fitting.}
+
+\item{influence_function}{A \code{function} for computing the influence
+function of each observation, which can be used for variance and covariance
+calculations.}
+
+\item{verbose}{A \code{logical} scalar: if \code{FALSE}, only results are
+returned; if \code{TRUE}, additional objects used to construct the estimate
+are also returned.}
+
+\item{predictors}{A \code{character} vector containing the names of
+covariates: used to check for missing values to be imputed.}
+
+\item{y}{A \code{numeric} vector containing the outcome values.}
+
+\item{a}{A \code{numeric} vector containing the binary treatment assignment
+indicator.}
+
+\item{y_pred}{A \code{numeric} vector containing the model-predicted value
+of the outcome under the observed treatment assignment.}
+
+\item{y1_pred}{A \code{numeric} vector containing the model-predicted value
+of the outcome under assignment to treatment.}
+
+\item{y0_pred}{A \code{numeric} vector containing the model-predicted value
+of the outcome under assignment to control.}
+
+\item{model_type}{A \code{character} scalar: either "stratified" or "single"
+model, used to indicate the analysis approach}
+
+\item{has_intercept}{A \code{logical} scalar, indicating whether an intercept
+term is included in the model.}
+
+\item{has_treatment_interaction}{A \code{logical} scalar, indicating whether
+treatment-by-covariate interactions are included in the model.}
 }
 \value{
-A \code{list} containing the marginal means and their contrast:
+Depending on the options specified, a \code{numeric} scalar
+containing the estimate, a \code{data.frame} containing estimates, standard
+errors, and confidence intervals, or a \code{list} additionally containing
+objects used in constructing the estimates.
 }
 \description{
-Computes the estimate of a contrast of means for continuous and binary
-outcomes on the additive scale, relative scale. Computing a marginal odds
-ratio is also possible for binary outcomes.
+Compute an estimate of a marginal treatment effect using marginal
+standardization, also known as standardization or G-computation.
 }
 \details{
-Generalized linear models, stratified by treatment arm, are fitted using the
-specified formulas. Predictions are generated for each individual from each
-treatment model, representing the predicted outcome under each treatment
-assignment. These predictions are marginalized over the covariates by
-averaging to produce marginal estimates of the means. Finally, the contrast
-is computed and returned.
+Marginal standardization can be viewed as a generalization of the ANCOVA
+estimate: the estimated treatment effect will coincide with ANCOVA when a
+single outcome model with an identity link is fit using a functional form
+where treatment assignment only appears as a main effect (i.e. no
+treatment-by-covariate interactions).
 
-Variance estimates can be obtained using the nonparametric bootstrap.
-Unadjusted estimates can be obtained by using intercept only models.
+Outcome regressions can include a single generalized linear model, or two
+treatment-stratified generalized linear models. Variance estimates can be
+obtained through the nonparametric bootstrap. Variance estimation using the
+influence or score function can also be obtained for certain estimands and
+outcome models.
+
+\code{standardization} should be used: this checks inputs, and calls
+\code{standardization_fit}: the latter has been streamlined to speed up
+the nonparametric bootstrap.
 }
 \examples{
-
-ex_1 <- example_1
-ex_1$.r_4 <- 1*(!is.na(ex_1$y_4))
-
-standardization(
-  data = ex_1,
+impart::standardization(
+  data = example_1,
+  outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
+  family = gaussian(link = "identity"),
   estimand = "difference",
-  y0_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-  y1_formula = y_4 ~ x_1 + x_2 + x_3 + x_4,
-  family = gaussian,
   treatment_column = "tx",
-  outcome_indicator_column = ".r_4"
+  se_method = "influence"
 )
 
+impart::standardization(
+  data = example_1,
+  outcome_formula = y_4 ~ x_1 + x_2 + x_3 + x_4 + tx,
+  family = gaussian(link = "identity"),
+  estimand = "difference",
+  treatment_column = "tx",
+  se_method = "score"
+)
 }

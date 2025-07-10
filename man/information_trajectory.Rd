@@ -11,6 +11,7 @@ information_trajectory(
   estimation_arguments,
   correction_function = NULL,
   orthogonalize,
+  bootstrap = TRUE,
   n_min = 30,
   n_increment = 5,
   rng_seed,
@@ -33,8 +34,10 @@ named \code{data}}
 \item{correction_function}{An optional function to adjust the variance
 estimate using parameters from \code{estimation_arguments}}
 
-\item{orthogonalize}{Logical scalar: Should estimates, their covariance,
-and the resulting test statistics be orthogonalized?}
+\item{orthogonalize}{A \code{logical} scalar:: Should estimates, their
+covariance, and the resulting test statistics be orthogonalized?}
+
+\item{bootstrap}{A \code{logical} scalar: should bootstrap be used?}
 
 \item{n_min}{A \code{numeric} scalar indicating the minimum sample size for
 the information trajectory}
