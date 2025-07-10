@@ -94,6 +94,7 @@ will reach pre-specified thresholds.</p>
 <span>  <span class="va">estimation_arguments</span>,</span>
 <span>  correction_function <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">orthogonalize</span>,</span>
+<span>  bootstrap <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n_min <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>  n_increment <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  <span class="va">rng_seed</span>,</span>
@@ -131,8 +132,12 @@ estimate using parameters from <code>estimation_arguments</code></p></dd>
 
 
 <dt id="arg-orthogonalize">orthogonalize<a class="anchor" aria-label="anchor" href="#arg-orthogonalize"></a></dt>
-<dd><p>Logical scalar: Should estimates, their covariance,
-and the resulting test statistics be orthogonalized?</p></dd>
+<dd><p>A <code>logical</code> scalar:: Should estimates, their
+covariance, and the resulting test statistics be orthogonalized?</p></dd>
+
+
+<dt id="arg-bootstrap">bootstrap<a class="anchor" aria-label="anchor" href="#arg-bootstrap"></a></dt>
+<dd><p>A <code>logical</code> scalar: should bootstrap be used?</p></dd>
 
 
 <dt id="arg-n-min">n_min<a class="anchor" aria-label="anchor" href="#arg-n-min"></a></dt>

@@ -103,9 +103,9 @@ on <a href="https://covariateadjustment.github.io/estimands.html" class="externa
 target of statistical inference, also known as an estimand</a>: for a
 time-to-event outcome, there are several outcomes that may be of
 interest, including the survival probability (SP), the restricted mean
-survival time (RMST), or hazard ratio (HR). Royston and Parmar (<span class="citation">(Royston and Parmar 2011; Royston and Parmar
-2013)</span>) provide an overview of RMST, with further practical
-considerations provided by Eaton, Therneau, and Le-Rademacher <span class="citation">(Eaton, Therneau, and Le-Rademacher 2020)</span>.</p>
+survival time (RMST), or hazard ratio (HR). Royston and Parmar (<span class="citation">[@Royston2011; @Royston2013]</span>) provide an
+overview of RMST, with further practical considerations provided by
+Eaton, Therneau, and Le-Rademacher <span class="citation">[@Eaton2020]</span>.</p>
 <p>Once the estimand is chosen, decisions must be made about what
 constitutes a meaningful effect size on the scale of the estimand. Next,
 the characteristics of the testing procedure must be specified,
@@ -156,7 +156,7 @@ logrank test depends on the number of events observed in both treatment
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>D</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(D_{1})</annotation></semantics></math>
 and control
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>D</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(D_{0})</annotation></semantics></math>
-arms <span class="citation">(Schoenfeld 1983)</span>. Let
+arms <span class="citation">[@Schoenfeld1983]</span>. Let
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><msub><mi>D</mi><mn>1</mn></msub><mo>+</mo><msub><mi>D</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">D = D_{1} + D_{0}</annotation></semantics></math>
 denote the total number of events in a trial with an allocation ratio of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>
@@ -408,7 +408,7 @@ is known, along with the sample size in the treatment
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mn>1</mn></msub><annotation encoding="application/x-tex">N_{1}</annotation></semantics></math>)
 and control
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mn>0</mn></msub><annotation encoding="application/x-tex">N_{0}</annotation></semantics></math>)
-arms, the variance of the log hazard ratio can be approximated by <span class="citation">(Tierney, Burdett, and Fisher 2025)</span>:</p>
+arms, the variance of the log hazard ratio can be approximated by <span class="citation">[@Tierney2025]</span>:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mi>a</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>θ</mi><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>H</mi><mi>R</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>N</mi><mn>1</mn></msub><mo>+</mo><msub><mi>N</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mi>/</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>D</mi><msub><mi>N</mi><mn>1</mn></msub><msub><mi>N</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>r</mi><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mi>/</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mi>D</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">var(\theta_{log(HR)}) = (N_{1} +N_{0})^2/(DN_{1}N_{0}) = (1 + r)^2/(rD)</annotation></semantics></math>
 The information is approximately:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ℐ</mi><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>H</mi><mi>R</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msub><mo>=</mo><mi>D</mi><msub><mi>N</mi><mn>1</mn></msub><msub><mi>N</mi><mn>0</mn></msub><mi>/</mi><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>N</mi><mn>1</mn></msub><mo>+</mo><msub><mi>N</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>=</mo><mi>D</mi><mi>r</mi><mi>/</mi><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mi>r</mi><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\mathcal{I}_{log(HR)} = DN_{1}N_{0}/(N_{1} +N_{0})^2 = Dr/(1 + r)^2</annotation></semantics></math>
@@ -466,47 +466,15 @@ from covariate adjustment when inferring about the marginal hazard
 ratio.</p>
 <p>Power and sample size software exists for design calculations with
 the RMST, including the <a href="https://github.com/anneae/RMSTdesign/tree/master" class="external-link">RMSTdesign
-package</a> <span class="citation">(Eaton, Therneau, and Le-Rademacher
-2020)</span>, and the <a href="https://cran.r-project.org/web/packages/SSRMST/index.html" class="external-link">SSRMST
+package</a> <span class="citation">[@Eaton2020]</span>, and the <a href="https://cran.r-project.org/web/packages/SSRMST/index.html" class="external-link">SSRMST
 package</a>.</p>
 <p>Until the variance of the RMST or survival probability can be
 approximated by the number of observed events, investigators will have
 to rely on information monitoring during an ongoing trial.</p>
 </div>
 <div class="section level3">
-<h3 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h3>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
-<div id="ref-Eaton2020" class="csl-entry">
-Eaton, Anne, Terry Therneau, and Jennifer Le-Rademacher. 2020.
-<span>“Designing Clinical Trials with (Restricted) Mean Survival Time
-Endpoint: Practical Considerations.”</span> <em>Clinical Trials</em> 17
-(3): 285–94. <a href="https://doi.org/10.1177/1740774520905563" class="external-link">https://doi.org/10.1177/1740774520905563</a>.
-</div>
-<div id="ref-Royston2011" class="csl-entry">
-Royston, Patrick, and Mahesh K. B. Parmar. 2011. <span>“The Use of
-Restricted Mean Survival Time to Estimate the Treatment Effect in
-Randomized Clinical Trials When the Proportional Hazards Assumption Is
-in Doubt.”</span> <em>Statistics in Medicine</em> 30 (19): 2409–21. <a href="https://doi.org/10.1002/sim.4274" class="external-link">https://doi.org/10.1002/sim.4274</a>.
-</div>
-<div id="ref-Royston2013" class="csl-entry">
-Royston, Patrick, and Mahesh KB Parmar. 2013. <span>“Restricted Mean
-Survival Time: An Alternative to the Hazard Ratio for the Design and
-Analysis of Randomized Trials with a Time-to-Event Outcome.”</span>
-<em><span>BMC</span> Medical Research Methodology</em> 13 (1). <a href="https://doi.org/10.1186/1471-2288-13-152" class="external-link">https://doi.org/10.1186/1471-2288-13-152</a>.
-</div>
-<div id="ref-Schoenfeld1983" class="csl-entry">
-Schoenfeld, David A. 1983. <span>“Sample-Size Formula for the
-Proportional-Hazards Regression Model.”</span> <em>Biometrics</em> 39
-(2): 499. <a href="https://doi.org/10.2307/2531021" class="external-link">https://doi.org/10.2307/2531021</a>.
-</div>
-<div id="ref-Tierney2025" class="csl-entry">
-Tierney, Jayne F., Sarah Burdett, and David J. Fisher. 2025.
-<span>“Practical Methods for Incorporating Summary Time-to-Event Data
-into Meta-Analysis: Updated Guidance.”</span> <em>Systematic
-Reviews</em> 14 (1). <a href="https://doi.org/10.1186/s13643-025-02752-z" class="external-link">https://doi.org/10.1186/s13643-025-02752-z</a>.
-</div>
-</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

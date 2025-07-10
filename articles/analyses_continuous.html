@@ -217,9 +217,9 @@ this can be specified using the <code>correction_function</code>
 argument.</p>
 <p>For the standardization estimator computed by
 <code><a href="../reference/standardization.html">standardization()</a></code>, the corresponding small-sample variance
-correction is <code><a href="../reference/standardization.html">standardization_correction()</a></code>: this adjusts
-the variance according to the sample size in each arm and the number of
-parameters in each regression model.</p>
+correction is <code><a href="../reference/standardization.html">standardization_df_adjust_tsiatis_2008()</a></code>:
+this adjusts the variance according to the sample size in each arm and
+the number of parameters in each regression model.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Obtain time of last event</span></span>
 <span><span class="va">last_event</span> <span class="op">&lt;-</span></span>
@@ -250,26 +250,65 @@ parameters in each regression model.</p>
 <span>    estimation_arguments <span class="op">=</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>        estimand <span class="op">=</span> <span class="st">"difference"</span>,</span>
-<span>        y0_formula <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
-<span>        y1_formula <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
+<span>        outcome_formula_control <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
+<span>        outcome_formula_treatment <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
 <span>        family <span class="op">=</span> <span class="va">gaussian</span>,</span>
-<span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span>,</span>
-<span>        outcome_indicator_column <span class="op">=</span> <span class="st">".r_4"</span></span>
+<span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span></span>
 <span>      <span class="op">)</span>,</span>
-<span>    correction_function <span class="op">=</span> <span class="va">standardization_correction</span>,</span>
+<span>    correction_function <span class="op">=</span> <span class="va">standardization_df_adjust_tsiatis_2008</span>,</span>
 <span>    orthogonalize <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    n_min <span class="op">=</span> <span class="fl">50</span>,</span>
 <span>    n_increment <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>    rng_seed <span class="op">=</span> <span class="fl">23456</span>,</span>
 <span>    control <span class="op">=</span> <span class="fu"><a href="../reference/monitored_analysis_control.html">monitored_analysis_control</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in glm.fit(x = structure(numeric(0), dim = c(0L, 5L), dimnames = list(:</span></span>
-<span><span class="co">#&gt; no observations informative at iteration 1</span></span>
-<span><span class="co">#&gt; Warning: glm.fit: algorithm did not converge</span></span>
-<span><span class="co">#&gt; Error in glm.fit(x = structure(numeric(0), dim = c(0L, 5L), dimnames = list(: object 'fit' not found</span></span>
 <span></span>
 <span><span class="va">data_ia_1_trajectory</span></span>
-<span><span class="co">#&gt; Error: object 'data_ia_1_trajectory' not found</span></span></code></pre></div>
+<span><span class="co">#&gt;     event     time count_total count_complete count_events information</span></span>
+<span><span class="co">#&gt; 565   y_4 551.8682          70             50           NA   0.1380683</span></span>
+<span><span class="co">#&gt; 566   y_4 555.9573          71             50           NA   0.1339839</span></span>
+<span><span class="co">#&gt; 572   y_4 595.6751          77             53           NA   0.1425721</span></span>
+<span><span class="co">#&gt; 575   y_4 630.7461          80             56           NA   0.1482429</span></span>
+<span><span class="co">#&gt; 578   y_4 634.3194          83             59           NA   0.1711911</span></span>
+<span><span class="co">#&gt; 581   y_4 658.6659          86             62           NA   0.1696971</span></span>
+<span><span class="co">#&gt; 584   y_4 662.6718          89             65           NA   0.1665782</span></span>
+<span><span class="co">#&gt; 585   y_4 673.9776          90             65           NA   0.1633559</span></span>
+<span><span class="co">#&gt; 589   y_4 701.1256          94             68           NA   0.1805331</span></span>
+<span><span class="co">#&gt; 592   y_4 717.5104          97             71           NA   0.2098995</span></span>
+<span><span class="co">#&gt; 595   y_4 753.7782         100             74           NA   0.2179450</span></span>
+<span><span class="co">#&gt; 598   y_4 758.3298         103             77           NA   0.2021433</span></span>
+<span><span class="co">#&gt; 602   y_4 778.4102         107             80           NA   0.2070840</span></span>
+<span><span class="co">#&gt; 605   y_4 781.6646         110             83           NA   0.2181654</span></span>
+<span><span class="co">#&gt;     information_lag_1 information_change information_pct_change</span></span>
+<span><span class="co">#&gt; 565                NA                 NA                     NA</span></span>
+<span><span class="co">#&gt; 566         0.1380683       -0.004084420             -3.0484414</span></span>
+<span><span class="co">#&gt; 572         0.1339839        0.008588275              6.0238099</span></span>
+<span><span class="co">#&gt; 575         0.1425721        0.005670759              3.8253158</span></span>
+<span><span class="co">#&gt; 578         0.1482429        0.022948176             13.4050071</span></span>
+<span><span class="co">#&gt; 581         0.1711911       -0.001493985             -0.8803831</span></span>
+<span><span class="co">#&gt; 584         0.1696971       -0.003118900             -1.8723338</span></span>
+<span><span class="co">#&gt; 585         0.1665782       -0.003222324             -1.9725794</span></span>
+<span><span class="co">#&gt; 589         0.1633559        0.017177195              9.5147089</span></span>
+<span><span class="co">#&gt; 592         0.1805331        0.029366413             13.9907033</span></span>
+<span><span class="co">#&gt; 595         0.2098995        0.008045561              3.6915549</span></span>
+<span><span class="co">#&gt; 598         0.2179450       -0.015801736             -7.8170963</span></span>
+<span><span class="co">#&gt; 602         0.2021433        0.004940738              2.3858613</span></span>
+<span><span class="co">#&gt; 605         0.2070840        0.011081351              5.0793349</span></span>
+<span><span class="co">#&gt;     information_fraction</span></span>
+<span><span class="co">#&gt; 565            0.3028952</span></span>
+<span><span class="co">#&gt; 566            0.2939348</span></span>
+<span><span class="co">#&gt; 572            0.3127758</span></span>
+<span><span class="co">#&gt; 575            0.3252163</span></span>
+<span><span class="co">#&gt; 578            0.3755602</span></span>
+<span><span class="co">#&gt; 581            0.3722827</span></span>
+<span><span class="co">#&gt; 584            0.3654404</span></span>
+<span><span class="co">#&gt; 585            0.3583713</span></span>
+<span><span class="co">#&gt; 589            0.3960547</span></span>
+<span><span class="co">#&gt; 592            0.4604790</span></span>
+<span><span class="co">#&gt; 595            0.4781294</span></span>
+<span><span class="co">#&gt; 598            0.4434634</span></span>
+<span><span class="co">#&gt; 602            0.4543024</span></span>
+<span><span class="co">#&gt; 605            0.4786128</span></span></code></pre></div>
 <p>Once the trajectory has been computed, it can be smoothed and
 plotted:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -277,7 +316,7 @@ plotted:</p>
 <span>  <span class="va">information</span> <span class="op">~</span> <span class="va">y_4</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">data_ia_1_trajectory</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(m$data, eframe): object 'data_ia_1_trajectory' not found</span></span>
+<span><span class="co">#&gt; Error in eval(predvars, data, env): object 'y_4' not found</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span>
@@ -286,7 +325,7 @@ plotted:</p>
 <span>  <span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(mf, parent.frame()): object 'data_ia_1_trajectory' not found</span></span>
+<span><span class="co">#&gt; Error in eval(predvars, data, env): object 'y_4' not found</span></span>
 <span></span>
 <span><span class="co"># Requires `deming` package</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
@@ -296,7 +335,7 @@ plotted:</p>
 <span>  <span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(temp, parent.frame()): object 'data_ia_1_trajectory' not found</span></span>
+<span><span class="co">#&gt; Error in eval(predvars, data, env): object 'y_4' not found</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
 <span>  h <span class="op">=</span> <span class="va">monitored_design</span><span class="op">$</span><span class="va">original_design</span><span class="op">$</span><span class="va">information_thresholds</span>,</span>
@@ -315,13 +354,12 @@ information:</p>
 <span>    estimation_arguments <span class="op">=</span> </span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>        estimand <span class="op">=</span> <span class="st">"difference"</span>,</span>
-<span>        y0_formula <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
-<span>        y1_formula <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
+<span>        outcome_formula_control <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
+<span>        outcome_formula_treatment <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
 <span>        family <span class="op">=</span> <span class="va">gaussian</span>,</span>
-<span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span>,</span>
-<span>        outcome_indicator_column <span class="op">=</span> <span class="st">".r_4"</span></span>
+<span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span></span>
 <span>      <span class="op">)</span>,</span>
-<span>    correction_function <span class="op">=</span> <span class="va">standardization_correction</span></span>
+<span>    correction_function <span class="op">=</span> <span class="va">standardization_df_adjust_tsiatis_2008</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">interim_analysis_1</span><span class="op">$</span><span class="va">interim_analysis_1</span><span class="op">$</span><span class="va">decision</span></span>
@@ -352,13 +390,12 @@ provided, and the result of the previous analysis is passed using the
 <span>    estimation_arguments <span class="op">=</span> </span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>        estimand <span class="op">=</span> <span class="st">"difference"</span>,</span>
-<span>        y0_formula <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
-<span>        y1_formula <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
+<span>        outcome_formula_control <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
+<span>        outcome_formula_treatment <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
 <span>        family <span class="op">=</span> <span class="va">gaussian</span>,</span>
-<span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span>,</span>
-<span>        outcome_indicator_column <span class="op">=</span> <span class="st">".r_4"</span></span>
+<span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span></span>
 <span>      <span class="op">)</span>,</span>
-<span>    correction_function <span class="op">=</span> <span class="va">standardization_correction</span></span>
+<span>    correction_function <span class="op">=</span> <span class="va">standardization_df_adjust_tsiatis_2008</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">interim_analysis_2</span><span class="op">$</span><span class="va">interim_analysis_2</span><span class="op">$</span><span class="va">decision</span></span>
@@ -386,13 +423,12 @@ provided, and the result of the previous analysis is passed using the
 <span>    estimation_arguments <span class="op">=</span> </span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>        estimand <span class="op">=</span> <span class="st">"difference"</span>,</span>
-<span>        y0_formula <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
-<span>        y1_formula <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
+<span>        outcome_formula_control <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
+<span>        outcome_formula_treatment <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
 <span>        family <span class="op">=</span> <span class="va">gaussian</span>,</span>
-<span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span>,</span>
-<span>        outcome_indicator_column <span class="op">=</span> <span class="st">".r_4"</span></span>
+<span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span></span>
 <span>      <span class="op">)</span>,</span>
-<span>    correction_function <span class="op">=</span> <span class="va">standardization_correction</span></span>
+<span>    correction_function <span class="op">=</span> <span class="va">standardization_df_adjust_tsiatis_2008</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">final_analysis</span><span class="op">$</span><span class="va">final_analysis</span><span class="op">$</span><span class="va">decision</span></span>

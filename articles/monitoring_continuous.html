@@ -439,11 +439,10 @@ against the target information level for analyses:</p>
 <span>    estimation_arguments <span class="op">=</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>        estimand <span class="op">=</span> <span class="st">"difference"</span>,</span>
-<span>        y0_formula <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
-<span>        y1_formula <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
+<span>        outcome_formula_control <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
+<span>        outcome_formula_treatment <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
 <span>        family <span class="op">=</span> <span class="va">gaussian</span>,</span>
-<span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span>,</span>
-<span>        outcome_indicator_column <span class="op">=</span> <span class="st">".r_4"</span></span>
+<span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span></span>
 <span>      <span class="op">)</span>,</span>
 <span>    orthogonalize <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    rng_seed <span class="op">=</span> <span class="fl">23456</span></span>
@@ -537,13 +536,12 @@ projecting when pre-specified information levels may be met:</p>
 <span>    estimation_arguments <span class="op">=</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>        estimand <span class="op">=</span> <span class="st">"difference"</span>,</span>
-<span>        y0_formula <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
-<span>        y1_formula <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
+<span>        outcome_formula_control <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
+<span>        outcome_formula_treatment <span class="op">=</span> <span class="va">y_4</span> <span class="op">~</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span> <span class="va">x_3</span> <span class="op">+</span> <span class="va">x_4</span>,</span>
 <span>        family <span class="op">=</span> <span class="va">gaussian</span>,</span>
-<span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span>,</span>
-<span>        outcome_indicator_column <span class="op">=</span> <span class="st">".r_4"</span></span>
+<span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span></span>
 <span>      <span class="op">)</span>,</span>
-<span>    correction_function <span class="op">=</span> <span class="va">standardization_correction</span>,</span>
+<span>    correction_function <span class="op">=</span> <span class="va">standardization_df_adjust_tsiatis_2008</span>,</span>
 <span>    orthogonalize <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    n_min <span class="op">=</span> <span class="fl">40</span>,</span>
 <span>    n_increment <span class="op">=</span> <span class="fl">2</span>,</span>
@@ -552,13 +550,77 @@ projecting when pre-specified information levels may be met:</p>
 <span>    <span class="co"># This does more bootstrap replicates by default</span></span>
 <span>    control <span class="op">=</span> <span class="fu"><a href="../reference/monitored_analysis_control.html">monitored_analysis_control_testing</a></span><span class="op">(</span><span class="op">)</span> </span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in glm.fit(x = structure(numeric(0), dim = c(0L, 5L), dimnames = list(:</span></span>
-<span><span class="co">#&gt; no observations informative at iteration 1</span></span>
-<span><span class="co">#&gt; Warning: glm.fit: algorithm did not converge</span></span>
-<span><span class="co">#&gt; Error in glm.fit(x = structure(numeric(0), dim = c(0L, 5L), dimnames = list(: object 'fit' not found</span></span>
 <span></span>
 <span><span class="va">data_n_70_trajectory</span></span>
-<span><span class="co">#&gt; Error: object 'data_n_70_trajectory' not found</span></span></code></pre></div>
+<span><span class="co">#&gt;     event     time count_total count_complete count_events information</span></span>
+<span><span class="co">#&gt; 489   y_4 491.3059          55             40           NA  0.02354317</span></span>
+<span><span class="co">#&gt; 493   y_4 506.9791          59             42           NA  0.06373427</span></span>
+<span><span class="co">#&gt; 494   y_4 508.6034          60             42           NA  0.06373427</span></span>
+<span><span class="co">#&gt; 496   y_4 518.1410          62             44           NA  0.06273970</span></span>
+<span><span class="co">#&gt; 497   y_4 527.2583          63             44           NA  0.06569907</span></span>
+<span><span class="co">#&gt; 499   y_4 527.6485          65             46           NA  0.06672800</span></span>
+<span><span class="co">#&gt; 501   y_4 538.5259          67             48           NA  0.11713994</span></span>
+<span><span class="co">#&gt; 502   y_4 540.6071          68             48           NA  0.09814035</span></span>
+<span><span class="co">#&gt; 504   y_4 551.8682          70             50           NA  0.12625125</span></span>
+<span><span class="co">#&gt; 505   y_4 555.9573          71             50           NA  0.12003936</span></span>
+<span><span class="co">#&gt; 508   y_4 578.2366          74             52           NA  0.14664434</span></span>
+<span><span class="co">#&gt; 509   y_4 579.6637          75             52           NA  0.14664434</span></span>
+<span><span class="co">#&gt; 510   y_4 582.8345          76             52           NA  0.14664434</span></span>
+<span><span class="co">#&gt; 512   y_4 597.3935          78             54           NA  0.15105217</span></span>
+<span><span class="co">#&gt; 514   y_4 630.7461          80             56           NA  0.14185643</span></span>
+<span><span class="co">#&gt; 516   y_4 633.0925          82             58           NA  0.15632099</span></span>
+<span><span class="co">#&gt; 518   y_4 635.4027          84             60           NA  0.16605940</span></span>
+<span><span class="co">#&gt; 520   y_4 658.6659          86             62           NA  0.18410677</span></span>
+<span><span class="co">#&gt; 522   y_4 662.5691          88             64           NA  0.17192467</span></span>
+<span><span class="co">#&gt; 525   y_4 675.4510          91             66           NA  0.17923912</span></span>
+<span><span class="co">#&gt; 528   y_4 701.1256          94             68           NA  0.17267007</span></span>
+<span><span class="co">#&gt; 530   y_4 707.0069          96             70           NA  0.18025072</span></span>
+<span><span class="co">#&gt;     information_lag_1 information_change information_pct_change</span></span>
+<span><span class="co">#&gt; 489                NA                 NA                     NA</span></span>
+<span><span class="co">#&gt; 493        0.02354317       0.0401910997              63.060421</span></span>
+<span><span class="co">#&gt; 494        0.06373427       0.0000000000               0.000000</span></span>
+<span><span class="co">#&gt; 496        0.06373427      -0.0009945712              -1.585234</span></span>
+<span><span class="co">#&gt; 497        0.06273970       0.0029593721               4.504435</span></span>
+<span><span class="co">#&gt; 499        0.06569907       0.0010289294               1.541975</span></span>
+<span><span class="co">#&gt; 501        0.06672800       0.0504119382              43.035653</span></span>
+<span><span class="co">#&gt; 502        0.11713994      -0.0189995846             -19.359605</span></span>
+<span><span class="co">#&gt; 504        0.09814035       0.0281108949              22.265835</span></span>
+<span><span class="co">#&gt; 505        0.12625125      -0.0062118854              -5.174874</span></span>
+<span><span class="co">#&gt; 508        0.12003936       0.0266049799              18.142520</span></span>
+<span><span class="co">#&gt; 509        0.14664434       0.0000000000               0.000000</span></span>
+<span><span class="co">#&gt; 510        0.14664434       0.0000000000               0.000000</span></span>
+<span><span class="co">#&gt; 512        0.14664434       0.0044078303               2.918085</span></span>
+<span><span class="co">#&gt; 514        0.15105217      -0.0091957493              -6.482434</span></span>
+<span><span class="co">#&gt; 516        0.14185643       0.0144645633               9.253117</span></span>
+<span><span class="co">#&gt; 518        0.15632099       0.0097384163               5.864417</span></span>
+<span><span class="co">#&gt; 520        0.16605940       0.0180473670               9.802663</span></span>
+<span><span class="co">#&gt; 522        0.18410677      -0.0121821058              -7.085723</span></span>
+<span><span class="co">#&gt; 525        0.17192467       0.0073144562               4.080837</span></span>
+<span><span class="co">#&gt; 528        0.17923912      -0.0065690556              -3.804397</span></span>
+<span><span class="co">#&gt; 530        0.17267007       0.0075806509               4.205615</span></span>
+<span><span class="co">#&gt;     information_fraction</span></span>
+<span><span class="co">#&gt; 489           0.05164918</span></span>
+<span><span class="co">#&gt; 493           0.13982070</span></span>
+<span><span class="co">#&gt; 494           0.13982070</span></span>
+<span><span class="co">#&gt; 496           0.13763880</span></span>
+<span><span class="co">#&gt; 497           0.14413109</span></span>
+<span><span class="co">#&gt; 499           0.14638836</span></span>
+<span><span class="co">#&gt; 501           0.25698243</span></span>
+<span><span class="co">#&gt; 502           0.21530101</span></span>
+<span><span class="co">#&gt; 504           0.27697089</span></span>
+<span><span class="co">#&gt; 505           0.26334321</span></span>
+<span><span class="co">#&gt; 508           0.32170941</span></span>
+<span><span class="co">#&gt; 509           0.32170941</span></span>
+<span><span class="co">#&gt; 510           0.32170941</span></span>
+<span><span class="co">#&gt; 512           0.33137934</span></span>
+<span><span class="co">#&gt; 514           0.31120564</span></span>
+<span><span class="co">#&gt; 516           0.34293810</span></span>
+<span><span class="co">#&gt; 518           0.36430230</span></span>
+<span><span class="co">#&gt; 520           0.40389475</span></span>
+<span><span class="co">#&gt; 522           0.37716956</span></span>
+<span><span class="co">#&gt; 525           0.39321606</span></span>
+<span><span class="co">#&gt; 528           0.37880482</span></span>
+<span><span class="co">#&gt; 530           0.39543531</span></span></code></pre></div>
 <p>This trajectory can be smoothed using regression, ideally using a
 method resistant to outliers, such as <code><a href="https://rdrr.io/pkg/deming/man/theilsen.html" class="external-link">deming::theilsen</a></code>.
 Inverse regression can be used to obtain an estimated number of outcomes
@@ -569,7 +631,7 @@ necessary to achieve a given level of information:</p>
 <span>  data <span class="op">=</span> <span class="va">data_n_70_trajectory</span>,</span>
 <span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(m$data, eframe): object 'data_n_70_trajectory' not found</span></span>
+<span><span class="co">#&gt; Error in eval(predvars, data, env): object 'y_4' not found</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span>
@@ -578,7 +640,7 @@ necessary to achieve a given level of information:</p>
 <span>  <span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(mf, parent.frame()): object 'data_n_70_trajectory' not found</span></span>
+<span><span class="co">#&gt; Error in eval(predvars, data, env): object 'y_4' not found</span></span>
 <span></span>
 <span><span class="co"># Requires `deming` package</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
@@ -588,7 +650,7 @@ necessary to achieve a given level of information:</p>
 <span>  <span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(temp, parent.frame()): object 'data_n_70_trajectory' not found</span></span>
+<span><span class="co">#&gt; Error in eval(predvars, data, env): object 'y_4' not found</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
 <span>  h <span class="op">=</span> <span class="va">monitored_design</span><span class="op">$</span><span class="va">original_design</span><span class="op">$</span><span class="va">information_fractions</span>,</span>
