@@ -335,6 +335,23 @@ standardization <-
       } else if(se_method %in% c("influence", "score")){
         n_observations <- standardization_result$n_observations
 
+        if(is.null(outcome_formula)){
+          if(
+            !all(
+              attributes(terms(outcome_formula_treatment))$intercept == 1,
+              attributes(terms(outcome_formula_control))$intercept == 1
+            )
+          ){
+            stop("Influence function not implemented for models without an ",
+                 "intercept.")
+          }
+        } else {
+          if(!attributes(terms(outcome_formula))$intercept){
+            stop("Influence function not implemented for models without an ",
+                 "intercept.")
+          }
+        }
+
         influence <-
           do.call(
             what = influence_function,
@@ -347,7 +364,8 @@ standardization <-
               ]
           )
 
-        se_eif <- mean(influence^2/n_observations)
+        variance_eif <- sum(influence^2)
+        se_eif <- sqrt(variance_eif)
 
         if(se_method == "influence"){
           se <- se_eif
@@ -668,22 +686,25 @@ standardization_influence <-
   ){
 
     if(estimand == "difference"){
-      if(model_type == "single"){
-        if(has_intercept & !has_treatment_interaction){
-          influence <-
-            2*(2*a - 1)*(y - y_pred) -
-            ((y1_pred - mean(y1_pred)) - (y0_pred - mean(y0_pred)))
+      a_bar <- mean(a[which(!is.na(y))])
+      n_1 <- sum(a[which(!is.na(y))])
+      n_0 <- sum((1 - a)[which(!is.na(y))])
+      n <- n_1 + n_0
+      y1_bar <- mean(y[which(a == 1 & !is.na(y))])
+      y0_bar <- mean(y[which(a == 0 & !is.na(y))])
+      f1_bar <- sum(a*y1_pred)/n_1
+      f0_bar <- sum((1 - a)*y0_pred)/n_0
 
-          influence[which(is.na(influence))] <- 0
-          return(influence)
-        } else {
-          stop("Influence function not yet implemented for models with ",
-               "treatment-covariate interactions or models without intercepts.")
-        }
-      } else if(model_type == "stratified") {
-        stop("Influence function not yet implemented for treatment-stratified ",
-             "outcome models.")
-      }
+      beta_hat <- mean(y1_pred) - mean(y0_pred)
+
+      influence <-
+        ((a/n_1) - (1-a)/n_0)*y - beta_hat/n -
+        (a - a_bar)*(y1_pred/n_1 + y0_pred/n_0) -
+        (a - a_bar)*((y1_bar - f1_bar)/n_1 + (y0_bar - f0_bar)/n_0)
+
+      influence[which(is.na(influence))] <- 0
+      return(influence)
+
     } else {
       stop("Influence function not yet implemented for estimand \"",
            estimand, "\"")

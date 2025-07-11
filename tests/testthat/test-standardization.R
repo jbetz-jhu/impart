@@ -75,7 +75,35 @@ test_that(
           treatment_column = "tx",
           se_method = "influence"
         ),
-      regexp = "Influence function not yet implemented for models with treatment-covariate"
+      regexp = "Influence function not implemented for models without an intercept."
+    )
+
+    expect_error(
+      object =
+        standardization(
+          data = example_1_ia_1,
+          outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4 -1,
+          outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4 -1,
+          family = gaussian(link = "identity"),
+          estimand = "difference",
+          treatment_column = "tx",
+          se_method = "influence"
+        ),
+      regexp = "Influence function not implemented for models without an intercept."
+    )
+
+    expect_error(
+      object =
+        standardization(
+          data = example_1_ia_1,
+          outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4 -1,
+          outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4,
+          family = gaussian(link = "identity"),
+          estimand = "difference",
+          treatment_column = "tx",
+          se_method = "influence"
+        ),
+      regexp = "Influence function not implemented for models without an intercept."
     )
 
     expect_error(
@@ -83,13 +111,13 @@ test_that(
         standardization(
           data = example_1_ia_1,
           outcome_formula_control = y_4 ~ x_1 + x_2 + x_3 + x_4,
-          outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4,
+          outcome_formula_treatment = y_4 ~ x_1 + x_2 + x_3 + x_4 -1,
           family = gaussian(link = "identity"),
           estimand = "difference",
           treatment_column = "tx",
           se_method = "influence"
         ),
-      regexp = "Influence function not yet implemented for treatment-stratified"
+      regexp = "Influence function not implemented for models without an intercept."
     )
 
     expect_error(

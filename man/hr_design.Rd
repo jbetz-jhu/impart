@@ -6,7 +6,7 @@
 \alias{hr_alpha}
 \alias{hr_minimal}
 \alias{hr_design}
-\title{Calculate minimum hazard ratio, number of required events, power, or Type I error}
+\title{Design Calculations for a Hazard Ratio Estimand}
 \usage{
 hr_events(hazard_ratio, power = 0.8, alpha = 0.05, test_sides = 2, ratio = 1)
 
@@ -49,6 +49,13 @@ inferential target is the hazard ratio. \code{hr_design()} will calculate
 the minimum number of events, minimum hazard ratio, power, or Type I error
 when the other arguments are specified.
 }
+\details{
+The function \code{hr_design} takes in user input, and depending on the
+arguments supplied, calls the appropriate function depending on whether the
+number of pooled events observed (\code{hr_events}), power (\code{hr_power}),
+Type I Error (\code{hr_alpha}), or relative risk (\code{hr_minimal}) is left
+unspecified.
+}
 \examples{
 # Number of Events
 hr_design(
@@ -81,4 +88,17 @@ hr_design(
   alpha = 0.05,
   test_sides = 2
 )
+}
+\references{
+{
+Schoenfeld, DA. 1983. “Sample-Size Formula for the Proportional-Hazards
+Regression Model.” Biometrics 39 (2): 499.
+\url{https://doi.org/10.2307/2531021}.
+}
+}
+\seealso{
+\code{\link[stats:power.t.test]{stats::power.t.test()}} for design calculations for a difference in
+means, \code{\link[stats:power.prop.test]{stats::power.prop.test()}} for design calculations for a difference in
+proportions, \code{\link[=rr_design]{rr_design()}} for design calculations for a relative
+risk estimand.
 }
