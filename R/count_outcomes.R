@@ -144,7 +144,7 @@ count_outcomes <-
       long_times <-
         list(
           data.frame(
-            id = data[, id_variable],
+            id = data[, ".id"],
             event = "randomization",
             value = NA,
             time = data$`.e`,
@@ -173,7 +173,7 @@ count_outcomes <-
 
         event_time_data_i <-
           data.frame(
-            id = data_i[, id_variable],
+            id = data_i[, ".id"],
             event = outcome_variables[i],
             value = data_i[, outcome_variables[i]],
             time = data_i[, outcome_time_variables[i]],
