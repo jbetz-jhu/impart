@@ -132,10 +132,53 @@ unique parameters are constructed, and the required information is
 computed for each value of the parameters.</p>
     </div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The amount of information in a sample of size \(N\) depends on
+<em>nuisance parameters</em>, such as the variance of continuous outcomes,
+the risk of binary and time-to-event outcomes, rates of misssing data, and
+the correlation between covariates and the outcomes of interest.</p>
+<p>In studies with a fixed sample size, this sample size is chosen based on
+assumptions about these nuisance parameters, which are incorporated into the
+<em>effect size</em>. The sample size is chosen to give power \((1 - \beta)\)
+while maintaining a type I error rate of \((\alpha)\) under some assumed
+effect size. Inaccurate estimates of nuisance parameters can lead to
+over-powered or under-powered studies.</p>
+<p>In an information-monitored design, investigators choose an estimand of
+interest, such as the difference in means or proportions, that is free from
+nuisance parameters. A trial is designed to identify some minimum important
+difference \(\delta_{min}\) in the estimand with power \((1 - \beta)\)
+while maintaining a type I error rate of \((\alpha)\). Data is collected
+until the precision of the estimate (i.e. the reciprocal of its variance)
+reaches a pre-specified threshold \(\mathcal{I}\):</p>
+<p>$$\mathcal{I} = \left(\frac{Z_{\alpha/s} + Z_{\beta}}{\delta_{min}}\right)^2
+\approx \frac{1}{Var(\hat{\delta})} =
+\frac{1}{\left(SE(\hat{\delta})\right)^2}$$</p>
+<p>The sample size required to reach the information target \(\mathcal{I}\)
+depends on nuisance parameters mentioned above.</p>
+<p>This function allows a user to determine the target level of information
+\(\mathcal{I}\) needed to detect a difference of \(\delta_{min}\) in the
+estimand with power \((1 - \beta)\) while maintaining a type I error rate
+of \((\alpha)\).</p>
+    </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Mehta, CR, and Tsiatis AA. 2001. "Flexible Sample Size Considerations Using
+Information-Based Interim Monitoring." <em>Drug Information Journal</em>
+35 (4): 1095–1112. <a href="https://doi.org/10.1177/009286150103500407" class="external-link">https://doi.org/10.1177/009286150103500407</a></p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="https://rpact-com.github.io/rpact/reference/getDesignGroupSequential.html" class="external-link">rpact::getDesignGroupSequential()</a></code> for planning multi-stage
-designs, and <code><a href="required_information_sequential.html">required_information_sequential()</a></code> for adjusting the
-information level from a single stage design to a multi-stage design.</p></div>
+    <div class="dont-index"><p><a href="https://rpact-com.github.io/rpact/reference/getDesignGroupSequential.html" class="external-link">rpact::getDesignGroupSequential</a> for planning multi-stage
+designs, and <a href="inflation_factor.html">required_information_sequential</a> for adjusting the
+information level from a single stage design to a multi-stage design. To
+estimate the sample size (or count of events observed) at which the
+information target may be reached under assumed values of the nuisance
+parameters, see
+<a href="asymptotic_information.html">asymptotic_information_difference_means</a>,
+<a href="asymptotic_information.html">asymptotic_information_difference_proportions</a>,
+<a href="asymptotic_information.html">asymptotic_information_relative_risk</a>,
+<a href="mann_whitney.html">asymptotic_information_mann_whitney_fm</a>, and
+<a href="asymptotic_information_logrank.html">asymptotic_information_logrank</a>.</p></div>
     </div>
 
     <div class="section level2">

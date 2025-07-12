@@ -180,7 +180,7 @@ sample size at which the target information level is reached.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Assume control probability = 0.25</span></span>
 <span><span class="va">approximate_n_p0_0.25</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_binary_1_to_1</a></span><span class="op">(</span></span>
+<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_risk_difference</a></span><span class="op">(</span></span>
 <span>    information <span class="op">=</span> <span class="va">information_single_stage</span>,</span>
 <span>    pi_0 <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>    delta <span class="op">=</span> <span class="va">minimum_difference</span>,</span>
@@ -209,7 +209,7 @@ sample size at which the target information level is reached.</p>
 <span></span>
 <span><span class="co"># Assume control probability = 0.42</span></span>
 <span><span class="va">approximate_n_p0_0.42</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_binary_1_to_1</a></span><span class="op">(</span></span>
+<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_risk_difference</a></span><span class="op">(</span></span>
 <span>    information <span class="op">=</span> <span class="va">information_single_stage</span>,</span>
 <span>    pi_0 <span class="op">=</span> <span class="fl">0.42</span>,</span>
 <span>    delta <span class="op">=</span> <span class="va">minimum_difference</span>,</span>
@@ -391,7 +391,7 @@ the target level of information must be adjusted:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Inflate information level to account for multiple testing</span></span>
 <span><span class="va">information_adaptive</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/required_information_sequential.html">required_information_sequential</a></span><span class="op">(</span></span>
+<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/inflation_factor.html">required_information_sequential</a></span><span class="op">(</span></span>
 <span>    information_single_stage <span class="op">=</span> <span class="va">information_single_stage</span>,</span>
 <span>    trial_design <span class="op">=</span> <span class="va">trial_design</span></span>
 <span>  <span class="op">)</span></span>
@@ -411,7 +411,7 @@ levels can be reached at lower sample sizes, resulting in studies with
 shorter duration.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Information Only From Final Outcomes</span></span>
-<span><span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_binary_1_to_1</a></span><span class="op">(</span></span>
+<span><span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_risk_difference</a></span><span class="op">(</span></span>
 <span>  information <span class="op">=</span> <span class="va">information_rates</span><span class="op">*</span><span class="va">information_adaptive</span>,</span>
 <span>  pi_0 <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  pi_1 <span class="op">=</span> <span class="fl">0.25</span> <span class="op">+</span> <span class="va">minimum_difference</span>,</span>
@@ -424,7 +424,7 @@ shorter duration.</p>
 <span><span class="co"># 10% Relative Efficiency Increase from Covariates</span></span>
 <span><span class="va">relative_efficiency</span> <span class="op">&lt;-</span> <span class="fl">1.1</span></span>
 <span><span class="co"># Information From Final Outcomes + Covariates</span></span>
-<span><span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_binary_1_to_1</a></span><span class="op">(</span></span>
+<span><span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_risk_difference</a></span><span class="op">(</span></span>
 <span>  information <span class="op">=</span> <span class="va">information_rates</span><span class="op">*</span><span class="va">information_adaptive</span><span class="op">/</span><span class="va">relative_efficiency</span>,</span>
 <span>  pi_0 <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  pi_1 <span class="op">=</span> <span class="fl">0.25</span> <span class="op">+</span> <span class="va">minimum_difference</span>,</span>
@@ -437,7 +437,7 @@ shorter duration.</p>
 <span><span class="co"># 20% Relative Efficiency Increase from Covariates</span></span>
 <span><span class="va">relative_efficiency</span> <span class="op">&lt;-</span> <span class="fl">1.2</span></span>
 <span><span class="co"># Information From Final Outcomes + Covariates</span></span>
-<span><span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_binary_1_to_1</a></span><span class="op">(</span></span>
+<span><span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_risk_difference</a></span><span class="op">(</span></span>
 <span>  information <span class="op">=</span> <span class="va">information_rates</span><span class="op">*</span><span class="va">information_adaptive</span><span class="op">/</span><span class="va">relative_efficiency</span>,</span>
 <span>  pi_0 <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  pi_1 <span class="op">=</span> <span class="fl">0.25</span> <span class="op">+</span> <span class="va">minimum_difference</span>,</span>

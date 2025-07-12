@@ -77,22 +77,16 @@
         <dd>Apply group sequential stopping rules to test statistics</dd>
       </dl><dl><dt>
 
-          <code><a href="asymptotic_info.html">asymptotic_information_difference_means()</a></code> <code><a href="asymptotic_info.html">asymptotic_information_difference_proportions()</a></code> <code><a href="asymptotic_info.html">asymptotic_information_risk_difference()</a></code> <code><a href="asymptotic_info.html">asymptotic_information_relative_risk()</a></code>
+          <code><a href="asymptotic_information.html">asymptotic_information_difference_means()</a></code> <code><a href="asymptotic_information.html">asymptotic_information_difference_proportions()</a></code> <code><a href="asymptotic_information.html">asymptotic_information_risk_difference()</a></code> <code><a href="asymptotic_information.html">asymptotic_information_relative_risk()</a></code>
 
         </dt>
-        <dd>Approximate information from a random samples of a given size for continuous and binary outcomes</dd>
+        <dd>Compute Approximate Information from Sample Size: Continuous &amp; Binary Outcomes</dd>
       </dl><dl><dt>
 
           <code><a href="asymptotic_information_logrank.html">asymptotic_information_logrank()</a></code>
 
         </dt>
-        <dd>Approximate information from a random samples of a given size for log hazard ratio</dd>
-      </dl><dl><dt>
-
-          <code><a href="asymptotic_information_mann_whitney_fm.html">asymptotic_information_mann_whitney_fm()</a></code>
-
-        </dt>
-        <dd>Approximate information from a random samples of a given size for ordinal outcomes</dd>
+        <dd>Compute Approximate Information from Event Counts: Log Hazard Ratio</dd>
       </dl><dl><dt>
 
           <code><a href="boot_control.html">boot_control()</a></code> <code><a href="boot_control.html">boot_control_testing()</a></code>
@@ -191,10 +185,16 @@
         <dd>Impute missing baseline covariates using mean/mode imputation</dd>
       </dl><dl><dt>
 
-          <code><a href="information_to_n.html">information_to_n_continuous_1_to_1()</a></code> <code><a href="information_to_n.html">information_to_n_binary_1_to_1()</a></code> <code><a href="information_to_n.html">information_to_events_log_hr()</a></code>
+          <code><a href="inflation_factor.html">required_information_sequential()</a></code> <code><a href="inflation_factor.html">get_gsd_inflation_factor()</a></code>
 
         </dt>
-        <dd>Convert information level into an approximate sample size requirement for a one-stage design</dd>
+        <dd>Adjust Information Target for a Group Sequential Design</dd>
+      </dl><dl><dt>
+
+          <code><a href="information_to_n.html">information_to_n_difference_means()</a></code> <code><a href="information_to_n.html">information_to_n_risk_difference()</a></code> <code><a href="information_to_n.html">information_to_n_relative_risk()</a></code> <code><a href="information_to_n.html">information_to_events_log_hr()</a></code>
+
+        </dt>
+        <dd>Convert Information Target into Sample Size for Fixed N Single-Stage Design</dd>
       </dl><dl><dt>
 
           <code><a href="information_trajectory.html">information_trajectory()</a></code>
@@ -207,6 +207,12 @@
 
         </dt>
         <dd>Initialize an Information Monitoring Design</dd>
+      </dl><dl><dt>
+
+          <code><a href="mann_whitney.html">asymptotic_information_mann_whitney_fm()</a></code> <code><a href="mann_whitney.html">mw_from_pmfs()</a></code>
+
+        </dt>
+        <dd>Compute Approximate Information from Sample Size: Mann-Whitney Estimand</dd>
       </dl><dl><dt>
 
           <code><a href="monitored_analysis.html">monitored_analysis()</a></code>
@@ -225,12 +231,6 @@
 
         </dt>
         <dd>Check consistency of a <code>monitored_design</code> object</dd>
-      </dl><dl><dt>
-
-          <code><a href="mw_from_pmfs.html">mw_from_pmfs()</a></code>
-
-        </dt>
-        <dd>Title Compute the Mann-Whitney estimand from Probability Mass Functions</dd>
       </dl><dl><dt>
 
           <code><a href="orthogonalize_estimates.html">orthogonalize_estimates()</a></code>
@@ -261,12 +261,6 @@
 
         </dt>
         <dd>Determine the information level required for a one-stage, fixed sample size design</dd>
-      </dl><dl><dt>
-
-          <code><a href="required_information_sequential.html">required_information_sequential()</a></code>
-
-        </dt>
-        <dd>Adjust Information for Interim Monitoring</dd>
       </dl><dl><dt>
 
           <code><a href="rr_design.html">rr_n_per_arm()</a></code> <code><a href="rr_design.html">rr_power()</a></code> <code><a href="rr_design.html">rr_alpha()</a></code> <code><a href="rr_design.html">rr_minimal()</a></code> <code><a href="rr_design.html">rr_design()</a></code>

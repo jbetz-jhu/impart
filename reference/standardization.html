@@ -283,6 +283,8 @@ the nonparametric bootstrap.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   estimate se_influence lcl_influence_0.95 ucl_influence_0.95   estimand</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 3.302204     1.147582           1.052984           5.551424 difference</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   variance_factor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1.022422</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">impart</span><span class="fu">::</span><span class="fu">standardization</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">example_1</span>,</span></span>
@@ -292,8 +294,8 @@ the nonparametric bootstrap.</p>
 <span class="r-in"><span>  treatment_column <span class="op">=</span> <span class="st">"tx"</span>,</span></span>
 <span class="r-in"><span>  se_method <span class="op">=</span> <span class="st">"score"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   estimate se_score lcl_score_0.95 ucl_score_0.95   estimand</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 3.302204 1.152525       1.043296       5.561112 difference</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   estimate se_score lcl_score_0.95 ucl_score_0.95   estimand variance_factor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 3.302204 1.152525       1.043296       5.561112 difference        1.022422</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

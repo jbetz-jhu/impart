@@ -148,7 +148,7 @@ previous vignettes:</p>
 <span></span>
 <span><span class="co"># Inflate information level to account for multiple testing</span></span>
 <span><span class="va">information_adaptive</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/required_information_sequential.html">required_information_sequential</a></span><span class="op">(</span></span>
+<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/inflation_factor.html">required_information_sequential</a></span><span class="op">(</span></span>
 <span>    information_single_stage <span class="op">=</span> <span class="va">information_single_stage</span>,</span>
 <span>    trial_design <span class="op">=</span> <span class="va">trial_design</span></span>
 <span>  <span class="op">)</span></span>
@@ -219,7 +219,9 @@ argument.</p>
 <code><a href="../reference/standardization.html">standardization()</a></code>, the corresponding small-sample variance
 correction is <code><a href="../reference/standardization.html">standardization_df_adjust_tsiatis_2008()</a></code>:
 this adjusts the variance according to the sample size in each arm and
-the number of parameters in each regression model.</p>
+the number of parameters in each regression model.
+<strong>Note:</strong> the number of bootstraps used is decreased for
+the purposes of lower computational time.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Obtain time of last event</span></span>
 <span><span class="va">last_event</span> <span class="op">&lt;-</span></span>
@@ -260,7 +262,7 @@ the number of parameters in each regression model.</p>
 <span>    n_min <span class="op">=</span> <span class="fl">50</span>,</span>
 <span>    n_increment <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>    rng_seed <span class="op">=</span> <span class="fl">23456</span>,</span>
-<span>    control <span class="op">=</span> <span class="fu"><a href="../reference/monitored_analysis_control.html">monitored_analysis_control</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    control <span class="op">=</span> <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/monitored_analysis_control.html">monitored_analysis_control</a></span><span class="op">(</span>n_bootstrap <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">data_ia_1_trajectory</span></span>
@@ -313,35 +315,32 @@ the number of parameters in each regression model.</p>
 plotted:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
-<span>  <span class="va">information</span> <span class="op">~</span> <span class="va">y_4</span>,</span>
+<span>  <span class="va">information</span> <span class="op">~</span> <span class="va">count_complete</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">data_ia_1_trajectory</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(predvars, data, env): object 'y_4' not found</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span>
-<span>    formula <span class="op">=</span> <span class="va">information</span> <span class="op">~</span> <span class="va">y_4</span>,</span>
+<span>    formula <span class="op">=</span> <span class="va">information</span> <span class="op">~</span> <span class="va">count_complete</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">data_ia_1_trajectory</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(predvars, data, env): object 'y_4' not found</span></span>
 <span></span>
 <span><span class="co"># Requires `deming` package</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
 <span>  <span class="fu">deming</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/deming/man/theilsen.html" class="external-link">theilsen</a></span><span class="op">(</span></span>
-<span>    formula <span class="op">=</span> <span class="va">information</span> <span class="op">~</span> <span class="va">y_4</span>,</span>
+<span>    formula <span class="op">=</span> <span class="va">information</span> <span class="op">~</span> <span class="va">count_complete</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">data_ia_1_trajectory</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(predvars, data, env): object 'y_4' not found</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span></span>
 <span>  h <span class="op">=</span> <span class="va">monitored_design</span><span class="op">$</span><span class="va">original_design</span><span class="op">$</span><span class="va">information_thresholds</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="../reference/figures/Smooth-Information-Trajectory-1.png" width="80%" style="display: block; margin: auto;"></p>
 <p>Once the information level has been confirmed to be above the
 threshold, conducting the analysis is similar to computing
 information:</p>
@@ -359,7 +358,8 @@ information:</p>
 <span>        family <span class="op">=</span> <span class="va">gaussian</span>,</span>
 <span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span></span>
 <span>      <span class="op">)</span>,</span>
-<span>    correction_function <span class="op">=</span> <span class="va">standardization_df_adjust_tsiatis_2008</span></span>
+<span>    correction_function <span class="op">=</span> <span class="va">standardization_df_adjust_tsiatis_2008</span>,</span>
+<span>    control <span class="op">=</span> <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/monitored_analysis_control.html">monitored_analysis_control</a></span><span class="op">(</span>n_bootstrap <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">interim_analysis_1</span><span class="op">$</span><span class="va">interim_analysis_1</span><span class="op">$</span><span class="va">decision</span></span>
@@ -395,7 +395,8 @@ provided, and the result of the previous analysis is passed using the
 <span>        family <span class="op">=</span> <span class="va">gaussian</span>,</span>
 <span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span></span>
 <span>      <span class="op">)</span>,</span>
-<span>    correction_function <span class="op">=</span> <span class="va">standardization_df_adjust_tsiatis_2008</span></span>
+<span>    correction_function <span class="op">=</span> <span class="va">standardization_df_adjust_tsiatis_2008</span>,</span>
+<span>    control <span class="op">=</span> <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/monitored_analysis_control.html">monitored_analysis_control</a></span><span class="op">(</span>n_bootstrap <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">interim_analysis_2</span><span class="op">$</span><span class="va">interim_analysis_2</span><span class="op">$</span><span class="va">decision</span></span>
@@ -428,7 +429,8 @@ provided, and the result of the previous analysis is passed using the
 <span>        family <span class="op">=</span> <span class="va">gaussian</span>,</span>
 <span>        treatment_column <span class="op">=</span> <span class="st">"tx"</span></span>
 <span>      <span class="op">)</span>,</span>
-<span>    correction_function <span class="op">=</span> <span class="va">standardization_df_adjust_tsiatis_2008</span></span>
+<span>    correction_function <span class="op">=</span> <span class="va">standardization_df_adjust_tsiatis_2008</span>,</span>
+<span>    control <span class="op">=</span> <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/monitored_analysis_control.html">monitored_analysis_control</a></span><span class="op">(</span>n_bootstrap <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">final_analysis</span><span class="op">$</span><span class="va">final_analysis</span><span class="op">$</span><span class="va">decision</span></span>

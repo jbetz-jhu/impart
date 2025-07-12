@@ -169,7 +169,7 @@ control.</p>
 <p>Translating information levels to a sample size requires making some
 assumption about nuisance parameters, such as the variability of the
 outcomes in each treatment arm. The
-<code>information_to_n_continuous_1_to_1</code> function takes an
+<code>information_to_n_difference_means</code> function takes an
 information level and values of the nuisance parameters, and gives an
 approximate sample size. Note that this calculation only takes into
 account the information contained in the observed outcomes: if some
@@ -179,7 +179,7 @@ sample size at which the target information level is reached.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Assume Equal Variances: 7.5</span></span>
 <span><span class="va">approximate_n_sd_7.5</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_continuous_1_to_1</a></span><span class="op">(</span></span>
+<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_difference_means</a></span><span class="op">(</span></span>
 <span>    information <span class="op">=</span> <span class="va">information_single_stage</span>,</span>
 <span>    sigma_0 <span class="op">=</span> <span class="fl">7.5</span>,</span>
 <span>    sigma_1 <span class="op">=</span> <span class="fl">7.5</span>,</span>
@@ -207,7 +207,7 @@ sample size at which the target information level is reached.</p>
 <span><span class="co">#&gt; NOTE: n is number in *each* group</span></span>
 <span><span class="co"># Equal Variances: 10</span></span>
 <span><span class="va">approximate_n_sd_10</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_continuous_1_to_1</a></span><span class="op">(</span></span>
+<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_difference_means</a></span><span class="op">(</span></span>
 <span>    information <span class="op">=</span> <span class="va">information_single_stage</span>,</span>
 <span>    sigma_0 <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>    sigma_1 <span class="op">=</span> <span class="fl">10</span>,</span>
@@ -236,7 +236,7 @@ sample size at which the target information level is reached.</p>
 the populations are met, the sample size requirements determined using a
 fixed sample size design (<code><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html" class="external-link">pwr::pwr.t.test</a></code>) or an
 information-monitored design
-(<code>information_to_n_continuous_1_to_1</code>) are the same. The
+(<code>information_to_n_difference_means</code>) are the same. The
 advantage of an information-adaptive design is the sample size adapts to
 the information in the accruing data: rather than making assumptions
 about the standard deviations in each population, which could result in
@@ -386,7 +386,7 @@ the target level of information must be adjusted:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Inflate information level to account for multiple testing</span></span>
 <span><span class="va">information_adaptive</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/required_information_sequential.html">required_information_sequential</a></span><span class="op">(</span></span>
+<span>  <span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/inflation_factor.html">required_information_sequential</a></span><span class="op">(</span></span>
 <span>    information_single_stage <span class="op">=</span> <span class="va">information_single_stage</span>,</span>
 <span>    trial_design <span class="op">=</span> <span class="va">trial_design</span></span>
 <span>  <span class="op">)</span></span>
@@ -406,7 +406,7 @@ levels can be reached at lower sample sizes, resulting in studies with
 shorter duration.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Information Only From Final Outcomes</span></span>
-<span><span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_continuous_1_to_1</a></span><span class="op">(</span></span>
+<span><span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_difference_means</a></span><span class="op">(</span></span>
 <span>    information <span class="op">=</span> <span class="va">information_rates</span><span class="op">*</span><span class="va">information_adaptive</span>,</span>
 <span>    sigma_0 <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>    sigma_1 <span class="op">=</span> <span class="fl">10</span>,</span>
@@ -419,7 +419,7 @@ shorter duration.</p>
 <span><span class="co"># 10% Relative Efficiency Increase from Covariates</span></span>
 <span><span class="va">relative_efficiency</span> <span class="op">&lt;-</span> <span class="fl">1.1</span></span>
 <span><span class="co"># Information From Final Outcomes + Covariates</span></span>
-<span><span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_continuous_1_to_1</a></span><span class="op">(</span></span>
+<span><span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_difference_means</a></span><span class="op">(</span></span>
 <span>  information <span class="op">=</span> <span class="va">information_rates</span><span class="op">*</span><span class="va">information_adaptive</span><span class="op">/</span><span class="va">relative_efficiency</span>,</span>
 <span>  sigma_0 <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  sigma_1 <span class="op">=</span> <span class="fl">10</span>,</span>
@@ -432,7 +432,7 @@ shorter duration.</p>
 <span><span class="co"># 20% Relative Efficiency Increase from Covariates</span></span>
 <span><span class="va">relative_efficiency</span> <span class="op">&lt;-</span> <span class="fl">1.2</span></span>
 <span><span class="co"># Information From Final Outcomes + Covariates</span></span>
-<span><span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_continuous_1_to_1</a></span><span class="op">(</span></span>
+<span><span class="fu">impart</span><span class="fu">::</span><span class="fu"><a href="../reference/information_to_n.html">information_to_n_difference_means</a></span><span class="op">(</span></span>
 <span>  information <span class="op">=</span> <span class="va">information_rates</span><span class="op">*</span><span class="va">information_adaptive</span><span class="op">/</span><span class="va">relative_efficiency</span>,</span>
 <span>  sigma_0 <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  sigma_1 <span class="op">=</span> <span class="fl">10</span>,</span>
