@@ -318,7 +318,8 @@ standardization <-
             se_boot = sd(boot_result$t),
             se_boot_df_adjusted = sd(boot_result$t*sqrt(variance_factor)),
             t(do.call(what = c, args = ci_results)),
-            estimand = estimand
+            estimand = estimand,
+            variance_factor = variance_factor
           )
 
         if(verbose){
@@ -389,6 +390,8 @@ standardization <-
           data.frame(
             estimand = estimand
           )
+
+        standardization_result$variance_factor <- variance_factor
 
         return(standardization_result)
       }

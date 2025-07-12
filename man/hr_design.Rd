@@ -91,8 +91,8 @@ hr_design(
 }
 \references{
 {
-Schoenfeld, DA. 1983. “Sample-Size Formula for the Proportional-Hazards
-Regression Model.” Biometrics 39 (2): 499.
+Schoenfeld, DA. 1983. "Sample-Size Formula for the Proportional-Hazards
+Regression Model." \emph{Biometrics} 39 (2): 499.
 \url{https://doi.org/10.2307/2531021}.
 }
 }

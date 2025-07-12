@@ -27,9 +27,9 @@ A \code{data.frame} after imputing the columns named in
 \code{baseline_covariates}
 }
 \description{
-Impute missing values in baseline covariates. For \code{numeric} columns, the
-mean value of the observed values is imputed. For \code{factor} columns, the
-mode value of the observed values is imputed.
+This function is for impute missing values in baseline covariates. For
+\code{numeric} columns, the mean value of the observed values is imputed.
+For \code{factor} columns, the mode value of the observed values is imputed.
 }
 \examples{
 set.seed(12345)
@@ -45,4 +45,13 @@ impute_covariates_mean_mode(
   data = mtcars_missing,
   baseline_covariates = names(mtcars_missing)
 )
+}
+\references{
+{
+Benkeser, D, Díaz, I, Luedtke, A, Segal, J, Scharfstein, D, and Rosenblum,
+M. 2020. "Improving Precision and Power in Randomized Trials for COVID-19
+Treatments Using Covariate Adjustment, for Binary, Ordinal, and Time-to-Event
+Outcomes." \emph{Biometrics} 77 (4): 1467–81.
+\url{https://doi.org/10.1111/biom.13377}.
+}
 }

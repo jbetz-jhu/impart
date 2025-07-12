@@ -1,8 +1,8 @@
 #' Impute missing baseline covariates using mean/mode imputation
 #'
-#' Impute missing values in baseline covariates. For \code{numeric} columns, the
-#' mean value of the observed values is imputed. For \code{factor} columns, the
-#' mode value of the observed values is imputed.
+#' This function is for impute missing values in baseline covariates. For
+#' \code{numeric} columns, the mean value of the observed values is imputed.
+#' For \code{factor} columns, the mode value of the observed values is imputed.
 #'
 #' @param data a \code{data.frame} to impute
 #' @param baseline_covariates A \code{character} \code{vector} containing the
@@ -17,6 +17,14 @@
 #' \code{baseline_covariates}
 #'
 #' @export
+#'
+#' @references {
+#' Benkeser, D, Díaz, I, Luedtke, A, Segal, J, Scharfstein, D, and Rosenblum,
+#' M. 2020. "Improving Precision and Power in Randomized Trials for COVID-19
+#' Treatments Using Covariate Adjustment, for Binary, Ordinal, and Time-to-Event
+#' Outcomes." \emph{Biometrics} 77 (4): 1467–81.
+#' \url{https://doi.org/10.1111/biom.13377}.
+#' }
 #'
 #' @examples
 #' set.seed(12345)

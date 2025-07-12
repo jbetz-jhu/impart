@@ -142,15 +142,15 @@ rr_design(
 }
 \references{
 {
-Mehta C, Gao P, Bhatt DL, Harrington RA, Skerjanec S, and Ware JH. 2009.
-“Optimizing Trial Design: Sequential, Adaptive, and Enrichment Strategies.”
-Circulation 119 (4): 597–605.
+Mehta CR, Gao P, Bhatt DL, Harrington RA, Skerjanec S, and Ware JH. 2009.
+"Optimizing Trial Design: Sequential, Adaptive, and Enrichment Strategies."
+\emph{Circulation} 119 (4): 597–605.
 \url{https://doi.org/10.1161/circulationaha.108.809707}.
 }
 }
 \seealso{
-\code{\link[stats:power.t.test]{stats::power.t.test()}} for design calculations for a difference in
-means, \code{\link[stats:power.prop.test]{stats::power.prop.test()}} for design calculations for a difference in
-proportions, \code{\link[=hr_design]{hr_design()}} for design calculations for a hazard ratio
+\link[stats:power.t.test]{stats::power.t.test} for design calculations for a difference in
+means, \link[stats:power.prop.test]{stats::power.prop.test} for design calculations for a difference in
+proportions, \link{hr_design} for design calculations for a hazard ratio
 estimand.
 }

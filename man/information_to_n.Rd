@@ -2,24 +2,32 @@
 % Please edit documentation in R/information_to_n.R
 \name{information_to_n}
 \alias{information_to_n}
-\alias{information_to_n_continuous_1_to_1}
-\alias{information_to_n_binary_1_to_1}
+\alias{information_to_n_difference_means}
+\alias{information_to_n_risk_difference}
+\alias{information_to_n_relative_risk}
 \alias{information_to_events_log_hr}
-\title{Convert information level into an approximate sample size requirement for a
-one-stage design}
+\title{Convert Information Target into Sample Size for Fixed N Single-Stage Design}
 \usage{
-information_to_n_continuous_1_to_1(
+information_to_n_difference_means(
   information,
   sigma_0,
   sigma_1,
   round_up = TRUE
 )
 
-information_to_n_binary_1_to_1(
+information_to_n_risk_difference(
   information,
   pi_0 = NULL,
   pi_1 = NULL,
   delta = NULL,
+  round_up = TRUE
+)
+
+information_to_n_relative_risk(
+  information,
+  pi_0 = NULL,
+  pi_1 = NULL,
+  rr = NULL,
   round_up = TRUE
 )
 
@@ -49,6 +57,8 @@ receiving the control intervention}
 
 \item{delta}{The risk difference (i.e. \code{pi_1 - pi_0})}
 
+\item{rr}{The relative risk of the event in treatment vs. control (i.e. \code{pi_1/pi_0})}
+
 \item{allocation_ratio}{The allocation ratio of participants receiving
 treatment to those receiving control}
 }
@@ -59,18 +69,128 @@ a grid of unique parameters are constructed, and the approximate information
 is computed for each value of the parameters.
 }
 \description{
-These functions provide an asymptotic approximation to the information
-(i.e. precision, inverse of the variance) provided by two samples under
-assumed values of nuisance parameters for continuous and binary outcomes.
+These functions convert an information target into an approximate sample size
+required for a single-stage fixed sample size design with the same power and
+type I error requirements under assumed values of nuisance parameters.
+}
+\details{
+The amount of information in a sample of size \eqn{N} depends on
+\emph{nuisance parameters}, such as the variance of continuous outcomes,
+the risk of binary and time-to-event outcomes, rates of misssing data, and
+the correlation between covariates and the outcomes of interest.
+
+In studies with a fixed sample size, this sample size is chosen based on
+assumptions about these nuisance parameters, which are incorporated into the
+\emph{effect size}. The sample size is chosen to give power \eqn{(1 - \beta)}
+while maintaining a type I error rate of \eqn{(\alpha)} under some assumed
+effect size. Inaccurate estimates of nuisance parameters can lead to
+over-powered or under-powered studies.
+
+In an information-monitored design, investigators choose an estimand of
+interest, such as the difference in means or proportions, that is free from
+nuisance parameters. A trial is designed to identify some minimum important
+difference \eqn{\delta_{min}} in the estimand with power \eqn{(1 - \beta)}
+while maintaining a type I error rate of \eqn{(\alpha)}. Data is collected
+until the precision of the estimate (i.e. the reciprocal of its variance)
+reaches a pre-specified threshold \eqn{\mathcal{I}}:
+
+\deqn{\mathcal{I} = \left(\frac{Z_{\alpha/s} + Z_{\beta}}{\delta_{min}}\right)^2
+\approx \frac{1}{Var(\hat{\delta})} =
+\frac{1}{\left(SE(\hat{\delta})\right)^2}}
+
+The sample size required to reach the information target \eqn{\mathcal{I}}
+depends on nuisance parameters mentioned above.
+
+These functions allow a user to determine an approximate sample size \eqn{N}
+at which the information target \eqn{\mathcal{I}} would be reached under some
+assumptions about the nuisance parameters.
 }
 \examples{
-# To add
+information_to_n_difference_means(
+    information =
+      required_information_single_stage(
+        delta = 5,
+        power = 0.8,
+        alpha = 0.05,
+        sides = 2
+      ),
+    sigma_0 = 10,
+    sigma_1 = 10,
+    round_up = TRUE
+  )
 
+power.t.test(
+  delta = 5, sd = 10, sig.level = 0.05, power = 0.8
+)
+
+information_to_n_risk_difference(
+  information =
+    required_information_single_stage(
+      delta = 0.1,
+      power = 0.8,
+      alpha = 0.05,
+      sides = 2
+    ),
+  pi_0 = 0.25,
+  pi_1 = 0.15,
+  round_up = TRUE
+)
+
+power.prop.test(p1 = 0.25, p2 = 0.15, sig.level = 0.05, power = 0.8)
+
+information_to_n_relative_risk(
+  information =
+    required_information_single_stage(
+      delta = log(0.5),
+      power = 0.8,
+      alpha = 0.05,
+      sides = 2
+    ),
+  pi_0 = 0.2,
+  pi_1 = 0.1,
+  round_up = TRUE
+)
+
+rr_design(
+  pi_1 = 0.1,
+  pi_0 = 0.2,
+  power = 0.8,
+  alpha = 0.05
+)
+
+information_to_events_log_hr(
+  information =
+    required_information_single_stage(
+      delta = log(0.5),
+      power = 0.8,
+      alpha = 0.05,
+      sides = 2
+    ),
+  allocation_ratio = 1,
+  round_up = TRUE
+)
+
+hr_design(
+  hazard_ratio = 0.5,
+  power = 0.8,
+  alpha = 0.05,
+  test_sides = 2
+)
+}
+\references{
+{
+Mehta, CR, and Tsiatis AA. 2001. "Flexible Sample Size Considerations Using
+Information-Based Interim Monitoring". \emph{Drug Information Journal}
+35 (4): 1095–1112. \url{https://doi.org/10.1177/009286150103500407}
+}
 }
 \seealso{
-\code{\link[=asymptotic_information_difference_means]{asymptotic_information_difference_means()}},
-\code{\link[=asymptotic_information_difference_proportions]{asymptotic_information_difference_proportions()}}, and
-\code{\link[=asymptotic_information_mann_whitney_fm]{asymptotic_information_mann_whitney_fm()}} for an asymptotic
+\link{asymptotic_information_difference_means},
+\link{asymptotic_information_difference_proportions},
+\link{asymptotic_information_relative_risk},
+\link{asymptotic_information_mann_whitney_fm}, and
+\link{asymptotic_information_logrank} for an asymptotic
 approximation of the information for a given sample size and values of the
-nuisance parameters.
+nuisance parameters, and \link{required_information_single_stage} for
+determining the information target.
 }

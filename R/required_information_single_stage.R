@@ -8,6 +8,38 @@
 #' \code{required_information_single_stage} for ordinal outcomes, where the null
 #' value of the Mann-Whitney estimand is 0.5.
 #'
+#' The amount of information in a sample of size \eqn{N} depends on
+#' \emph{nuisance parameters}, such as the variance of continuous outcomes,
+#' the risk of binary and time-to-event outcomes, rates of misssing data, and
+#' the correlation between covariates and the outcomes of interest.
+#'
+#' In studies with a fixed sample size, this sample size is chosen based on
+#' assumptions about these nuisance parameters, which are incorporated into the
+#' \emph{effect size}. The sample size is chosen to give power \eqn{(1 - \beta)}
+#' while maintaining a type I error rate of \eqn{(\alpha)} under some assumed
+#' effect size. Inaccurate estimates of nuisance parameters can lead to
+#' over-powered or under-powered studies.
+#'
+#' In an information-monitored design, investigators choose an estimand of
+#' interest, such as the difference in means or proportions, that is free from
+#' nuisance parameters. A trial is designed to identify some minimum important
+#' difference \eqn{\delta_{min}} in the estimand with power \eqn{(1 - \beta)}
+#' while maintaining a type I error rate of \eqn{(\alpha)}. Data is collected
+#' until the precision of the estimate (i.e. the reciprocal of its variance)
+#' reaches a pre-specified threshold \eqn{\mathcal{I}}:
+#'
+#' \deqn{\mathcal{I} = \left(\frac{Z_{\alpha/s} + Z_{\beta}}{\delta_{min}}\right)^2
+#' \approx \frac{1}{Var(\hat{\delta})} =
+#' \frac{1}{\left(SE(\hat{\delta})\right)^2}}
+#'
+#' The sample size required to reach the information target \eqn{\mathcal{I}}
+#' depends on nuisance parameters mentioned above.
+#'
+#' This function allows a user to determine the target level of information
+#' \eqn{\mathcal{I}} needed to detect a difference of \eqn{\delta_{min}} in the
+#' estimand with power \eqn{(1 - \beta)} while maintaining a type I error rate
+#' of \eqn{(\alpha)}.
+#'
 #' @param alpha Desired Type I Error Rate of the test
 #' @param sides (Scalar - 1 or 2): Type of Test, either 1-sided or 2-sided.
 #' @param power Desired power of the test (1 - Type II Error Rate)
@@ -21,9 +53,23 @@
 #'
 #' @export
 #'
-#' @seealso [rpact::getDesignGroupSequential()] for planning multi-stage
-#' designs, and [impart::required_information_sequential()] for adjusting the
-#' information level from a single stage design to a multi-stage design.
+#' @seealso [rpact::getDesignGroupSequential] for planning multi-stage
+#' designs, and [impart::required_information_sequential] for adjusting the
+#' information level from a single stage design to a multi-stage design. To
+#' estimate the sample size (or count of events observed) at which the
+#' information target may be reached under assumed values of the nuisance
+#' parameters, see
+#' [impart::asymptotic_information_difference_means],
+#' [impart::asymptotic_information_difference_proportions],
+#' [impart::asymptotic_information_relative_risk],
+#' [impart::asymptotic_information_mann_whitney_fm], and
+#' [impart::asymptotic_information_logrank].
+#'
+#' @references {
+#' Mehta, CR, and Tsiatis AA. 2001. "Flexible Sample Size Considerations Using
+#' Information-Based Interim Monitoring." \emph{Drug Information Journal}
+#' 35 (4): 1095–1112. \url{https://doi.org/10.1177/009286150103500407}
+#' }
 #'
 #' @examples
 #' # When a single value is supplied for each parameter, a scalar is returned:

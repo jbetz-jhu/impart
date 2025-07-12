@@ -439,14 +439,14 @@ This trajectory can be smoothed using regression, ideally using a method resista
 #|   A plot of the time series of information with linear regression fits
 #|   superimposed on top.
 plot(
-  information_fraction ~ y_4,
+  information_fraction ~ count_complete,
   data = data_n_70_trajectory,
   ylim = c(0, 1)
 )
 
 abline(
   lm(
-    formula = information_fraction ~ y_4,
+    formula = information_fraction ~ count_complete,
     data = data_n_70_trajectory
   ),
   lty = 1
@@ -455,7 +455,7 @@ abline(
 # Requires `deming` package
 abline(
   deming::theilsen(
-    formula = information_fraction ~ y_4,
+    formula = information_fraction ~ count_complete,
     data = data_n_70_trajectory
   ),
   lty = 3

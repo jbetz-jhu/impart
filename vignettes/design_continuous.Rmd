@@ -123,12 +123,12 @@ For example, detecting a difference in means of `r minimum_difference` with `r 1
 
 ## Translating Information into Sample Size
 
-Translating information levels to a sample size requires making some assumption about nuisance parameters, such as the variability of the outcomes in each treatment arm. The `information_to_n_continuous_1_to_1` function takes an information level and values of the nuisance parameters, and gives an approximate sample size. Note that this calculation only takes into account the information contained in the observed outcomes: if some outcomes are missing, or if the analysis makes use of information in baseline covariates and intermediate outcomes, this can change the sample size at which the target information level is reached.
+Translating information levels to a sample size requires making some assumption about nuisance parameters, such as the variability of the outcomes in each treatment arm. The `information_to_n_difference_means` function takes an information level and values of the nuisance parameters, and gives an approximate sample size. Note that this calculation only takes into account the information contained in the observed outcomes: if some outcomes are missing, or if the analysis makes use of information in baseline covariates and intermediate outcomes, this can change the sample size at which the target information level is reached.
 
 ```{r Translate-Information-to-N}
 # Assume Equal Variances: 7.5
 approximate_n_sd_7.5 <-
-  impart::information_to_n_continuous_1_to_1(
+  impart::information_to_n_difference_means(
     information = information_single_stage,
     sigma_0 = 7.5,
     sigma_1 = 7.5,
@@ -144,7 +144,7 @@ pwr::pwr.t.test(
 )
 # Equal Variances: 10
 approximate_n_sd_10 <-
-  impart::information_to_n_continuous_1_to_1(
+  impart::information_to_n_difference_means(
     information = information_single_stage,
     sigma_0 = 10,
     sigma_1 = 10,
@@ -159,7 +159,7 @@ pwr::pwr.t.test(
 )
 ```
 
-Note that under specific assumptions about the standard deviations in the populations are met, the sample size requirements determined using a fixed sample size design (`pwr::pwr.t.test`) or an information-monitored design (`information_to_n_continuous_1_to_1`) are the same. The advantage of an information-adaptive design is the sample size adapts to the information in the accruing data: rather than making assumptions about the standard deviations in each population, which could result in an over- or under-powered trial, data collection proceeds until the target information level is met, which ensures adequate power and Type I Error control.
+Note that under specific assumptions about the standard deviations in the populations are met, the sample size requirements determined using a fixed sample size design (`pwr::pwr.t.test`) or an information-monitored design (`information_to_n_difference_means`) are the same. The advantage of an information-adaptive design is the sample size adapts to the information in the accruing data: rather than making assumptions about the standard deviations in each population, which could result in an over- or under-powered trial, data collection proceeds until the target information level is met, which ensures adequate power and Type I Error control.
 
 
 
@@ -297,7 +297,7 @@ Appropriately including information from covariates has the potential to increas
 
 ```{r Unadjusted-vs-Adjusted-Analysis}
 # Information Only From Final Outcomes
-impart::information_to_n_continuous_1_to_1(
+impart::information_to_n_difference_means(
     information = information_rates*information_adaptive,
     sigma_0 = 10,
     sigma_1 = 10,
@@ -306,7 +306,7 @@ impart::information_to_n_continuous_1_to_1(
 # 10% Relative Efficiency Increase from Covariates
 relative_efficiency <- 1.1
 # Information From Final Outcomes + Covariates
-impart::information_to_n_continuous_1_to_1(
+impart::information_to_n_difference_means(
   information = information_rates*information_adaptive/relative_efficiency,
   sigma_0 = 10,
   sigma_1 = 10,
@@ -315,7 +315,7 @@ impart::information_to_n_continuous_1_to_1(
 # 20% Relative Efficiency Increase from Covariates
 relative_efficiency <- 1.2
 # Information From Final Outcomes + Covariates
-impart::information_to_n_continuous_1_to_1(
+impart::information_to_n_difference_means(
   information = information_rates*information_adaptive/relative_efficiency,
   sigma_0 = 10,
   sigma_1 = 10,

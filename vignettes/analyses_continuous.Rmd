@@ -137,7 +137,7 @@ Before conducting the first interim analysis, the information level should be ab
 
 Analysts will need to specify `estimation_function`, the function used to compute the estimate, and `estimation_arguments`, a list of arguments aside from the data needed for this computation. Estimators may have a variance correction factor that can be computed from the analysis parameters: this can be specified using the `correction_function` argument.
 
-For the standardization estimator computed by `standardization()`, the corresponding small-sample variance correction is `standardization_df_adjust_tsiatis_2008()`: this adjusts the variance according to the sample size in each arm and the number of parameters in each regression model.
+For the standardization estimator computed by `standardization()`, the corresponding small-sample variance correction is `standardization_df_adjust_tsiatis_2008()`: this adjusts the variance according to the sample size in each arm and the number of parameters in each regression model. **Note:** the number of bootstraps used is decreased for the purposes of lower computational time.
 
 
 ```{r Compute-Information-Trajectory}
@@ -180,7 +180,7 @@ data_ia_1_trajectory <-
     n_min = 50,
     n_increment = 3,
     rng_seed = 23456,
-    control = monitored_analysis_control()
+    control = impart::monitored_analysis_control(n_bootstrap = 1000)
   )
 
 data_ia_1_trajectory
@@ -192,13 +192,13 @@ Once the trajectory has been computed, it can be smoothed and plotted:
 
 ```{r Smooth-Information-Trajectory}
 plot(
-  information ~ y_4,
+  information ~ count_complete,
   data = data_ia_1_trajectory
 )
 
 abline(
   lm(
-    formula = information ~ y_4,
+    formula = information ~ count_complete,
     data = data_ia_1_trajectory
   ),
   lty = 1
@@ -207,7 +207,7 @@ abline(
 # Requires `deming` package
 abline(
   deming::theilsen(
-    formula = information ~ y_4,
+    formula = information ~ count_complete,
     data = data_ia_1_trajectory
   ),
   lty = 3
@@ -237,7 +237,8 @@ interim_analysis_1 <-
         family = gaussian,
         treatment_column = "tx"
       ),
-    correction_function = standardization_df_adjust_tsiatis_2008
+    correction_function = standardization_df_adjust_tsiatis_2008,
+    control = impart::monitored_analysis_control(n_bootstrap = 1000)
   )
 
 interim_analysis_1$interim_analysis_1$decision
@@ -271,7 +272,8 @@ interim_analysis_2 <-
         family = gaussian,
         treatment_column = "tx"
       ),
-    correction_function = standardization_df_adjust_tsiatis_2008
+    correction_function = standardization_df_adjust_tsiatis_2008,
+    control = impart::monitored_analysis_control(n_bootstrap = 1000)
   )
 
 interim_analysis_2$interim_analysis_2$decision
@@ -305,7 +307,8 @@ final_analysis <-
         family = gaussian,
         treatment_column = "tx"
       ),
-    correction_function = standardization_df_adjust_tsiatis_2008
+    correction_function = standardization_df_adjust_tsiatis_2008,
+    control = impart::monitored_analysis_control(n_bootstrap = 1000)
   )
 
 final_analysis$final_analysis$decision

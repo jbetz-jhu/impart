@@ -59,8 +59,8 @@ test_that(
           n_0 = 100,
           sigma_0 = 1,
           sigma_1 = 1
-          )
-      )
+        )
+    )
 
     # Grid of Values
     expect_no_condition(
@@ -273,7 +273,7 @@ test_that(
     expect_lt(
       object =
         abs(
-          impart::required_information_single_stage(
+          required_information_single_stage(
             delta = mcid,
             alpha = alpha,
             power = power
@@ -313,7 +313,7 @@ test_that(
     expect_lt(
       object =
         abs(
-          1 - impart::required_information_single_stage(
+          1 - required_information_single_stage(
             delta = pi_1 - pi_0,
             alpha = alpha,
             power = power
@@ -351,7 +351,7 @@ test_that(
     expect_lt(
       object =
         abs(
-          impart::required_information_single_stage(
+          required_information_single_stage(
             delta = log(pi_1/pi_0),
             alpha = alpha,
             power = power

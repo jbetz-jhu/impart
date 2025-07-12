@@ -27,15 +27,15 @@
 #' arguments supplied and quantity of interest.
 #' @export
 #'
-#' @seealso [stats::power.t.test()] for design calculations for a difference in
-#' means, [stats::power.prop.test()] for design calculations for a difference in
-#' proportions, [impart::hr_design()] for design calculations for a hazard ratio
+#' @seealso [stats::power.t.test] for design calculations for a difference in
+#' means, [stats::power.prop.test] for design calculations for a difference in
+#' proportions, [impart::hr_design] for design calculations for a hazard ratio
 #' estimand.
 #'
 #' @references {
-#' Mehta C, Gao P, Bhatt DL, Harrington RA, Skerjanec S, and Ware JH. 2009.
-#' “Optimizing Trial Design: Sequential, Adaptive, and Enrichment Strategies.”
-#' Circulation 119 (4): 597–605.
+#' Mehta CR, Gao P, Bhatt DL, Harrington RA, Skerjanec S, and Ware JH. 2009.
+#' "Optimizing Trial Design: Sequential, Adaptive, and Enrichment Strategies."
+#' \emph{Circulation} 119 (4): 597–605.
 #' \url{https://doi.org/10.1161/circulationaha.108.809707}.
 #' }
 #'
@@ -86,6 +86,8 @@
 #'   alpha = 0.025,
 #'   test_sides = 1
 #' )
+
+
 
 
 #' @rdname rr_design
@@ -190,6 +192,8 @@ rr_n_per_arm <-
       return(params[, c("n_per_arm", "n_total")])
     }
   }
+
+
 
 
 #' @rdname rr_design
@@ -298,6 +302,8 @@ rr_power <-
   }
 
 
+
+
 #' @rdname rr_design
 #' @export
 # Determine Type I Error
@@ -404,6 +410,8 @@ rr_alpha <-
   }
 
 
+
+
 #' @rdname rr_design
 #' @export
 # Determine smallest effect on RR scale
@@ -500,6 +508,8 @@ rr_minimal <-
       return(params[, c("relative_risk")])
     }
   }
+
+
 
 
 #' @rdname rr_design

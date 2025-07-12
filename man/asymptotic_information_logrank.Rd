@@ -2,23 +2,28 @@
 % Please edit documentation in R/asymptotic_information_logrank.R
 \name{asymptotic_information_logrank}
 \alias{asymptotic_information_logrank}
-\title{Approximate information from a random samples of a given size for log hazard ratio}
+\title{Compute Approximate Information from Event Counts: Log Hazard Ratio}
 \usage{
 asymptotic_information_logrank(allocation_ratio = 1, total_events)
 }
 \arguments{
-\item{allocation_ratio}{Numeric scalar containing the allocation ratio of r
-treatments to 1 control. Defaults to 1.}
+\item{allocation_ratio}{A \code{numeric} scalar containing the allocation
+ratio of r participants to treatments for every 1 control. Defaults to 1.}
 
-\item{total_events}{Numeric vector containing the total number of events
-observed across both treatment arms}
+\item{total_events}{A \code{numeric} vector containing the total number of
+events observed across both treatment arms.}
 }
 \value{
 A \code{numeric} scalar or \code{data.frame} containing an
 approximate information level for the values of the inputs.
 }
 \description{
-Approximate information from a random samples of a given size for log hazard ratio
+This function provides an asymptotic approximation to the information
+(i.e. precision, inverse of the variance) provided by a number of observed
+events pooled across treatment arms for a time-to-event outcome, analyzed
+using the log hazard ratio estimand. These functions may be useful in
+pre-trial planning to determine when analyses may occur under different
+assumptions about the nuisance parameters involved.
 }
 \examples{
 asymptotic_information_logrank(
@@ -35,4 +40,25 @@ asymptotic_information_logrank(
   allocation_ratio = c(1, 2),
   total_events = c(66, 90)
 )
+}
+\references{
+{
+Schoenfeld, DA. 1983. "Sample-Size Formula for the Proportional-Hazards
+Regression Model." \emph{Biometrics} 39 (2): 499.
+\url{https://doi.org/10.2307/2531021}.
+
+Mehta, CR, and Tsiatis AA. 2001. "Flexible Sample Size Considerations Using
+Information-Based Interim Monitoring". \emph{Drug Information Journal}
+35 (4): 1095–1112. \url{https://doi.org/10.1177/009286150103500407}
+}
+}
+\seealso{
+\link{asymptotic_information_difference_means} for the
+information on the difference in means,
+\link{asymptotic_information_difference_proportions} for the information
+on a difference in proportions (i.e. a risk difference),
+\link{asymptotic_information_relative_risk} for the information on the
+relative risk (i.e. risk ratio), and
+\link{asymptotic_information_mann_whitney_fm} for information on the
+Mann-Whitney estimand.
 }

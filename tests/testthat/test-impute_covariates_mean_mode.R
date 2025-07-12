@@ -85,7 +85,7 @@ test_that(
               binary_categorical = TRUE
             ),
           FUN = class
-          ),
+        ),
       expected = sapply(X = test_data[, -4], FUN = class)
     )
 

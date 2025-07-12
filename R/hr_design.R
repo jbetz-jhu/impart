@@ -28,8 +28,8 @@
 #' risk estimand.
 #'
 #' @references {
-#' Schoenfeld, DA. 1983. “Sample-Size Formula for the Proportional-Hazards
-#' Regression Model.” Biometrics 39 (2): 499.
+#' Schoenfeld, DA. 1983. "Sample-Size Formula for the Proportional-Hazards
+#' Regression Model." \emph{Biometrics} 39 (2): 499.
 #' \url{https://doi.org/10.2307/2531021}.
 #' }
 #'
@@ -65,6 +65,9 @@
 #'   alpha = 0.05,
 #'   test_sides = 2
 #' )
+
+
+
 
 #' @rdname hr_design
 #' @export
@@ -133,6 +136,9 @@ hr_events <-
     }
   }
 
+
+
+
 #' @rdname hr_design
 #' @export
 # Determine Power
@@ -188,6 +194,9 @@ hr_power <-
       return(params$power)
     }
   }
+
+
+
 
 #' @rdname hr_design
 #' @export
@@ -247,6 +256,9 @@ hr_alpha <-
     }
   }
 
+
+
+
 #' @rdname hr_design
 #' @export
 # Determine minimum absolute value of HR detectable
@@ -299,6 +311,9 @@ hr_minimal <-
       return(params[, c("hazard_ratio", "hazard_ratio_inv")])
     }
   }
+
+
+
 
 #' @rdname hr_design
 #' @export
